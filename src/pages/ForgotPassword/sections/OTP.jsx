@@ -7,7 +7,6 @@ import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
-  InputOTPSeparator,
 } from "@/components/ui/input-otp";
 
 import { useForm } from "react-hook-form";
@@ -20,7 +19,7 @@ const otpSchema = z.object({
   otp: z.string().length(6, "أدخل رمز مكوّن من 6 أرقام"),
 });
 
-const OTP = () => {
+const OTP = ({ goNext, parentData, setParentData }) => {
   const form = useForm({
     resolver: zodResolver(otpSchema),
     defaultValues: {
@@ -30,6 +29,8 @@ const OTP = () => {
 
   const onSubmit = (data) => {
     console.log("OTP:", data.otp);
+    setParentData((prev) => ({ ...prev, otp: data.otp }));
+    goNext();
   };
 
   return (
@@ -55,17 +56,7 @@ const OTP = () => {
                   containerClassName="justify-center"
                 >
                   <InputOTPGroup>
-                    {[0, 1, 2].map((i) => (
-                      <InputOTPSlot
-                        key={i}
-                        index={i}
-                        className={`text-2xl w-12 h-12 border bg-white text-black`}
-                      />
-                    ))}
-                  </InputOTPGroup>
-                  <InputOTPSeparator />
-                  <InputOTPGroup>
-                    {[3, 4, 5].map((i) => (
+                    {[...Array(6)].map((_, i) => (
                       <InputOTPSlot
                         key={i}
                         index={i}

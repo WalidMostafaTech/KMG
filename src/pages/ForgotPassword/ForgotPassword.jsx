@@ -4,7 +4,7 @@ import ResetPassword from "./sections/ResetPassword";
 import OTP from "./sections/OTP";
 
 const ForgotPassword = () => {
-  const [currentIndex, setCurrentIndex] = useState(1);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [parentData, setParentData] = useState({
     email: "",
     otp: "",

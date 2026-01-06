@@ -40,9 +40,14 @@ const OrderMethod = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
         {list.map((item, index) => (
-          <div key={item.id} className="flex flex-col items-center gap-2 card">
-            <h2 className="bg-primary rounded-xl w-16 h-16 flex items-center justify-center
-            text-4xl font-bold shadow-lg shadow-accent-foreground/20 mb-4">
+          <div
+            key={item.id}
+            className="flex flex-col items-center text-center gap-2 card"
+          >
+            <h2
+              className="bg-primary rounded-xl w-16 h-16 flex items-center justify-center
+            text-4xl font-bold shadow-lg shadow-accent-foreground/20 mb-4"
+            >
               {index + 1}
             </h2>
 

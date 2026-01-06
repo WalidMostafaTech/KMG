@@ -66,7 +66,7 @@ const ServicesAccounts = () => {
             key={item.id}
             className="flex flex-col gap-2 card"
           >
-            <div className="w-full h-48 bg-accent overflow-hidden rounded-lg">
+            <div className="w-full h-60 bg-accent overflow-hidden rounded-lg">
               <img
                 src={item.image}
                 alt={item.title}

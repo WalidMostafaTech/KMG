@@ -4,6 +4,15 @@ import { Button } from "@/components/ui/button";
 const ServicesAccountCard = ({ item }) => {
   return (
     <div key={item.id} className="flex flex-col gap-4 card">
+      <div className="flex items-center justify-between gap-2">
+        <img
+          src={item.image}
+          alt="image"
+          className="w-10 h-10 object-contain"
+        />
+        <img src={item.icon} alt="icon" className="w-10 h-10 object-contain" />
+      </div>
+
       <p>{item.title}</p>
 
       <div className="flex flex-col gap-1 text-sm">
