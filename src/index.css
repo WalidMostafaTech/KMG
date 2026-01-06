@@ -74,6 +74,10 @@
   --secondary: #2f3433;
   --secondary-foreground: #ffffff;
 
+  /* Destructive */
+  /* --destructive: #ff0000;
+  --destructive-foreground: #ffffff; */
+
   --muted: #2f3433;
   --muted-foreground: #b5b5b5;
 
@@ -81,7 +85,7 @@
   --accent-foreground: #ffffff;
 
   --border: rgba(255, 255, 255, 0.08);
-  --input: #28272e;
+  --input: #2a2a37;
   --ring: rgba(255, 255, 255, 0.3);
 }
 

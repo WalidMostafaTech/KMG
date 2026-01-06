@@ -6,56 +6,48 @@ const list = [
   {
     id: 1,
     title: "الحسابات",
-    link: "/services",
     items: [
       {
         id: 1,
         img: image,
         title: "The Best Web",
         disc: "Tokens",
-        link: "/services",
       },
       {
         id: 2,
         img: image,
         title: "The Best Web",
         disc: "Tokens",
-        link: "/services",
       },
       {
         id: 3,
         img: image,
         title: "The Best Web",
         disc: "Tokens",
-        link: "/services",
       },
     ],
   },
   {
     id: 2,
     title: "الحسابات",
-    link: "/services",
     items: [
       {
         id: 1,
         img: image,
         title: "The Best Web",
         disc: "Tokens",
-        link: "/services",
       },
       {
         id: 2,
         img: image,
         title: "The Best Web",
         disc: "Tokens",
-        link: "/services",
       },
       {
         id: 3,
         img: image,
         title: "The Best Web",
         disc: "Tokens",
-        link: "/services",
       },
     ],
   },
@@ -70,7 +62,7 @@ const ServicesSection = () => {
             <div className="flex items-center justify-between gap-4">
               <h2 className="text-2xl font-bold">{item.title}</h2>
               <Link
-                to={item.link}
+                to={`/services`}
                 className="flex items-center gap-1 group hover:underline"
               >
                 عرض المزيد
@@ -81,7 +73,7 @@ const ServicesSection = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
               {item.items.map((i) => (
                 <Link
-                  to={i.link}
+                  to={`/services/accounts/${i.link}`}
                   key={i.id}
                   className="flex gap-2 hover:bg-accent rounded transition"
                 >

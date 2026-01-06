@@ -7,7 +7,7 @@ function App() {
     <main>
       <Header />
 
-      <div className="min-h-svh">
+      <div className="min-h-[90vh]">
         <Outlet />
       </div>
 

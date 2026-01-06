@@ -21,6 +21,10 @@ const ServicesAccountsCheckout = React.lazy(() =>
   )
 );
 
+const Register = React.lazy(() => import("../pages/Register/Register"));
+const Login = React.lazy(() => import("../pages/Login/Login"));
+const ForgotPassword = React.lazy(() => import("../pages/ForgotPassword/ForgotPassword"));
+
 const NotFound = React.lazy(() => import("../pages/NotFound/NotFound"));
 
 const router = createBrowserRouter([
@@ -44,6 +48,10 @@ const router = createBrowserRouter([
           },
         ],
       },
+
+      { path: "/login", element: <Login /> },
+      { path: "/register", element: <Register /> },
+      { path: "/forgot-password", element: <ForgotPassword /> },
 
       { path: "*", element: <NotFound /> },
     ],
