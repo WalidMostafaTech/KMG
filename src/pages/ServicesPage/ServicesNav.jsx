@@ -12,6 +12,21 @@ const list = [
     title: "الإشتراكات",
     link: "/services/subscriptions",
   },
+  {
+    id: 3,
+    title: "شحن رصيد",
+    link: "/services/balance-top-up",
+  },
+  {
+    id: 4,
+    title: "كروت الهدايا",
+    link: "/services/gift-cards",
+  },
+  {
+    id: 5,
+    title: "إضافة لعبه للحساب",
+    link: "/services/add-game-to-account",
+  },
 ];
 
 const ServicesNav = () => {

@@ -1,14 +1,8 @@
 import { Link } from "react-router";
 import logo from "@/assets/images/logo.png";
-import { Button } from "@/components/ui/button";
-import { Globe, Search } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
+import HeaderAction from "./HeaderAction";
+import { Search } from "lucide-react";
 
 const Header = () => {
   return (
@@ -31,37 +25,7 @@ const Header = () => {
           />
         </div>
 
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="icon"
-            className="rounded-full lg:hidden"
-          >
-            <Search />
-          </Button>
-
-          {/* Language Select */}
-          <Select defaultValue="en">
-            <SelectTrigger className="min-w-[110px] rounded-full">
-              <SelectValue placeholder="اللغة" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="ar">
-                <Globe />
-                العربية
-              </SelectItem>
-              <SelectItem value="en">
-                <Globe />
-                English
-              </SelectItem>
-            </SelectContent>
-          </Select>
-
-          {/* Login Button */}
-          <Link to="/login">
-            <Button>تسجيل الدخول</Button>
-          </Link>
-        </div>
+        <HeaderAction />
       </div>
     </header>
   );

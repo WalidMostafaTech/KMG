@@ -79,7 +79,7 @@ const list = [
   },
 ];
 
-const ServicesAccountsCheckout = () => {
+const AccountsCheckout = () => {
   // const { id } = useParams();
 
   return (
@@ -101,4 +101,4 @@ const ServicesAccountsCheckout = () => {
   );
 };
 
-export default ServicesAccountsCheckout;
+export default AccountsCheckout;

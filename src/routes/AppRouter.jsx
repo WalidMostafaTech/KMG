@@ -7,23 +7,26 @@ const Home = React.lazy(() => import("../pages/Home/Home"));
 const ServicesPage = React.lazy(() =>
   import("../pages/ServicesPage/ServicesPage")
 );
-const ServicesAccounts = React.lazy(() =>
-  import("../pages/ServicesPage/pages/ServicesAccounts/ServicesAccounts")
+const Accounts = React.lazy(() =>
+  import("../pages/ServicesPage/pages/Accounts/Accounts")
 );
-const ServicesAccountsDetails = React.lazy(() =>
-  import(
-    "../pages/ServicesPage/pages/ServicesAccountsDetails/ServicesAccountsDetails"
-  )
+const AccountsDetails = React.lazy(() =>
+  import("../pages/ServicesPage/pages/AccountsDetails/AccountsDetails")
 );
-const ServicesAccountsCheckout = React.lazy(() =>
-  import(
-    "../pages/ServicesPage/pages/ServicesAccountsCheckout/ServicesAccountsCheckout"
-  )
+const AccountsCheckout = React.lazy(() =>
+  import("../pages/ServicesPage/pages/AccountsCheckout/AccountsCheckout")
 );
-const ServicesSubscriptions = React.lazy(() =>
-  import(
-    "../pages/ServicesPage/pages/ServicesSubscriptions/ServicesSubscriptions"
-  )
+const Subscriptions = React.lazy(() =>
+  import("../pages/ServicesPage/pages/Subscriptions/Subscriptions")
+);
+const BalanceTopUp = React.lazy(() =>
+  import("../pages/ServicesPage/pages/BalanceTopUp/BalanceTopUp")
+);
+const GiftCards = React.lazy(() =>
+  import("../pages/ServicesPage/pages/GiftCards/GiftCards")
+);
+const AddGameToAccount = React.lazy(() =>
+  import("../pages/ServicesPage/pages/AddGameToAccount/AddGameToAccount")
 );
 
 const Register = React.lazy(() => import("../pages/Register/Register"));
@@ -31,6 +34,8 @@ const Login = React.lazy(() => import("../pages/Login/Login"));
 const ForgotPassword = React.lazy(() =>
   import("../pages/ForgotPassword/ForgotPassword")
 );
+
+const Profile = React.lazy(() => import("../pages/Profile/Profile"));
 
 const NotFound = React.lazy(() => import("../pages/NotFound/NotFound"));
 
@@ -44,21 +49,35 @@ const router = createBrowserRouter([
         path: "/services",
         element: <ServicesPage />,
         children: [
-          { index: true, element: <ServicesAccounts /> },
+          { index: true, element: <Accounts /> },
           {
             path: "/services/accounts/:id",
-            element: <ServicesAccountsDetails />,
+            element: <AccountsDetails />,
           },
           {
             path: "/services/accounts/checkout/:id",
-            element: <ServicesAccountsCheckout />,
+            element: <AccountsCheckout />,
           },
           {
             path: "/services/subscriptions",
-            element: <ServicesSubscriptions />,
+            element: <Subscriptions />,
+          },
+          {
+            path: "/services/balance-top-up",
+            element: <BalanceTopUp />,
+          },
+          {
+            path: "/services/gift-cards",
+            element: <GiftCards />,
+          },
+          {
+            path: "/services/add-game-to-account",
+            element: <AddGameToAccount />,
           },
         ],
       },
+
+      { path: "/profile", element: <Profile /> },
 
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },

@@ -3,7 +3,10 @@ import visaIcon from "@/assets/icons/visa-icon.jpg";
 import masterIcon from "@/assets/icons/master-card-icon.jpg";
 import americanIcon from "@/assets/icons/american-express-icon.jpg";
 import discoverIcon from "@/assets/icons/discover-icon.jpg";
-import { Facebook, Linkedin, Twitch, Twitter, Youtube } from "lucide-react";
+import { Facebook, Linkedin, Youtube } from "lucide-react";
+import { FaXTwitter } from "react-icons/fa6";
+import { FaInstagram } from "react-icons/fa";
+
 import { Link } from "react-router";
 
 const list = [
@@ -58,7 +61,7 @@ const socials = [
     id: 2,
     name: "twitter",
     link: "www.google.com",
-    icon: <Twitter />,
+    icon: <FaXTwitter />,
   },
   {
     id: 3,
@@ -68,9 +71,9 @@ const socials = [
   },
   {
     id: 4,
-    name: "twitch",
+    name: "instagram",
     link: "www.google.com",
-    icon: <Twitch />,
+    icon: <FaInstagram />,
   },
   {
     id: 5,

@@ -45,7 +45,7 @@ const list = [
   },
 ];
 
-const ServicesAccounts = () => {
+const Accounts = () => {
   return (
     <section className="container py-6 lg:py-10">
       <div className="w-full flex items-center gap-2 bg-input py-2 px-4 rounded-full">
@@ -82,4 +82,4 @@ const ServicesAccounts = () => {
   );
 };
 
-export default ServicesAccounts;
+export default Accounts;

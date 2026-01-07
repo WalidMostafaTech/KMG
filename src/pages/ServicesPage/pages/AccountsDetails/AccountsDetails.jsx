@@ -82,7 +82,7 @@ const list = [
   },
 ];
 
-const ServicesAccountsDetails = () => {
+const AccountsDetails = () => {
   const { id } = useParams();
 
   return (
@@ -162,4 +162,4 @@ const ServicesAccountsDetails = () => {
   );
 };
 
-export default ServicesAccountsDetails;
+export default AccountsDetails;
