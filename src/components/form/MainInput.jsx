@@ -100,7 +100,7 @@ const MainInput = ({
                     }
                     placeholder={placeholder}
                     disabled={disabled}
-                    className={`bg-input rounded-full focus-visible:border-primary focus-visible:ring-primary/50
+                    className={`bg-muted rounded-full
                     ${icon ? "ps-10" : ""} ${isPassword ? "pe-10" : ""}`}
                   />
 

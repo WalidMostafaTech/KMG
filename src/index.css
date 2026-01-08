@@ -79,7 +79,7 @@
   --destructive-foreground: #ffffff; */
 
   --muted: #2f3433;
-  --muted-foreground: #b5b5b5;
+  --muted-foreground: #919191;
 
   --accent: #2f3433;
   --accent-foreground: #ffffff;
@@ -139,6 +139,15 @@
     &.active,
     &:hover {
       @apply border-primary;
+    }
+  }
+
+  .sideBarLink {
+    @apply flex items-center gap-2 py-1 px-4 rounded-full transition-all duration-300;
+
+    &.active,
+    &:hover {
+      @apply bg-primary;
     }
   }
 

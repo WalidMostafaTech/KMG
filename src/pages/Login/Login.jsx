@@ -68,12 +68,11 @@ const Login = () => {
           </Button>
 
           <p className="text-sm text-center">
-            ليس لديك حساب؟
+            ليس لديك حساب؟{" "}
             <Link
               to="/register"
               className="text-purple-500 cursor-pointer hover:underline"
             >
-              {" "}
               إنشاء حساب جديد
             </Link>
           </p>

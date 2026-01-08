@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
-import { Globe, Search } from "lucide-react";
+import { Bell, Globe, Search } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -8,7 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,23 +19,65 @@ import {
 import { FaRegUser } from "react-icons/fa6";
 import { FiShoppingCart } from "react-icons/fi";
 import { IoIosLogOut } from "react-icons/io";
+import UserAvatar from "@/components/common/UserAvatar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
+const notifications = Array.from({ length: 4 }, (_, index) => ({
+  id: index + 1,
+  title:
+    "هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة.هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة.",
+  description: "4 minutes ago",
+  is_read: index % 2 === 0 ? true : false,
+}));
 
 const HeaderAction = () => {
   const user = "walid mostafa";
   const navigate = useNavigate();
-
-  const getInitials = (fullName) => {
-    if (!fullName) return "?";
-    const parts = fullName.trim().split(" ");
-    if (parts.length === 1) return parts[0][0].toUpperCase();
-    return (parts[0][0] + parts[1][0]).toUpperCase();
-  };
 
   return (
     <div className="flex items-center gap-2">
       <Button variant="outline" size="icon" className="rounded-full lg:hidden">
         <Search />
       </Button>
+
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button variant="outline" size="icon" className="rounded-full">
+            <Bell />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent align="end" className={`lg:w-[500px]`}>
+          <div className="flex flex-col gap-2">
+            {notifications.map((notification) => (
+              <div
+                key={notification.id}
+                className="flex items-center gap-2 py-1 px-2 border-b last:border-b-0 card bg-muted"
+              >
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white text-primary">
+                  <Bell />
+                </div>
+
+                <div className="flex flex-col gap-1 flex-1">
+                  <p className="font-bold text-xs">{notification.title}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {notification.description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="block mt-4">
+            <Link to="/profile/notifications">
+              <Button className={`w-full`}>المزيد من التنبيهات</Button>
+            </Link>
+          </div>
+        </PopoverContent>
+      </Popover>
 
       {/* Language Select */}
       <Select defaultValue="en">
@@ -58,36 +99,29 @@ const HeaderAction = () => {
       {user ? (
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <Avatar className={`cursor-pointer`}>
-              <AvatarImage src={null} />
-              <AvatarFallback>{getInitials(user)}</AvatarFallback>
-            </Avatar>
+            <UserAvatar name={user} image={user} />
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
+          <DropdownMenuContent align="end" dir="rtl">
             <DropdownMenuLabel className="flex items-center gap-2">
+              <UserAvatar name={user} image={user} />
               <h3 className="font-semibold">{user}</h3>
-
-              <Avatar>
-                <AvatarImage src={null} />
-                <AvatarFallback>{getInitials(user)}</AvatarFallback>
-              </Avatar>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => navigate("/profile")}
               className="justify-start"
             >
-              الملف الشخصي
               <FaRegUser />
+              الملف الشخصي
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              الطلبات
+            <DropdownMenuItem onClick={() => navigate("/profile/orders")}>
               <FiShoppingCart />
+              الطلبات
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="bg-red-500/10">
-              تسجيل الخروج
               <IoIosLogOut />
+              تسجيل الخروج
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

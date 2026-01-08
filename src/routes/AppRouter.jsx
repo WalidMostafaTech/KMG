@@ -36,6 +36,13 @@ const ForgotPassword = React.lazy(() =>
 );
 
 const Profile = React.lazy(() => import("../pages/Profile/Profile"));
+const Account = React.lazy(() =>
+  import("../pages/Profile/pages/Account/Account")
+);
+const Orders = React.lazy(() => import("../pages/Profile/pages/Orders/Orders"));
+const Notifications = React.lazy(() =>
+  import("../pages/Profile/pages/Notifications/Notifications")
+);
 
 const NotFound = React.lazy(() => import("../pages/NotFound/NotFound"));
 
@@ -77,7 +84,15 @@ const router = createBrowserRouter([
         ],
       },
 
-      { path: "/profile", element: <Profile /> },
+      {
+        path: "/profile",
+        element: <Profile />,
+        children: [
+          { index: true, element: <Account /> },
+          { path: "orders", element: <Orders /> },
+          { path: "notifications", element: <Notifications /> },
+        ],
+      },
 
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
