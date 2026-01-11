@@ -6,6 +6,7 @@ import "swiper/css";
 import SwiperNavigation from "@/components/common/SwiperNavigation";
 import image from "@/assets/images/slider-img.png";
 import { Link } from "react-router";
+import { useSelector } from "react-redux";
 
 const list = [
   {
@@ -51,12 +52,14 @@ const list = [
 ];
 
 const DiscoverByPlatform = () => {
+    const { lang } = useSelector((state) => state.language);
+
   return (
     <section className="sectionPadding container">
       <SectionTitle title={"استكشاف حسب المنصات"} />
 
       <Swiper
-        // dir={lang === "ar" ? "rtl" : "ltr"}
+        dir={lang === "ar" ? "rtl" : "ltr"}
         modules={[Navigation]}
         spaceBetween={16}
         navigation={{

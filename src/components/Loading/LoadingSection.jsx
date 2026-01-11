@@ -2,7 +2,7 @@ import Loader from "./Loader";
 
 const LoadingSection = () => {
   return (
-    <article className="h-[500px] flex items-center justify-center">
+    <article className="h-[600px] flex items-center justify-center">
       <Loader />
     </article>
   );

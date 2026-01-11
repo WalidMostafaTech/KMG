@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 
-import ServicesPaymentCards from "@/pages/ServicesPage/sections/ServicesPaymentCards";
+import ServicesPaymentCards from "@/components/commonSections/ServicesPaymentCards";
 
 const PaymentCard = ({ currentOffer, location }) => {
   if (!currentOffer) return null;

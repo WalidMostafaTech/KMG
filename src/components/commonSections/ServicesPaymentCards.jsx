@@ -49,7 +49,7 @@ const ServicesPaymentCards = () => {
           <button
             key={item.id}
             onClick={() => setShowModal(true)}
-            className="flex-1 min-w-[180px] cursor-pointer"
+            className="flex-1 min-w-[180px] lg:min-w-[200px] cursor-pointer"
           >
             <div className="p-2 bg-accent rounded-2xl flex items-center gap-2 text-start">
               <span className="bg-card rounded-lg p-2">{item.icon}</span>
@@ -68,7 +68,7 @@ const ServicesPaymentCards = () => {
             <DialogTitle>...</DialogTitle>
           </VisuallyHidden>
 
-          <DialogDescription className="text-sm pt-4">
+          <DialogDescription className="text-sm pt-4 text-white">
             حساب GTA V مودد + 1 مليار دولار حساب PC Enhanced كامل المميزات 1
             مليار دولار داخل اللعبة + 50+ سيارة فاخرة رانك 1000+ + جميع الأسلحة
             والملابس مفتوحة حماية TradeShield كاملة (ضمان عدم الباند) تسليم فوري

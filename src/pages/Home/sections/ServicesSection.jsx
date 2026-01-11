@@ -66,7 +66,7 @@ const ServicesSection = () => {
                 className="flex items-center gap-1 group hover:underline"
               >
                 عرض المزيد
-                <ChevronLeft className="group-hover:-translate-x-2 transition-all" />
+                <ChevronLeft className="group-hover:-translate-x-2 ltr:group-hover:translate-x-2 transition-all ltr:rotate-180" />
               </Link>
             </div>
 

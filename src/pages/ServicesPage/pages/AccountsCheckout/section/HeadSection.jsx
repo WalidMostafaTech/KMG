@@ -4,6 +4,7 @@ import image from "@/assets/images/slider-img.png";
 
 import { Button } from "@/components/ui/button";
 import { DollarSign } from "lucide-react";
+import ServicesPaymentCards from "@/components/commonSections/ServicesPaymentCards";
 
 const HeadSection = () => {
   return (
@@ -34,33 +35,7 @@ const HeadSection = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {[...Array(4)].map(() => (
-            <Dialog>
-              <DialogTrigger>
-                <div className="p-2 bg-accent rounded-2xl flex items-start gap-2 cursor-pointer">
-                  <span className="bg-card rounded-lg p-2">
-                    <DollarSign size={20} />
-                  </span>
-
-                  <div>
-                    <p className="font-bold text-sm">استرجاع المبلغ</p>
-                    <p className="text-xs">ضمان كامل</p>
-                  </div>
-                </div>
-              </DialogTrigger>
-              <DialogContent>
-                <p className="text-sm pt-4">
-                  حساب GTA V مودد + 1 مليار دولار حساب PC Enhanced كامل المميزات
-                  1 مليار دولار داخل اللعبة + 50+ سيارة فاخرة رانك 1000+ + جميع
-                  الأسلحة والملابس مفتوحة حماية TradeShield كاملة (ضمان عدم
-                  الباند) تسليم فوري خلال 5-10 دقائق دعم 24/7 + ضمان استرداد
-                  100% السعر الآن: 74.99 دولار (بدل 99.99 دولار)
-                </p>
-              </DialogContent>
-            </Dialog>
-          ))}
-        </div>
+        <ServicesPaymentCards />
       </div>
     </div>
   );

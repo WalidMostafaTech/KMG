@@ -116,7 +116,7 @@ const AccountsDetails = () => {
         </Select>
         <Select>
           <SelectTrigger className="rounded-full bg-input w-full">
-            <SelectValue placeholder="جهاز" />
+            <SelectValue placeholder="المنصه" />
           </SelectTrigger>
           <SelectContent className={`bg-input rounded-xl`}>
             <SelectItem value="ar" className={`rounded-lg`}>

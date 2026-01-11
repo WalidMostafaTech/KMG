@@ -6,6 +6,7 @@ import "swiper/css";
 import SwiperNavigation from "@/components/common/SwiperNavigation";
 import TestimonialsCard from "@/components/cards/TestimonialsCard";
 import image from "@/assets/images/slider-img.png";
+import { useSelector } from "react-redux";
 
 const testimonials = [
   {
@@ -46,12 +47,14 @@ const testimonials = [
 ];
 
 const Testimonials = () => {
+  const { lang } = useSelector((state) => state.language);
+
   return (
     <section className="sectionPadding container">
       <SectionTitle title={"اراء العملاء"} />
 
       <Swiper
-        // dir={lang === "ar" ? "rtl" : "ltr"}
+        dir={lang === "ar" ? "rtl" : "ltr"}
         modules={[Navigation]}
         spaceBetween={16}
         navigation={{

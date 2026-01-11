@@ -23,8 +23,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useSelector } from "react-redux";
 
 const ProfileSideBar = () => {
+  const { lang } = useSelector((state) => state.language);
+
   const sideContent = (
     <div className="flex flex-col gap-2">
       <NavLink to={"/profile"} end className="sideBarLink">
@@ -50,7 +53,7 @@ const ProfileSideBar = () => {
           </button>
         </DialogTrigger>
 
-        <DialogContent className="sm:max-w-md">
+        <DialogContent showCloseButton={false} className="sm:max-w-md">
           <DialogHeader className="text-center">
             <DialogDescription>
               <img src={logoutIcon} alt="logout" className="mx-auto" />
@@ -89,7 +92,7 @@ const ProfileSideBar = () => {
           <Button>القائمة</Button>
         </SheetTrigger>
 
-        <SheetContent>
+        <SheetContent side={lang === "ar" ? "right" : "left"}>
           {/* Accessible but hidden */}
           <SheetTitle className={`flex items-center justify-center`}>
             <img src={logo} alt="logo" className="w-20 h-20 object-contain" />

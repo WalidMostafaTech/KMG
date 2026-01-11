@@ -1,13 +1,7 @@
 import { Link, useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
-import { Bell, Globe, Search } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Bell, Search } from "lucide-react";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,6 +19,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useState } from "react";
+import LanguageSwitcher from "@/components/common/LanguageSwitcher";
+import { useSelector } from "react-redux";
 
 const notifications = Array.from({ length: 4 }, (_, index) => ({
   id: index + 1,
@@ -37,6 +34,8 @@ const notifications = Array.from({ length: 4 }, (_, index) => ({
 const HeaderAction = () => {
   const user = "walid mostafa";
   const navigate = useNavigate();
+  const [openNotifications, setOpenNotifications] = useState(false);
+  const { lang } = useSelector((state) => state.language);
 
   return (
     <div className="flex items-center gap-2">
@@ -44,7 +43,7 @@ const HeaderAction = () => {
         <Search />
       </Button>
 
-      <Popover>
+      <Popover open={openNotifications} onOpenChange={setOpenNotifications}>
         <PopoverTrigger asChild>
           <Button variant="outline" size="icon" className="rounded-full">
             <Bell />
@@ -72,7 +71,10 @@ const HeaderAction = () => {
           </div>
 
           <div className="block mt-4">
-            <Link to="/profile/notifications">
+            <Link
+              to="/profile/notifications"
+              onClick={() => setOpenNotifications(false)}
+            >
               <Button className={`w-full`}>المزيد من التنبيهات</Button>
             </Link>
           </div>
@@ -80,28 +82,14 @@ const HeaderAction = () => {
       </Popover>
 
       {/* Language Select */}
-      <Select defaultValue="en">
-        <SelectTrigger className="min-w-[110px] rounded-full">
-          <SelectValue placeholder="اللغة" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="ar">
-            <Globe />
-            العربية
-          </SelectItem>
-          <SelectItem value="en">
-            <Globe />
-            English
-          </SelectItem>
-        </SelectContent>
-      </Select>
+      <LanguageSwitcher />
 
       {user ? (
         <DropdownMenu>
           <DropdownMenuTrigger>
             <UserAvatar name={user} image={user} />
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" dir="rtl">
+          <DropdownMenuContent align="end" dir={lang === "ar" ? "rtl" : "ltr"}>
             <DropdownMenuLabel className="flex items-center gap-2">
               <UserAvatar name={user} image={user} />
               <h3 className="font-semibold">{user}</h3>
