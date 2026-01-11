@@ -44,6 +44,10 @@ const Notifications = React.lazy(() =>
   import("../pages/Profile/pages/Notifications/Notifications")
 );
 
+const Chat = React.lazy(() => import("../pages/Chat/Chat"));
+
+const Payment = React.lazy(() => import("../pages/Payment/Payment"));
+
 const NotFound = React.lazy(() => import("../pages/NotFound/NotFound"));
 
 const router = createBrowserRouter([
@@ -93,6 +97,10 @@ const router = createBrowserRouter([
           { path: "notifications", element: <Notifications /> },
         ],
       },
+
+      { path: "/chat/:id?", element: <Chat /> },
+
+      { path: "/payment", element: <Payment /> },
 
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },

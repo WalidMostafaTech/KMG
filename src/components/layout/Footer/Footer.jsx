@@ -8,6 +8,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import { FaInstagram } from "react-icons/fa";
 
 import { Link } from "react-router";
+import ContactUsModal from "./ContactUsModal";
 
 const list = [
   {
@@ -29,24 +30,6 @@ const list = [
     id: 4,
     icon: discoverIcon,
     link: "www.google.com",
-  },
-];
-
-const links = [
-  {
-    id: 1,
-    name: "انضم كاشريك",
-    link: "/",
-  },
-  {
-    id: 2,
-    name: "سياسة الاسترداد",
-    link: "/",
-  },
-  {
-    id: 3,
-    name: "اتصل بنا",
-    link: "/",
   },
 ];
 
@@ -115,15 +98,19 @@ const Footer = () => {
         </p>
 
         <div className="flex items-center gap-4">
-          {links.map((item) => (
-            <Link
-              href={item.link}
-              key={item.id}
-              className="text-sm underline hover:text-primary transition"
-            >
-              {item.name}
-            </Link>
-          ))}
+          <Link
+            to="/register"
+            className="text-sm underline hover:text-primary transition"
+          >
+            انضم كاشريك
+          </Link>
+          <Link
+            to="/"
+            className="text-sm underline hover:text-primary transition"
+          >
+            سياسة الاسترداد
+          </Link>
+          <ContactUsModal />
         </div>
 
         <div className="flex items-center gap-4">

@@ -18,6 +18,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const Orders = () => {
   return (
@@ -106,30 +107,32 @@ const Orders = () => {
                   تفاصيل الطلب
                 </Button>
               </DialogTrigger>
-              <DialogContent className="md:max-w-3xl max-h-[90vh] overflow-y-auto">
-                <DialogHeader className={`mb-4`}>
-                  <DialogTitle className={`text-center`}>
-                    تفاصيل الطلب
-                  </DialogTitle>
-                  <DialogDescription className={`mt-2`}>
-                    <img
-                      src={image}
-                      alt="order"
-                      className="w-full h-[200px] md:h-[300px] object-cover"
-                    />
-                  </DialogDescription>
-                </DialogHeader>
+              <DialogContent className="md:max-w-3xl">
+                <ScrollArea className="h-[90vh] px-2">
+                  <DialogHeader className={`mb-4`}>
+                    <DialogTitle className={`text-center`}>
+                      تفاصيل الطلب
+                    </DialogTitle>
+                    <DialogDescription className={`mt-2`}>
+                      <img
+                        src={image}
+                        alt="order"
+                        className="w-full h-[200px] md:h-[300px] object-cover rounded-xl"
+                      />
+                    </DialogDescription>
+                  </DialogHeader>
 
-                <div className="flex flex-col gap-2">
-                  {Array.from({ length: 10 }).map(() => (
-                    <div className="flex flex-col gap-1 card">
-                      <p className="text-muted-foreground text-sm">
-                        اسم الحساب:
-                      </p>
-                      <h3 className="font-bold">FIFA Ultimate Team Pro</h3>
-                    </div>
-                  ))}
-                </div>
+                  <div className="flex flex-col gap-2">
+                    {Array.from({ length: 10 }).map(() => (
+                      <div className="flex flex-col gap-1 card">
+                        <p className="text-muted-foreground text-sm">
+                          اسم الحساب:
+                        </p>
+                        <h3 className="font-bold">FIFA Ultimate Team Pro</h3>
+                      </div>
+                    ))}
+                  </div>
+                </ScrollArea>
               </DialogContent>
             </Dialog>
           </div>
