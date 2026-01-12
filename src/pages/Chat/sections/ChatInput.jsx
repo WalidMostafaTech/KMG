@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Send, Image as ImageIcon } from "lucide-react";
+import { Send, Image as ImageIcon, Paperclip } from "lucide-react";
 
 const ChatInput = ({ setMessages }) => {
   const [input, setInput] = useState("");
@@ -16,6 +16,28 @@ const ChatInput = ({ setMessages }) => {
         id: Date.now(),
         sender: "user",
         image: imageUrl,
+        created_at: new Date().toLocaleTimeString(),
+      },
+    ]);
+  };
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const fileUrl = URL.createObjectURL(file);
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: Date.now(),
+        sender: "user",
+        file: {
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          url: fileUrl,
+        },
         created_at: new Date().toLocaleTimeString(),
       },
     ]);
@@ -38,6 +60,7 @@ const ChatInput = ({ setMessages }) => {
 
   return (
     <div className="pt-3 border-t border-white/10 flex items-center gap-2">
+      {/* Image */}
       <label className="cursor-pointer text-white/70 hover:text-white">
         <ImageIcon size={20} />
         <input
@@ -46,6 +69,12 @@ const ChatInput = ({ setMessages }) => {
           hidden
           onChange={handleImageUpload}
         />
+      </label>
+
+      {/* File */}
+      <label className="cursor-pointer text-white/70 hover:text-white">
+        <Paperclip size={20} />
+        <input type="file" hidden onChange={handleFileUpload} />
       </label>
 
       <input
