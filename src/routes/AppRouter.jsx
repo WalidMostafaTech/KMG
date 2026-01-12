@@ -30,6 +30,9 @@ const AddGameToAccount = React.lazy(() =>
 );
 
 const Register = React.lazy(() => import("../pages/Register/Register"));
+const VerifyEmail = React.lazy(() =>
+  import("../pages/VerifyEmail/VerifyEmail")
+);
 const Login = React.lazy(() => import("../pages/Login/Login"));
 const ForgotPassword = React.lazy(() =>
   import("../pages/ForgotPassword/ForgotPassword")
@@ -114,6 +117,7 @@ const router = createBrowserRouter([
 
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
+      { path: "/verify-email", element: <VerifyEmail /> },
       { path: "/forgot-password", element: <ForgotPassword /> },
 
       { path: "*", element: <NotFound /> },

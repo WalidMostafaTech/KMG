@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import AuthContainer from "@/components/form/AuthContainer";
 
 import { Form, FormField } from "@/components/ui/form";
@@ -14,74 +14,74 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { z } from "zod";
 
 import FormError from "@/components/form/FormError";
-import { verifyOtp, resendOtp } from "@/services/forgotPasswordServices";
+import { sendOtpVerifyEmail } from "@/services/verifyEmailServices";
+import { verifyEmail } from "@/services/verifiedEmailServices";
 
 const otpSchema = z.object({
   otp: z.string().length(6, "أدخل رمز مكوّن من 6 أرقام"),
 });
 
-const OTP = ({ goNext, parentData, setParentData }) => {
+const VerifyEmail = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const email = location.state?.email;
+
   const form = useForm({
     resolver: zodResolver(otpSchema),
-    defaultValues: {
-      otp: "",
-    },
+    defaultValues: { otp: "" },
   });
 
-  // حالة العداد
   const [countdown, setCountdown] = useState(60);
 
-  // useMutation للتحقق من OTP
+  /* ================== Send OTP on Mount ================== */
+  const { mutate: sendOtpMutation, isPending: isSending } = useMutation({
+    mutationFn: (email) => sendOtpVerifyEmail(email),
+    onSuccess: () => setCountdown(60),
+  });
+
+  useEffect(() => {
+    if (email) sendOtpMutation(email);
+  }, [email]);
+
+  /* ================== Verify Email ================== */
   const {
-    mutate: verifyOtpMutation,
+    mutate: verifyEmailMutation,
     isPending,
     error,
   } = useMutation({
-    mutationFn: ({ code, email }) => verifyOtp({ code, email }),
-    onSuccess: (data) => {
-      setParentData((prev) => ({
-        ...prev,
-        otp: form.getValues("otp"),
-        reset_token: data.reset_token,
-      }));
-      goNext();
-    },
-  });
-
-  // useMutation لإعادة الإرسال
-  const { mutate: resendOtpMutation, isPending: isResending } = useMutation({
-    mutationFn: (email) => resendOtp(email),
+    mutationFn: ({ email, code }) => verifyEmail({ email, code }),
     onSuccess: () => {
-      setCountdown(60); // يبدأ العداد 60 ثانية بعد إعادة الإرسال
+      navigate("/login"); // أو أي صفحة بعد التفعيل
     },
   });
 
-  // العداد يتناقص كل ثانية
+  /* ================== Countdown ================== */
   useEffect(() => {
     if (countdown <= 0) return;
     const timer = setInterval(() => {
       setCountdown((prev) => prev - 1);
     }, 1000);
-
     return () => clearInterval(timer);
   }, [countdown]);
 
+  /* ================== Handlers ================== */
   const onSubmit = (data) => {
-    verifyOtpMutation({ code: data.otp, email: parentData.email });
+    verifyEmailMutation({ email, code: data.otp });
   };
 
   const handleResend = () => {
-    resendOtpMutation(parentData.email);
+    sendOtpMutation(email);
   };
 
   return (
     <AuthContainer
-      title="تأكيد الرمز"
-      description={`لقد قمنا بارسال كود الاسترجاع الى رقم الواتساب الخاص بك قم بالتحقق من الرسائل وادخل الكود المرسل الى ${parentData.email}`}
+      title="تأكيد البريد الإلكتروني"
+      description={`قمنا بإرسال رمز التفعيل إلى بريدك الإلكتروني ${email}`}
     >
       <Form {...form}>
         <form
@@ -89,7 +89,6 @@ const OTP = ({ goNext, parentData, setParentData }) => {
           className="space-y-6 w-full flex flex-col items-center"
           dir="ltr"
         >
-          {/* OTP INPUT */}
           <FormField
             control={form.control}
             name="otp"
@@ -119,18 +118,18 @@ const OTP = ({ goNext, parentData, setParentData }) => {
           />
 
           <Button type="submit" className="w-full" disabled={isPending}>
-            {isPending ? "جاري التحقق..." : "تأكيد الرمز"}
+            {isPending ? "جاري التحقق..." : "تأكيد الحساب"}
           </Button>
 
           <p className="text-sm text-center">
             لم يصلك الرمز؟
             <button
               type="button"
+              onClick={handleResend}
+              disabled={countdown > 0 || isSending}
               className={`text-purple-500 hover:underline ms-1 ${
                 countdown > 0 ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              disabled={countdown > 0 || isResending}
-              onClick={handleResend}
             >
               {countdown > 0
                 ? `إعادة الإرسال خلال ${countdown}s`
@@ -156,4 +155,4 @@ const OTP = ({ goNext, parentData, setParentData }) => {
   );
 };
 
-export default OTP;
+export default VerifyEmail;

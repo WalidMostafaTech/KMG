@@ -2,7 +2,7 @@ import api from "./api";
 import Cookies from "js-cookie";
 
 export const loginUser = async (formData) => {
-  const { data } = await api.post("/login", formData);
+  const { data } = await api.post("/auth/login", formData);
 
   if (data?.data?.token) {
     Cookies.set("token", data?.data?.token);
@@ -12,7 +12,7 @@ export const loginUser = async (formData) => {
 };
 
 export const registerUser = async (formData) => {
-  const { data } = await api.post("/register", formData);
+  const { data } = await api.post("/auth/register", formData);
 
   if (data?.data?.token) {
     Cookies.set("token", data?.data?.token);
@@ -22,7 +22,7 @@ export const registerUser = async (formData) => {
 };
 
 export const logoutUser = async () => {
-  const { data } = await api.post("/logout");
+  const { data } = await api.post("/auth/logout");
   Cookies.remove("token");
   return data;
 };

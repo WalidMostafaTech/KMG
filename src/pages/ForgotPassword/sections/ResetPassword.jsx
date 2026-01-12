@@ -1,5 +1,6 @@
 import AuthContainer from "@/components/form/AuthContainer";
 import MainInput from "@/components/form/MainInput";
+import FormError from "@/components/form/FormError";
 
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
@@ -7,37 +8,62 @@ import { Progress } from "@/components/ui/progress";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 
 import { Lock } from "lucide-react";
 import { useMemo } from "react";
 import { getPasswordStrength, strengthLabel } from "@/utils/PasswordStrength";
 
 import { z } from "zod";
+import { useNavigate } from "react-router";
+import { resetPassword } from "@/services/forgotPasswordServices";
+
 
 const resetPasswordSchema = z
   .object({
     password: z.string().min(6, "كلمة المرور قصيرة"),
-    confirm_password: z.string().min(6, "تأكيد كلمة المرور مطلوب"),
+    password_confirmation: z.string().min(6, "تأكيد كلمة المرور مطلوب"),
   })
-  .refine((data) => data.password === data.confirm_password, {
+  .refine((data) => data.password === data.password_confirmation, {
     message: "كلمتا المرور غير متطابقتين",
-    path: ["confirm_password"],
+    path: ["password_confirmation"],
   });
 
-const ResetPassword = () => {
+const ResetPasswordPage = ({ parentData }) => {
+  const navigate = useNavigate();
+
   const form = useForm({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
       password: "",
-      confirm_password: "",
+      password_confirmation: "",
     },
   });
 
   const password = form.watch("password");
   const strength = useMemo(() => getPasswordStrength(password), [password]);
 
+  // useMutation لإرسال طلب إعادة التعيين
+  const {
+    mutate: resetPasswordMutation,
+    isPending,
+    error,
+  } = useMutation({
+    mutationFn: (payload) => resetPassword(payload),
+    onSuccess: () => {
+      navigate("/login"); // بعد النجاح نرجع لتسجيل الدخول
+    },
+  });
+
   const onSubmit = (data) => {
-    console.log(data);
+    // نرسل جميع البيانات المطلوبة
+    resetPasswordMutation({
+      reset_token: parentData.reset_token,
+      code: parentData.otp,
+      email: parentData.email,
+      password: data.password,
+      password_confirmation: data.password_confirmation,
+    });
   };
 
   const progressColor =
@@ -60,6 +86,14 @@ const ResetPassword = () => {
           className="space-y-4 w-full"
           dir="rtl"
         >
+          {error && (
+            <FormError
+              errorMsg={
+                error.response?.data?.message || "حدث خطأ، حاول مرة أخرى"
+              }
+            />
+          )}
+
           <MainInput
             control={form.control}
             name="password"
@@ -70,7 +104,7 @@ const ResetPassword = () => {
 
           <MainInput
             control={form.control}
-            name="confirm_password"
+            name="password_confirmation"
             label="تأكيد كلمة المرور"
             type="password"
             icon={<Lock size={18} />}
@@ -81,7 +115,7 @@ const ResetPassword = () => {
             <Progress
               value={(strength / 4) * 100}
               indicatorColor={progressColor}
-              className={"bg-accent"}
+              className="bg-accent"
             />
 
             {strength > 0 && (
@@ -97,8 +131,8 @@ const ResetPassword = () => {
             )}
           </div>
 
-          <Button type="submit" className="w-full">
-            حفظ كلمة المرور الجديدة
+          <Button type="submit" className="w-full" disabled={isPending}>
+            {isPending ? "جاري إعادة التعيين..." : "حفظ كلمة المرور الجديدة"}
           </Button>
         </form>
       </Form>
@@ -106,4 +140,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default ResetPasswordPage;

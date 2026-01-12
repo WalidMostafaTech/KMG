@@ -1,15 +1,18 @@
 import AuthContainer from "@/components/form/AuthContainer";
 import MainInput from "@/components/form/MainInput";
+import FormError from "@/components/form/FormError";
 
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 
 import { Mail } from "lucide-react";
 import { Link } from "react-router";
 import { z } from "zod";
+import { sendOtp } from "@/services/forgotPasswordServices";
 
 const forgotPasswordSchema = z.object({
   email: z.string().email("البريد الإلكتروني غير صحيح"),
@@ -23,10 +26,21 @@ const CheckEmail = ({ goNext, setParentData }) => {
     },
   });
 
+  // useMutation
+  const {
+    mutate: sendOtpMutation,
+    isPending,
+    error,
+  } = useMutation({
+    mutationFn: ({ email }) => sendOtp(email),
+    onSuccess: (data, variables) => {
+      setParentData({ email: variables.email });
+      goNext();
+    },
+  });
+
   const onSubmit = (data) => {
-    console.log(data);
-    setParentData(data);
-    goNext();
+    sendOtpMutation(data);
   };
 
   return (
@@ -48,8 +62,8 @@ const CheckEmail = ({ goNext, setParentData }) => {
             icon={<Mail size={18} />}
           />
 
-          <Button type="submit" className="w-full">
-            إرسال رابط إعادة التعيين
+          <Button type="submit" className="w-full" disabled={isPending}>
+            {isPending ? "جاري الإرسال..." : "إرسال رابط إعادة التعيين"}
           </Button>
 
           <p className="text-sm text-center">
@@ -62,6 +76,14 @@ const CheckEmail = ({ goNext, setParentData }) => {
               تسجيل الدخول
             </Link>
           </p>
+
+          {error && (
+            <FormError
+              errorMsg={
+                error.response?.data?.message || "حدث خطأ، حاول مرة أخرى"
+              }
+            />
+          )}
         </form>
       </Form>
     </AuthContainer>

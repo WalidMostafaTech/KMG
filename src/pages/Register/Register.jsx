@@ -1,42 +1,63 @@
 import AuthContainer from "@/components/form/AuthContainer";
 import MainInput from "@/components/form/MainInput";
+import FormError from "@/components/form/FormError";
 
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 
 import { User, Mail, Lock } from "lucide-react";
-
 import { z } from "zod";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+
+import { registerUser } from "@/services/authServices";
 
 const registerSchema = z
   .object({
     name: z.string().min(3, "الاسم قصير"),
     email: z.string().email("البريد الإلكتروني غير صحيح"),
     password: z.string().min(6, "كلمة المرور قصيرة"),
-    confirm_password: z.string().min(6, "تأكيد كلمة المرور مطلوب"),
+    password_confirmation: z.string().min(6, "تأكيد كلمة المرور مطلوب"),
   })
-  .refine((data) => data.password === data.confirm_password, {
+  .refine((data) => data.password === data.password_confirmation, {
     message: "كلمتا المرور غير متطابقتين",
-    path: ["confirm_password"],
+    path: ["password_confirmation"],
   });
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const form = useForm({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       name: "",
       email: "",
       password: "",
-      confirm_password: "",
+      password_confirmation: "",
+    },
+  });
+
+  const {
+    mutate: register,
+    isPending,
+    error,
+  } = useMutation({
+    mutationFn: registerUser,
+    onSuccess: () => {
+      navigate("/verify-email", { state: { email: form.getValues("email") } });
     },
   });
 
   const onSubmit = (data) => {
-    console.log(data);
+    register({
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      password_confirmation: data.password_confirmation,
+    });
   };
 
   return (
@@ -73,14 +94,14 @@ const Register = () => {
 
           <MainInput
             control={form.control}
-            name="confirm_password"
+            name="password_confirmation"
             label="تأكيد كلمة المرور"
             type="password"
             icon={<Lock size={18} />}
           />
 
-          <Button type="submit" className="w-full">
-            إنشاء حساب
+          <Button type="submit" className="w-full" disabled={isPending}>
+            {isPending ? "جاري إنشاء الحساب..." : "إنشاء حساب"}
           </Button>
 
           <p className="text-sm text-center">
@@ -93,6 +114,12 @@ const Register = () => {
               تسجيل الدخول
             </Link>
           </p>
+
+          {error && (
+            <FormError
+              errorMsg={error.response?.data?.message || "حدث خطأ ما"}
+            />
+          )}
         </form>
       </Form>
     </AuthContainer>

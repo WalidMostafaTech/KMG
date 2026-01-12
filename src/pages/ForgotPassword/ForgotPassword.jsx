@@ -9,6 +9,7 @@ const ForgotPassword = () => {
     email: "",
     otp: "",
     password: "",
+    password_confirmation: "",
     reset_token: "",
   });
 
@@ -29,7 +30,7 @@ const ForgotPassword = () => {
         />
       )}
       {currentIndex === 2 && (
-        <ResetPassword parentData={parentData} setParentData={setParentData} />
+        <ResetPassword parentData={parentData}/>
       )}
     </>
   );

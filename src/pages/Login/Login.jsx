@@ -1,15 +1,19 @@
 import AuthContainer from "@/components/form/AuthContainer";
 import MainInput from "@/components/form/MainInput";
+import FormError from "@/components/form/FormError";
 
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 
 import { Mail, Lock } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { z } from "zod";
+import { loginUser } from "@/services/authServices";
+
 
 const loginSchema = z.object({
   email: z.string().email("البريد الإلكتروني غير صحيح"),
@@ -17,6 +21,8 @@ const loginSchema = z.object({
 });
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const form = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -25,8 +31,19 @@ const Login = () => {
     },
   });
 
+  const {
+    mutate: login,
+    isPending,
+    error,
+  } = useMutation({
+    mutationFn: loginUser,
+    onSuccess: () => {
+      navigate("/");
+    },
+  });
+
   const onSubmit = (data) => {
-    console.log(data);
+    login(data);
   };
 
   return (
@@ -63,8 +80,8 @@ const Login = () => {
             نسيت كلمة المرور؟
           </Link>
 
-          <Button type="submit" className="w-full">
-            تسجيل الدخول
+          <Button type="submit" className="w-full" disabled={isPending}>
+            {isPending ? "جاري تسجيل الدخول..." : "تسجيل الدخول"}
           </Button>
 
           <p className="text-sm text-center">
@@ -76,6 +93,14 @@ const Login = () => {
               إنشاء حساب جديد
             </Link>
           </p>
+
+          {error && (
+            <FormError
+              errorMsg={
+                error.response?.data?.message || "بيانات الدخول غير صحيحة"
+              }
+            />
+          )}
         </form>
       </Form>
     </AuthContainer>
