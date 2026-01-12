@@ -4,55 +4,10 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 
 import SwiperNavigation from "@/components/common/SwiperNavigation";
-import image from "@/assets/images/slider-img.png";
-import { Link } from "react-router";
 import { useSelector } from "react-redux";
 
-const list = [
-  {
-    id: 1,
-    link: "www.google.com",
-    image: image,
-  },
-  {
-    id: 2,
-    link: "www.google.com",
-    image: image,
-  },
-  {
-    id: 3,
-    link: "www.google.com",
-    image: image,
-  },
-  {
-    id: 4,
-    link: "www.google.com",
-    image: image,
-  },
-  {
-    id: 5,
-    link: "www.google.com",
-    image: image,
-  },
-  {
-    id: 6,
-    link: "www.google.com",
-    image: image,
-  },
-  {
-    id: 7,
-    link: "www.google.com",
-    image: image,
-  },
-  {
-    id: 8,
-    link: "www.google.com",
-    image: image,
-  },
-];
-
-const DiscoverByPlatform = () => {
-    const { lang } = useSelector((state) => state.language);
+const DiscoverByPlatform = ({ data }) => {
+  const { lang } = useSelector((state) => state.language);
 
   return (
     <section className="sectionPadding container">
@@ -78,20 +33,15 @@ const DiscoverByPlatform = () => {
           },
         }}
       >
-        {list?.map((item) => (
+        {data?.map((item) => (
           <SwiperSlide key={item.id}>
-            <Link
-              to={item.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="h-52 bg-card"
-            >
+            <div className="h-32 bg-background">
               <img
                 src={item.image}
-                alt={item.link}
-                className="w-full h-full object-cover rounded-lg"
+                alt={item.name}
+                className="w-full h-full object-contain rounded-lg"
               />
-            </Link>
+            </div>
           </SwiperSlide>
         ))}
       </Swiper>

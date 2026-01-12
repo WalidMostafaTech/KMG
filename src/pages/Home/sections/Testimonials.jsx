@@ -5,48 +5,9 @@ import "swiper/css";
 
 import SwiperNavigation from "@/components/common/SwiperNavigation";
 import TestimonialsCard from "@/components/cards/TestimonialsCard";
-import image from "@/assets/images/slider-img.png";
 import { useSelector } from "react-redux";
 
-const testimonials = [
-  {
-    id: 1,
-    name: "John Doe",
-    image: image,
-    rate: 5,
-    desc: "أفضل موقع لشراء حسابات GTA! الأسعار معقولة، أشتريت حسابين والاثنين شغّالين بدون أي مشاكل.",
-  },
-  {
-    id: 2,
-    name: "John Doe",
-    image: image,
-    rate: 3.5,
-    desc: "أفضل موقع لشراء حسابات GTA! الأسعار معقولة، أشتريت حسابين والاثنين شغّالين بدون أي مشاكل.",
-  },
-  {
-    id: 3,
-    name: "John Doe",
-    image: image,
-    rate: 5,
-    desc: "أفضل موقع لشراء حسابات GTA! الأسعار معقولة، أشتريت حسابين والاثنين شغّالين بدون أي مشاكل.",
-  },
-  {
-    id: 4,
-    name: "John Doe",
-    image: image,
-    rate: 5,
-    desc: "أفضل موقع لشراء حسابات GTA! الأسعار معقولة، أشتريت حسابين والاثنين شغّالين بدون أي مشاكل.",
-  },
-  {
-    id: 5,
-    name: "John Doe",
-    image: image,
-    rate: 5,
-    desc: "أفضل موقع لشراء حسابات GTA! الأسعار معقولة، أشتريت حسابين والاثنين شغّالين بدون أي مشاكل.",
-  },
-];
-
-const Testimonials = () => {
+const Testimonials = ({ data }) => {
   const { lang } = useSelector((state) => state.language);
 
   return (
@@ -73,7 +34,7 @@ const Testimonials = () => {
           },
         }}
       >
-        {testimonials?.map((item) => (
+        {data?.map((item) => (
           <SwiperSlide key={item.id}>
             <TestimonialsCard item={item} />
           </SwiperSlide>

@@ -49,7 +49,7 @@ const HeaderAction = () => {
             <Bell />
           </Button>
         </PopoverTrigger>
-        <PopoverContent align="end" className={`lg:w-[500px]`}>
+        <PopoverContent align="end" className={`md:w-[500px]`}>
           <div className="flex flex-col gap-2">
             {notifications.map((notification) => (
               <div

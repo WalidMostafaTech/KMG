@@ -1,4 +1,3 @@
-import sliderImg from "@/assets/images/slider-img.png";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 
@@ -6,15 +5,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { useSelector } from "react-redux";
 
-const sliderData = [
-  { id: 1, img: sliderImg },
-  { id: 2, img: sliderImg },
-  { id: 3, img: sliderImg },
-  { id: 4, img: sliderImg },
-  { id: 5, img: sliderImg },
-];
-
-const Hero = () => {
+const Hero = ({ data }) => {
   const { lang } = useSelector((state) => state.language);
 
   return (
@@ -28,12 +19,17 @@ const Hero = () => {
           pagination={{ clickable: true }}
           className="h-full hero-swiper"
         >
-          {sliderData.map((slide) => (
+          {data?.map((slide) => (
             <SwiperSlide key={slide.id}>
               <img
-                src={slide.img}
+                src={slide.mobile_image}
                 alt=""
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover lg:hidden"
+              />
+              <img
+                src={slide.web_image}
+                alt=""
+                className="w-full h-full object-cover hidden lg:block"
               />
             </SwiperSlide>
           ))}

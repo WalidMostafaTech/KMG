@@ -5,44 +5,31 @@ export const getSettings = async () => {
   return data?.data || [];
 };
 
-export const sendContact = async (formData) => {
-  const { data } = await api.post("/contact", formData);
-  return data;
-};
-
-export const sendConsultationRequest = async (formData) => {
-  const { data } = await api.post("/consultation-request", formData);
-  return data;
-};
-
-export const getConsultationSettings = async () => {
-  const { data } = await api.get("/consultation-settings");
+export const getFaq = async () => {
+  const { data } = await api.get("/fqa");
   return data?.data || [];
 };
 
-export const getProcessOutsourcePage = async () => {
-  const { data } = await api.get("/process-outsource-page");
+export const getPurchaseSteps = async () => {
+  const { data } = await api.get("/purchase-steps");
   return data?.data || [];
 };
 
-export const getPages = async () => {
-  const { data } = await api.get("/pages");
+export const getFooter = async () => {
+  const { data } = await api.get("/footer-and-social-links");
+  return data?.data || {};
+};
+
+export const getContactUs = async (formData) => {
+  const { data } = await api.post(`/contact`, formData);
   return data?.data || [];
 };
 
-export const getTermsAndConditions = async () => {
-  const { data } = await api.get("/terms-conditions");
-  return data?.data || [];
-};
-
-export const getCities = async () => {
-  const { data } = await api.get("/cities");
-  return data?.data || [];
-};
-
-export const setPageSeo = async ({ page, slug }) => {
-  const { data } = await api.get(`/page-seo`, {
-    params: { page, slug },
+export const getPolicies = async (type) => {
+  const { data } = await api.get(`/policies`, {
+    params: {
+      type,
+    },
   });
   return data?.data || [];
 };

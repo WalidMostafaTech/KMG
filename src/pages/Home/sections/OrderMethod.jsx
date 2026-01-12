@@ -33,13 +33,13 @@ const list = [
   },
 ];
 
-const OrderMethod = () => {
+const OrderMethod = ({ data }) => {
   return (
     <section className="container sectionPadding">
       <SectionTitle title={"طرق الطلب"} />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
-        {list.map((item, index) => (
+        {data?.map((item, index) => (
           <div
             key={item.id}
             className="flex flex-col items-center text-center gap-2 card"
@@ -52,7 +52,7 @@ const OrderMethod = () => {
             </h2>
 
             <h3 className="text-2xl font-bold">{item.title}</h3>
-            <p className="text-sm">{item.disc}</p>
+            <p className="text-sm">{item.description}</p>
           </div>
         ))}
       </div>

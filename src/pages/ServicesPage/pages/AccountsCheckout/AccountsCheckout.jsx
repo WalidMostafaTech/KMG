@@ -5,7 +5,7 @@ import ServicesAccountCard from "@/components/cards/ServicesAccountCard";
 import HeadSection from "./section/HeadSection";
 import OfferDetails from "./section/OfferDetails";
 import FAQ from "@/components/commonSections/FAQ";
-import PaymentSteps from "./section/PaymentSteps";
+import PurchaseSteps from "@/components/commonSections/PurchaseSteps";
 
 const list = [
   {
@@ -94,7 +94,7 @@ const AccountsCheckout = () => {
         ))}
       </div>
 
-      <PaymentSteps />
+      <PurchaseSteps />
 
       <FAQ />
     </section>

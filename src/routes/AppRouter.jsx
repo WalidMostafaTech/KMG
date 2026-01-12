@@ -46,6 +46,13 @@ const Notifications = React.lazy(() =>
 
 const Chat = React.lazy(() => import("../pages/Chat/Chat"));
 
+const RefundPolicy = React.lazy(() =>
+  import("../pages/RefundPolicy/RefundPolicy")
+);
+const JoinAsPartner = React.lazy(() =>
+  import("../pages/JoinAsPartner/JoinAsPartner")
+);
+
 const Payment = React.lazy(() => import("../pages/Payment/Payment"));
 
 const NotFound = React.lazy(() => import("../pages/NotFound/NotFound"));
@@ -99,6 +106,9 @@ const router = createBrowserRouter([
       },
 
       { path: "/chat/:id?", element: <Chat /> },
+
+      { path: "/refund-policy", element: <RefundPolicy /> },
+      { path: "/join-as-partner", element: <JoinAsPartner /> },
 
       { path: "/payment", element: <Payment /> },
 
