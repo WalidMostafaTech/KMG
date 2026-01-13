@@ -1,31 +1,23 @@
-import image from "@/assets/images/slider-img.png";
 import MainPagination from "@/components/common/MainPagination";
 
-const list = Array.from({ length: 8 }).map((_, index) => ({
-  id: index + 1,
-  image: image,
-  title: `offer ${index + 1}`,
-  disc: `offer ${index + 1} disc`,
-}));
-
-const OffersList = ({ onOfferClick, currentOffer }) => {
+const OffersList = ({ onOfferClick, currentOffer, offers }) => {
   return (
     <div>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 h-fit">
-        {list.map((item) => (
+        {offers?.map((item) => (
           <div
             key={item.id}
             onClick={() => onOfferClick(item)}
-            className={`card flex flex-col gap-2 cursor-pointer hover:scale-105 duration-200 ${
+            className={`card flex flex-col items-center text-center gap-2 cursor-pointer hover:scale-105 duration-200 ${
               item?.id === currentOffer?.id ? "border-primary border-2" : ""
             }`}
           >
             <img
               src={item.image}
-              alt=""
+              alt={item.name}
               className="max-h-[70px] object-contain"
             />
-            <p>{item.title}</p>
+            <p>{item.name}</p>
             <span>{item.disc}</span>
           </div>
         ))}

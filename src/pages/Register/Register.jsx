@@ -47,7 +47,7 @@ const Register = () => {
   } = useMutation({
     mutationFn: registerUser,
     onSuccess: () => {
-      navigate("/verify-email", { state: { email: form.getValues("email") } });
+      navigate("/verify-email", { replace: true });
     },
   });
 

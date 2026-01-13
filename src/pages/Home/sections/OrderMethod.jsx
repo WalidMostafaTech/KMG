@@ -1,38 +1,5 @@
 import SectionTitle from "@/components/common/SectionTitle";
 
-const list = [
-  {
-    id: 1,
-    title: "حماية 100%",
-    disc: "جميع المعاملات محمية",
-  },
-  {
-    id: 2,
-    title: "بائعون موثوقون",
-    disc: "فحص دقيق لكل بائع",
-  },
-  {
-    id: 3,
-    title: "خدمة 7-24",
-    disc: "خدمة عملاء على مدار الساعة",
-  },
-  {
-    id: 4,
-    title: "استرجاع مضمون",
-    disc: "ضمان استرجاع الأموال",
-  },
-  {
-    id: 5,
-    title: "تسليم سريع",
-    disc: "معظم الطلبات فورية",
-  },
-  {
-    id: 6,
-    title: "أسعار تنافسية",
-    disc: "أفضل الأسعار فى السوق",
-  },
-];
-
 const OrderMethod = ({ data }) => {
   return (
     <section className="container sectionPadding">

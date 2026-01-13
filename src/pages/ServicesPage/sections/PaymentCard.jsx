@@ -8,7 +8,7 @@ const PaymentCard = ({ currentOffer, location }) => {
   return (
     <div className="flex flex-col gap-4 card w-full md:max-w-xs h-fit">
       <div>
-        <h3 className="text-lg font-bold mb-2">{currentOffer.title}</h3>
+        <h3 className="text-lg font-bold mb-2">{currentOffer.name}</h3>
 
         <ul className="flex flex-col gap-2 text-sm">
           <li className="flex justify-between">

@@ -13,7 +13,8 @@ import { Mail, Lock } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { z } from "zod";
 import { loginUser } from "@/services/authServices";
-
+import { useDispatch } from "react-redux";
+import { addProfile } from "@/store/profile/profileSlice";
 
 const loginSchema = z.object({
   email: z.string().email("البريد الإلكتروني غير صحيح"),
@@ -22,6 +23,7 @@ const loginSchema = z.object({
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const form = useForm({
     resolver: zodResolver(loginSchema),
@@ -37,8 +39,9 @@ const Login = () => {
     error,
   } = useMutation({
     mutationFn: loginUser,
-    onSuccess: () => {
+    onSuccess: (data) => {
       navigate("/");
+      dispatch(addProfile(data?.user));
     },
   });
 

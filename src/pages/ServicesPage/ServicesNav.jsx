@@ -31,8 +31,8 @@ const list = [
 
 const ServicesNav = () => {
   return (
-    <nav className="bg-input py-2">
-      <div className="container flex items-center justify-center gap-8">
+    <nav className="bg-input">
+      <div className="container py-2 flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-8">
         <div className="flex items-center gap-2">
           <div className="w-10 h-10 overflow-hidden rounded">
             <img
@@ -41,10 +41,10 @@ const ServicesNav = () => {
               className="w-full h-full object-cover"
             />
           </div>
-          <h2 className="text-lg font-bold">الخدمات</h2>
+          <h2 className="text-lg font-bold capitalize">pupg</h2>
         </div>
 
-        <ul className="flex items-center gap-4">
+        <ul className="flex flex-wrap items-center justify-center gap-4 py-2">
           {list.map((item) => (
             <li key={item.id}>
               <NavLink end to={item.link} className={`services_nav_links`}>

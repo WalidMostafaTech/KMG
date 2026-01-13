@@ -2,6 +2,9 @@ import React, { Suspense } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router";
 import App from "../App";
 import LoadingPage from "../components/Loading/LoadingPage";
+import ProtectedRoute from "@/components/protectRoutes/ProtectedRoute";
+import AuthGuard from "@/components/protectRoutes/AuthGuard";
+import VerifyEmailGuard from "@/components/protectRoutes/VerifyEmailGuard";
 
 const Home = React.lazy(() => import("../pages/Home/Home"));
 const ServicesPage = React.lazy(() =>
@@ -99,12 +102,18 @@ const router = createBrowserRouter([
       },
 
       {
-        path: "/profile",
-        element: <Profile />,
+        element: <ProtectedRoute />,
         children: [
-          { index: true, element: <Account /> },
-          { path: "orders", element: <Orders /> },
-          { path: "notifications", element: <Notifications /> },
+          {
+            path: "/profile",
+            element: <Profile />,
+            children: [
+              { index: true, element: <Account /> },
+              { path: "orders", element: <Orders /> },
+              { path: "notifications", element: <Notifications /> },
+            ],
+          },
+          { path: "/chat/:id?", element: <Chat /> },
         ],
       },
 
@@ -115,10 +124,23 @@ const router = createBrowserRouter([
 
       { path: "/payment", element: <Payment /> },
 
-      { path: "/login", element: <Login /> },
-      { path: "/register", element: <Register /> },
-      { path: "/verify-email", element: <VerifyEmail /> },
-      { path: "/forgot-password", element: <ForgotPassword /> },
+      {
+        element: <AuthGuard />,
+        children: [
+          { path: "/login", element: <Login /> },
+          { path: "/register", element: <Register /> },
+          { path: "/forgot-password", element: <ForgotPassword /> },
+        ],
+      },
+
+      {
+        path: "/verify-email",
+        element: (
+          <VerifyEmailGuard>
+            <VerifyEmail />
+          </VerifyEmailGuard>
+        ),
+      },
 
       { path: "*", element: <NotFound /> },
     ],

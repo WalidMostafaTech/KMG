@@ -12,6 +12,12 @@ import { User, Mail, SquarePen } from "lucide-react";
 import PhoneInputField from "@/components/form/PhoneInputField";
 import { isValidPhoneNumber } from "react-phone-number-input";
 import ChangePasswordModal from "./sections/ChangePasswordModal";
+import { useMutation } from "@tanstack/react-query";
+import { updateProfile } from "@/services/authServices";
+import { useDispatch, useSelector } from "react-redux";
+import { useRef, useState } from "react";
+import FormError from "@/components/form/FormError";
+import { addProfile } from "@/store/profile/profileSlice";
 
 /* ---------------- schema ---------------- */
 const accountSchema = z.object({
@@ -24,28 +30,53 @@ const accountSchema = z.object({
 });
 
 const Account = () => {
-  /* ---------------- user data ---------------- */
-  const user = {
-    name: "walid mostafa",
-    email: "2Ko2M@example.com",
-    image: null,
-    phone: "",
-  };
+  const { profile } = useSelector((state) => state.profile);
+  const [openChangePassword, setOpenChangePassword] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [avatar, setAvatar] = useState(profile?.image || null);
 
+  const fileInputRef = useRef(null);
+
+  const dispatch = useDispatch();
+
+  /* ---------------- user data ---------------- */
   /* ---------------- form ---------------- */
   const form = useForm({
     resolver: zodResolver(accountSchema),
     defaultValues: {
-      name: user.name || "",
-      email: user.email || "",
-      phone: user.phone || "",
+      name: profile?.name || "",
+      email: profile?.email || "",
+      phone: profile?.phone || "",
     },
     mode: "onChange",
   });
 
+  const updateProfileMutation = useMutation({
+    mutationFn: updateProfile,
+    onSuccess: (data) => {
+      dispatch(addProfile(data));
+
+      alert("تم تحديث البيانات بنجاح");
+      setErrorMsg("");
+      // toast.success("تم تحديث البيانات بنجاح");
+    },
+    onError: (error) => {
+      setErrorMsg(error?.response?.data?.message);
+      // toast.error(error?.response?.data?.message || "حدث خطأ");
+    },
+  });
+
   const onSubmit = (values) => {
-    console.log("Form Values:", values);
-    // هنا تعمل API call
+    const formData = new FormData();
+    formData.append("name", values.name);
+    formData.append("email", values.email);
+    formData.append("phone", values.phone);
+
+    if (fileInputRef.current?.files?.[0]) {
+      formData.append("image", fileInputRef.current.files[0]);
+    }
+
+    updateProfileMutation.mutate(formData);
   };
 
   return (
@@ -53,9 +84,9 @@ const Account = () => {
       {/* ===== Header Card ===== */}
       <div className="card flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-2">
-          <UserAvatar name={user.name} image={user.image} size={80} />
+          <UserAvatar name={profile?.name} image={profile?.image} size={80} />
 
-          <h2 className="text-2xl font-bold capitalize">{user.name}</h2>
+          <h2 className="text-2xl font-bold capitalize">{profile?.name}</h2>
         </div>
 
         <Button className="sm:w-[200px] gap-2">
@@ -65,13 +96,42 @@ const Account = () => {
       </div>
 
       {/* ===== Form Card ===== */}
-      <div className="card">
+      <div
+        className="card"
+        style={{
+          pointerEvents: updateProfileMutation.isPending ? "none" : "auto",
+        }}
+      >
         <div className="flex flex-col items-center gap-2">
           <div className="relative">
-            <div className="absolute bottom-0 start-0 w-8 h-8 bg-primary rounded-full z-10 cursor-pointer flex items-center justify-center">
+            <div
+              className="absolute bottom-0 start-0 w-8 h-8 bg-primary rounded-full z-10 cursor-pointer flex items-center justify-center"
+              onClick={() => fileInputRef.current?.click()}
+            >
               <SquarePen size={20} />
             </div>
-            <UserAvatar name={user.name} image={user.image} size={100} />
+            <UserAvatar
+              name={profile?.name}
+              image={avatar} // هنا بدل profile?.image
+              size={100}
+            />
+
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              ref={fileInputRef}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  const reader = new FileReader();
+                  reader.onload = () => {
+                    setAvatar(reader.result); // هنعرض الصورة مباشرة
+                  };
+                  reader.readAsDataURL(file);
+                }
+              }}
+            />
           </div>
           <h3 className="text-2xl font-bold">البيانات الشخصية</h3>
         </div>
@@ -105,13 +165,30 @@ const Account = () => {
             />
 
             <div className="flex flex-col sm:flex-row gap-2">
-              <Button type="submit">حفظ التغييرات</Button>
-
-              <ChangePasswordModal />
+              <Button type="submit" disabled={updateProfileMutation.isPending}>
+                {updateProfileMutation.isPending
+                  ? "جاري الحفظ..."
+                  : "حفظ التغييرات"}
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                className="rounded-full"
+                onClick={() => setOpenChangePassword(true)}
+              >
+                تغيير كلمة المرور
+              </Button>
             </div>
+
+            {errorMsg && <FormError errorMsg={errorMsg} />}
           </form>
         </Form>
       </div>
+
+      <ChangePasswordModal
+        open={openChangePassword}
+        onClose={() => setOpenChangePassword(false)}
+      />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
-import { Bell, Search } from "lucide-react";
+import { Bell, MessageSquareText, Search } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -20,8 +20,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useState } from "react";
-import LanguageSwitcher from "@/components/common/LanguageSwitcher";
-import { useSelector } from "react-redux";
+import LanguageSwitcher from "./LanguageSwitcher";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutAct } from "@/store/profile/profileSlice";
 
 const notifications = Array.from({ length: 4 }, (_, index) => ({
   id: index + 1,
@@ -32,10 +33,16 @@ const notifications = Array.from({ length: 4 }, (_, index) => ({
 }));
 
 const HeaderAction = () => {
-  const user = "walid mostafa";
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
   const [openNotifications, setOpenNotifications] = useState(false);
   const { lang } = useSelector((state) => state.language);
+  const { profile } = useSelector((state) => state.profile);
+
+  const handleLogout = () => {
+    dispatch(logoutAct());
+  };
 
   return (
     <div className="flex items-center gap-2">
@@ -43,56 +50,69 @@ const HeaderAction = () => {
         <Search />
       </Button>
 
-      <Popover open={openNotifications} onOpenChange={setOpenNotifications}>
-        <PopoverTrigger asChild>
-          <Button variant="outline" size="icon" className="rounded-full">
-            <Bell />
+      {profile && (
+        <>
+          <Button
+            variant="outline"
+            size="icon"
+            className="rounded-full"
+            onClick={() => navigate("/chat")}
+          >
+            <MessageSquareText />
           </Button>
-        </PopoverTrigger>
-        <PopoverContent align="end" className={`md:w-[500px]`}>
-          <div className="flex flex-col gap-2">
-            {notifications.map((notification) => (
-              <div
-                key={notification.id}
-                className="flex items-center gap-2 py-1 px-2 border-b last:border-b-0 card bg-muted"
-              >
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white text-primary">
-                  <Bell />
-                </div>
 
-                <div className="flex flex-col gap-1 flex-1">
-                  <p className="font-bold text-xs">{notification.title}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {notification.description}
-                  </p>
-                </div>
+          <Popover open={openNotifications} onOpenChange={setOpenNotifications}>
+            <PopoverTrigger asChild>
+              <Button variant="outline" size="icon" className="rounded-full">
+                <Bell />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent align="end" className={`md:w-[500px]`}>
+              <div className="flex flex-col gap-2">
+                {notifications.map((notification) => (
+                  <div
+                    key={notification.id}
+                    className="flex gap-2 py-2 px-4 border-b last:border-b-0 rounded-lg bg-muted"
+                  >
+                    <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white text-primary">
+                      <Bell />
+                    </div>
+
+                    <div className="flex flex-col gap-1 flex-1">
+                      <p className="font-bold text-xs">{notification.title}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {notification.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
 
-          <div className="block mt-4">
-            <Link
-              to="/profile/notifications"
-              onClick={() => setOpenNotifications(false)}
-            >
-              <Button className={`w-full`}>المزيد من التنبيهات</Button>
-            </Link>
-          </div>
-        </PopoverContent>
-      </Popover>
+              <div className="block mt-4">
+                <Link
+                  to="/profile/notifications"
+                  onClick={() => setOpenNotifications(false)}
+                >
+                  <Button className={`w-full`}>المزيد من التنبيهات</Button>
+                </Link>
+              </div>
+            </PopoverContent>
+          </Popover>
+        </>
+      )}
 
       {/* Language Select */}
       <LanguageSwitcher />
 
-      {user ? (
+      {profile ? (
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <UserAvatar name={user} image={user} />
+            <UserAvatar name={profile?.name} image={profile?.image} />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" dir={lang === "ar" ? "rtl" : "ltr"}>
             <DropdownMenuLabel className="flex items-center gap-2">
-              <UserAvatar name={user} image={user} />
-              <h3 className="font-semibold">{user}</h3>
+              <UserAvatar name={profile?.name} image={profile?.image} />
+              <h3 className="font-semibold">{profile?.name}</h3>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem
@@ -107,7 +127,7 @@ const HeaderAction = () => {
               الطلبات
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="bg-red-500/10">
+            <DropdownMenuItem className="bg-red-500/10" onClick={handleLogout}>
               <IoIosLogOut />
               تسجيل الخروج
             </DropdownMenuItem>

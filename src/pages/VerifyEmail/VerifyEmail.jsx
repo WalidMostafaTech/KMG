@@ -14,22 +14,30 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 
-import { Link, useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { z } from "zod";
 
 import FormError from "@/components/form/FormError";
-import { sendOtpVerifyEmail } from "@/services/verifyEmailServices";
-import { verifyEmail } from "@/services/verifiedEmailServices";
+import {
+  sendOtpVerifyEmail,
+  verifyEmail,
+} from "@/services/verifyEmailServices";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addProfile,
+  clearProfile,
+  logoutAct,
+} from "@/store/profile/profileSlice";
 
 const otpSchema = z.object({
   otp: z.string().length(6, "أدخل رمز مكوّن من 6 أرقام"),
 });
 
 const VerifyEmail = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const { profile } = useSelector((state) => state.profile);
 
-  const email = location.state?.email;
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const form = useForm({
     resolver: zodResolver(otpSchema),
@@ -39,14 +47,21 @@ const VerifyEmail = () => {
   const [countdown, setCountdown] = useState(60);
 
   /* ================== Send OTP on Mount ================== */
+  const [otpSent, setOtpSent] = useState(false);
+
   const { mutate: sendOtpMutation, isPending: isSending } = useMutation({
     mutationFn: (email) => sendOtpVerifyEmail(email),
-    onSuccess: () => setCountdown(60),
+    onSuccess: () => {
+      setCountdown(60);
+      setOtpSent(true);
+    },
   });
 
   useEffect(() => {
-    if (email) sendOtpMutation(email);
-  }, [email]);
+    if (profile?.email && !otpSent) {
+      sendOtpMutation(profile.email);
+    }
+  }, [profile?.email, otpSent]);
 
   /* ================== Verify Email ================== */
   const {
@@ -55,8 +70,9 @@ const VerifyEmail = () => {
     error,
   } = useMutation({
     mutationFn: ({ email, code }) => verifyEmail({ email, code }),
-    onSuccess: () => {
-      navigate("/login"); // أو أي صفحة بعد التفعيل
+    onSuccess: (data) => {
+      dispatch(addProfile(data?.user));
+      navigate("/", { replace: true });
     },
   });
 
@@ -71,17 +87,23 @@ const VerifyEmail = () => {
 
   /* ================== Handlers ================== */
   const onSubmit = (data) => {
-    verifyEmailMutation({ email, code: data.otp });
+    verifyEmailMutation({ email: profile?.email, code: data.otp });
   };
 
   const handleResend = () => {
-    sendOtpMutation(email);
+    sendOtpMutation(profile?.email);
+  };
+
+  const handleBackToRegister = () => {
+    dispatch(logoutAct());
+    dispatch(clearProfile());
+    navigate(`/register`, { replace: true });
   };
 
   return (
     <AuthContainer
       title="تأكيد البريد الإلكتروني"
-      description={`قمنا بإرسال رمز التفعيل إلى بريدك الإلكتروني ${email}`}
+      description={`قمنا بإرسال رمز التفعيل إلى بريدك الإلكتروني ${profile?.email}`}
     >
       <Form {...form}>
         <form
@@ -137,12 +159,13 @@ const VerifyEmail = () => {
             </button>
           </p>
 
-          <Link
-            to="/login"
-            className="text-sm hover:underline text-muted-foreground"
+          <button
+            type="button"
+            onClick={handleBackToRegister}
+            className="text-sm hover:underline text-muted-foreground cursor-pointer"
           >
             الرجوع لتسجيل الدخول
-          </Link>
+          </button>
 
           {error && (
             <FormError

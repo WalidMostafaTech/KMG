@@ -1,12 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getProfile, logoutUser } from "../../services/authServices";
 
-const initialState = {
-  profile: null,
-  loading: false,
-  error: null,
-};
-
 export const getProfileAct = createAsyncThunk(
   "profile/getProfileAct",
   async (_, { rejectWithValue }) => {
@@ -37,10 +31,19 @@ export const logoutAct = createAsyncThunk(
   }
 );
 
+const initialState = {
+  profile: null,
+  loading: false,
+  error: null,
+};
+
 const profileSlice = createSlice({
   name: "profile",
   initialState,
   reducers: {
+    addProfile: (state, action) => {
+      state.profile = action.payload;
+    },
     clearProfile: (state) => {
       state.profile = null;
     },
@@ -53,7 +56,7 @@ const profileSlice = createSlice({
       })
       .addCase(getProfileAct.fulfilled, (state, action) => {
         state.loading = false;
-        state.profile = action.payload.user;
+        state.profile = action.payload;
       })
       .addCase(getProfileAct.rejected, (state, action) => {
         state.loading = false;
@@ -68,5 +71,5 @@ const profileSlice = createSlice({
   },
 });
 
-export const { clearProfile } = profileSlice.actions;
+export const { addProfile, clearProfile } = profileSlice.actions;
 export default profileSlice.reducer;

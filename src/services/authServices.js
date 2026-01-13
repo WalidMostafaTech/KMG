@@ -18,7 +18,7 @@ export const registerUser = async (formData) => {
     Cookies.set("token", data?.data?.token);
   }
 
-  return data;
+  return data?.data;
 };
 
 export const logoutUser = async () => {
@@ -38,7 +38,11 @@ export const getProfile = async () => {
 };
 
 export const updateProfile = async (formData) => {
-  const { data } = await api.post("/profile", formData);
+  const { data } = await api.post("/profile", formData , {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 
   if (data?.data?.token) {
     Cookies.set("token", data?.data?.token);

@@ -1,59 +1,51 @@
-import image from "@/assets/images/slider-img.png";
+import { getGamesByService } from "@/services/homeServices";
+import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft } from "lucide-react";
 import { Link } from "react-router";
 
-const list = [
-  {
-    id: 1,
-    title: "الحسابات",
-    items: [
-      {
-        id: 1,
-        img: image,
-        title: "The Best Web",
-        disc: "Tokens",
-      },
-      {
-        id: 2,
-        img: image,
-        title: "The Best Web",
-        disc: "Tokens",
-      },
-      {
-        id: 3,
-        img: image,
-        title: "The Best Web",
-        disc: "Tokens",
-      },
-    ],
-  },
-  {
-    id: 2,
-    title: "الحسابات",
-    items: [
-      {
-        id: 1,
-        img: image,
-        title: "The Best Web",
-        disc: "Tokens",
-      },
-      {
-        id: 2,
-        img: image,
-        title: "The Best Web",
-        disc: "Tokens",
-      },
-      {
-        id: 3,
-        img: image,
-        title: "The Best Web",
-        disc: "Tokens",
-      },
-    ],
-  },
-];
-
 const ServicesSection = () => {
+  const {
+    data: servicesData,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["services-games"],
+    queryFn: getGamesByService,
+  });
+
+  const list = [
+    {
+      id: 1,
+      title: "الحسابات",
+      link: "",
+      items: servicesData?.accounts || [],
+    },
+    {
+      id: 2,
+      title: "الإشتراكات",
+      link: "/subscriptions",
+      items: servicesData?.subscriptions || [],
+    },
+    {
+      id: 3,
+      title: "شحن رصيد",
+      link: "/balance-top-up",
+      items: servicesData?.top_up || [],
+    },
+    {
+      id: 4,
+      title: "كروت الهدايا",
+      link: "/gift-cards",
+      items: servicesData?.gift_cards || [],
+    },
+    {
+      id: 5,
+      title: "إضافة لعبه للحساب",
+      link: "/add-game-to-account",
+      items: servicesData?.add_game_to_account || [],
+    },
+  ];
+
   return (
     <section className="container sectionPadding">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
@@ -62,7 +54,7 @@ const ServicesSection = () => {
             <div className="flex items-center justify-between gap-4">
               <h2 className="text-2xl font-bold">{item.title}</h2>
               <Link
-                to={`/services`}
+                to={`/services${item.link}`}
                 className="flex items-center gap-1 group hover:underline"
               >
                 عرض المزيد
@@ -79,15 +71,15 @@ const ServicesSection = () => {
                 >
                   <div className="w-12 h-12 overflow-hidden rounded">
                     <img
-                      src={i.img}
-                      alt={i.title}
+                      src={i.icon}
+                      alt={i.name}
                       className="w-full h-full object-cover"
                     />
                   </div>
 
                   <div>
-                    <h3 className="font-bold">{i.title}</h3>
-                    <p className="text-sm text-muted-foreground">{i.disc}</p>
+                    <h3 className="font-bold">{i.name}</h3>
+                    {/* <p className="text-sm text-muted-foreground">{i.disc}</p> */}
                   </div>
                 </Link>
               ))}

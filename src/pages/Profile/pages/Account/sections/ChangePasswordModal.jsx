@@ -4,7 +4,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
@@ -18,41 +17,66 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import { Lock } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { updateProfile } from "@/services/authServices";
+import { useState } from "react";
+import FormError from "@/components/form/FormError";
 
 const changePasswordSchema = z
   .object({
-    currentPassword: z.string().min(6, "كلمة المرور قصيرة"),
-    newPassword: z.string().min(6, "كلمة المرور الجديدة قصيرة"),
-    confirmPassword: z.string().min(6, "كلمة المرور قصيرة"),
+    current_password: z.string().min(6, "كلمة المرور قصيرة"),
+    password: z.string().min(6, "كلمة المرور الجديدة قصيرة"),
+    password_confirmation: z.string().min(6, "كلمة المرور قصيرة"),
   })
-  .refine((data) => data.newPassword === data.confirmPassword, {
+  .refine((data) => data.password === data.password_confirmation, {
     message: "كلمتا المرور غير متطابقتين",
-    path: ["confirmPassword"],
+    path: ["password_confirmation"],
   });
 
-const ChangePasswordModal = () => {
+const ChangePasswordModal = ({ open, onClose }) => {
+  const [errorMsg, setErrorMsg] = useState("");
+
   const form = useForm({
     resolver: zodResolver(changePasswordSchema),
     defaultValues: {
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
+      current_password: "",
+      password: "",
+      password_confirmation: "",
+    },
+  });
+
+  const changePasswordMutation = useMutation({
+    mutationFn: updateProfile,
+    onSuccess: () => {
+      alert("تم تغيير كلمة المرور بنجاح");
+      // toast.success("تم تغيير كلمة المرور بنجاح");
+      form.reset();
+      onClose(); // 🔴 يقفل المودال
+      setErrorMsg("");
+    },
+    onError: (error) => {
+      setErrorMsg(error?.response?.data?.message);
+      // toast.error(error?.response?.data?.message || "حدث خطأ");
     },
   });
 
   const onSubmit = (data) => {
+    changePasswordMutation.mutate({
+      current_password: data.current_password,
+      password: data.password,
+      password_confirmation: data.password_confirmation,
+    });
     console.log("Change Password Data:", data);
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline" className="rounded-full">
-          تغيير كلمة المرور
-        </Button>
-      </DialogTrigger>
-
-      <DialogContent className="sm:max-w-md">
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent
+        className="sm:max-w-md"
+        style={{
+          pointerEvents: changePasswordMutation.isPending ? "none" : "auto",
+        }}
+      >
         <DialogHeader className="text-center">
           <DialogDescription></DialogDescription>
           <DialogTitle className="text-xl text-center">
@@ -68,42 +92,53 @@ const ChangePasswordModal = () => {
           >
             <MainInput
               control={form.control}
-              name="currentPassword"
-              label="كلمة المرور"
+              name="current_password"
+              label="كلمة المرور الحالية"
               type="password"
               icon={<Lock size={18} />}
             />
 
             <MainInput
               control={form.control}
-              name="newPassword"
-              label="أدخل كلمة المرور الجديدة"
+              name="password"
+              label="كلمة المرور الجديدة"
               type="password"
               icon={<Lock size={18} />}
             />
 
             <MainInput
               control={form.control}
-              name="confirmPassword"
+              name="password_confirmation"
               label="تأكيد كلمة المرور الجديدة"
               type="password"
               icon={<Lock size={18} />}
             />
 
             <DialogFooter className="flex gap-3 pt-2">
-              <Button type="submit" className="flex-1">
-                تغيير كلمة المرور
+              <Button
+                type="submit"
+                className="flex-1"
+                disabled={changePasswordMutation.isPending}
+              >
+                {changePasswordMutation.isPending
+                  ? "جاري التغيير..."
+                  : "تغيير كلمة المرور"}
               </Button>
 
               <Button
                 type="button"
                 variant="outline"
                 className="flex-1 rounded-full"
-                onClick={() => form.reset()}
+                onClick={() => {
+                  form.reset();
+                  onClose();
+                }}
               >
                 تراجع
               </Button>
             </DialogFooter>
+
+            {errorMsg && <FormError errorMsg={errorMsg} />}
           </form>
         </Form>
       </DialogContent>

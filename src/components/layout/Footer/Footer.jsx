@@ -72,9 +72,11 @@ const Footer = () => {
 
         <img src={logo} alt="logo" />
 
-        <p className="text-center text-sm max-w-3xl">
-          {footerData?.footer_text}
-        </p>
+        {footerData?.footer_text && (
+          <p className="text-center text-sm max-w-3xl">
+            {footerData?.footer_text}
+          </p>
+        )}
 
         <div className="flex items-center gap-4">
           <Link
