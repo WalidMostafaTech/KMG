@@ -5,22 +5,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { BadgeCheck, NotebookTabs, SlidersHorizontal } from "lucide-react";
-import image from "@/assets/images/slider-img.png";
-import { Button } from "@/components/ui/button";
-import { BsChatLeftText } from "react-icons/bs";
-import { Badge } from "@/components/ui/badge";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { SlidersHorizontal } from "lucide-react";
+
+import { getOrders } from "@/services/paymentsServices";
+import { useQuery } from "@tanstack/react-query";
+import MyOrdersCard from "@/pages/Profile/pages/Orders/sections/MyOrdersCard";
 
 const Orders = () => {
+  const {
+    data: orders,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["my_orders"],
+    queryFn: getOrders,
+  });
+
   return (
     <div className="space-y-6">
       <div>
@@ -72,71 +72,10 @@ const Orders = () => {
         </ul>
       </div>
 
-      <div className="card flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-2 lg:gap-4">
-          <div className="w-24 lg:w-36 aspect-square overflow-hidden rounded-2xl">
-            <img
-              src={image}
-              alt="image"
-              className="w-full h-full object-cover"
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <h3 className="text-lg font-bold">اسم المنتج</h3>
-            <p className="text-muted-foreground text-sm">اسم المنتج</p>{" "}
-            <p className="text-lg font-bold">124.99$</p>
-          </div>
-        </div>
-
-        <div className="flex flex-col items-center gap-2">
-          <Button className="w-full gap-2">
-            مراسلة
-            <BsChatLeftText />
-          </Button>
-          <div className="flex items-center gap-2">
-            <Badge variant={`outline`} className="gap-2 rounded-full">
-              <BadgeCheck />
-              حالة الطلب
-            </Badge>
-
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="outline" className="gap-2 rounded-full">
-                  <NotebookTabs />
-                  تفاصيل الطلب
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="md:max-w-3xl">
-                <ScrollArea className="h-[90vh] px-2">
-                  <DialogHeader className={`mb-4`}>
-                    <DialogTitle className={`text-center`}>
-                      تفاصيل الطلب
-                    </DialogTitle>
-                    <DialogDescription className={`mt-2`}>
-                      <img
-                        src={image}
-                        alt="order"
-                        className="w-full h-[200px] md:h-[300px] object-cover rounded-xl"
-                      />
-                    </DialogDescription>
-                  </DialogHeader>
-
-                  <div className="flex flex-col gap-2">
-                    {Array.from({ length: 10 }).map(() => (
-                      <div className="flex flex-col gap-1 card">
-                        <p className="text-muted-foreground text-sm">
-                          اسم الحساب:
-                        </p>
-                        <h3 className="font-bold">FIFA Ultimate Team Pro</h3>
-                      </div>
-                    ))}
-                  </div>
-                </ScrollArea>
-              </DialogContent>
-            </Dialog>
-          </div>
-        </div>
+      <div className="space-y-4">
+        {orders?.items?.map((order) => (
+          <MyOrdersCard key={order.id} order={order} />
+        ))}
       </div>
     </div>
   );

@@ -2,6 +2,8 @@ import { useState } from "react";
 import ChatHeader from "./sections/ChatHeader";
 import ChatMsgs from "./sections/ChatMsgs";
 import ChatInput from "./sections/ChatInput";
+import { useQuery } from "@tanstack/react-query";
+import { getMsgs } from "@/services/chatServices";
 
 const Chat = () => {
   const [messages, setMessages] = useState([
@@ -18,6 +20,15 @@ const Chat = () => {
       created_at: new Date().toLocaleTimeString(),
     },
   ]);
+
+    const {
+      data: messagesData,
+      isLoading,
+      isError,
+    } = useQuery({
+      queryKey: ["get_msgs"],
+      queryFn: getMsgs,
+    });
 
   return (
     <section className="container py-4 h-[90vh]">

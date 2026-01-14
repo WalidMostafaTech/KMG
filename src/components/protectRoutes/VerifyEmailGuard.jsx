@@ -6,21 +6,23 @@ import LoadingPage from "../Loading/LoadingPage";
 
 const VerifyEmailGuard = ({ children }) => {
   const { profile, loading } = useSelector((state) => state.profile);
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getProfileAct());
-  }, [dispatch]);
+  // const dispatch = useDispatch();
 
-  if (loading) return <LoadingPage />;
+  // useEffect(() => {
+  //   dispatch(getProfileAct());
+  // }, [dispatch]);
 
-  if (!profile) {
-    return <Navigate to="/login" replace />;
-  }
+  // if (loading) return <LoadingPage />;
 
-  if (profile.is_verified) {
-    return <Navigate to="/" replace />;
-  }
+
+  // if (!profile) {
+  //   return <Navigate to="/login" replace />;
+  // }
+
+  // if (profile.is_verified) {
+  //   return <Navigate to="/" replace />;
+  // }
 
   return children;
 };

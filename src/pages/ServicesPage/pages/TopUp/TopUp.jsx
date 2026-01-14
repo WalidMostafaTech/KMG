@@ -5,7 +5,7 @@ import PaymentCard from "@/pages/ServicesPage/sections/PaymentCard";
 import { useQuery } from "@tanstack/react-query";
 import { getAllGamesByService } from "@/services/serviceServices";
 
-const BalanceTopUp = () => {
+const TopUp = () => {
   const [currentOffer, setCurrentOffer] = useState(null);
   const [location, setLocation] = useState({
     region: "",
@@ -17,14 +17,14 @@ const BalanceTopUp = () => {
     else setCurrentOffer(offer);
   };
 
-    const {
-      data: servicesData,
-      isLoading,
-      isError,
-    } = useQuery({
-      queryKey: ["services-games-top_up"],
-      queryFn: () => getAllGamesByService("top_up"),
-    });
+  const {
+    data: servicesData,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["services-games-top_up"],
+    queryFn: () => getAllGamesByService("top_up"),
+  });
 
   return (
     <section className="container py-6 lg:py-10 space-y-6">
@@ -43,4 +43,4 @@ const BalanceTopUp = () => {
   );
 };
 
-export default BalanceTopUp;
+export default TopUp;

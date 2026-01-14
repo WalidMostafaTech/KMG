@@ -1,5 +1,4 @@
 import { Search } from "lucide-react";
-import { useParams } from "react-router";
 import ServicesAccountCard from "@/components/cards/ServicesAccountCard";
 import {
   Select,
@@ -8,22 +7,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getProductsByGameAndService } from "@/services/serviceServices";
-import { useQuery } from "@tanstack/react-query";
 
-const AccountsDetails = () => {
-  const { id } = useParams();
-
-  const {
-    data: productData,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["product-accounts"],
-    queryFn: () =>
-      getProductsByGameAndService({ service: "accounts", game_id: id }),
-  });
-
+const Accounts = ({ products }) => {
   return (
     <section className="container py-6 lg:py-10 space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -93,7 +78,7 @@ const AccountsDetails = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 lg:gap-8">
-        {productData?.items?.map((item) => (
+        {products?.map((item) => (
           <ServicesAccountCard key={item.id} item={item} />
         ))}
       </div>
@@ -101,4 +86,4 @@ const AccountsDetails = () => {
   );
 };
 
-export default AccountsDetails;
+export default Accounts;

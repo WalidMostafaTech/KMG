@@ -3,20 +3,21 @@ import InstaPayForm from "../forms/InstaPayForm";
 import PaypalForm from "../forms/PaypalForm";
 import BinancePayForm from "../forms/BinancePayForm";
 
-const PaymentCard = ({ currentPayment, cancelPayment }) => {
+const PaymentCard = ({ currentPayment, cancelPayment, state }) => {
   if (!currentPayment) return null;
 
   return (
     <div className="flex flex-col gap-4 card w-full md:max-w-sm h-fit">
       <ul className="flex flex-col divide-y-2 text-sm">
         <li className="flex justify-between gap-2 py-1 text-muted-foreground">
-          <p>السعر الاجمالى</p> <span>$19.99</span>
+          <p>السعر الاجمالى</p> <span>{state.product_price}</span>
         </li>
         <li className="flex justify-between gap-2 py-1 text-muted-foreground">
-          <p>مصاريف الخدمة</p> <span>$24.99</span>
+          <p>مصاريف الخدمة</p> <span>{currentPayment.amount}</span>
         </li>
         <li className="flex justify-between gap-2 py-1">
-          <p>السعر النهائى</p> <span>$66.99</span>
+          <p>السعر النهائى</p>{" "}
+          <span>{state.product_price + currentPayment.amount}</span>
         </li>
       </ul>
 
@@ -35,16 +36,32 @@ const PaymentCard = ({ currentPayment, cancelPayment }) => {
       <div>
         {currentPayment.paymentMethod === "online" && <div></div>}
         {currentPayment.paymentMethod === "vodafone_cash" && (
-          <VodafoneCashForm cancelPayment={cancelPayment} />
+          <VodafoneCashForm
+            cancelPayment={cancelPayment}
+            currentPayment={currentPayment}
+            state={state}
+          />
         )}
-        {currentPayment.paymentMethod === "instaPay" && (
-          <InstaPayForm cancelPayment={cancelPayment} />
+        {currentPayment.paymentMethod === "instapay" && (
+          <InstaPayForm
+            cancelPayment={cancelPayment}
+            currentPayment={currentPayment}
+            state={state}
+          />
         )}
         {currentPayment.paymentMethod === "paypal" && (
-          <PaypalForm cancelPayment={cancelPayment} />
+          <PaypalForm
+            cancelPayment={cancelPayment}
+            currentPayment={currentPayment}
+            state={state}
+          />
         )}
         {currentPayment.paymentMethod === "binance_pay" && (
-          <BinancePayForm cancelPayment={cancelPayment} />
+          <BinancePayForm
+            cancelPayment={cancelPayment}
+            currentPayment={currentPayment}
+            state={state}
+          />
         )}
       </div>
     </div>

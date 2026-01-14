@@ -39,17 +39,17 @@ const list = [
   },
 ];
 
-const ServicesPaymentCards = () => {
+const ServicesPaymentCards = ({ grid = 1 }) => {
   const [showModal, setShowModal] = useState(false);
 
   return (
     <>
-      <div className="flex flex-wrap gap-2">
+      <div className={`grid grid-cols-1 gap-2 ${grid === 2 ? "sm:grid-cols-2 md:gap-4" : ""}`}>
         {list.map((item) => (
           <button
             key={item.id}
             onClick={() => setShowModal(true)}
-            className="flex-1 min-w-[180px] lg:min-w-[200px] cursor-pointer"
+            className="cursor-pointer"
           >
             <div className="p-2 bg-accent rounded-2xl flex items-center gap-2 text-start">
               <span className="bg-card rounded-lg p-2">{item.icon}</span>

@@ -15,17 +15,17 @@ const list = [
   {
     id: 3,
     title: "شحن رصيد",
-    link: "/services/balance-top-up",
+    link: "/services/top_up",
   },
   {
     id: 4,
     title: "كروت الهدايا",
-    link: "/services/gift-cards",
+    link: "/services/gift_cards",
   },
   {
     id: 5,
     title: "إضافة لعبه للحساب",
-    link: "/services/add-game-to-account",
+    link: "/services/add_game_to_account",
   },
 ];
 

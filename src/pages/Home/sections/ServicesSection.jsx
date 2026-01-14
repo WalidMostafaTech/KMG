@@ -17,7 +17,7 @@ const ServicesSection = () => {
     {
       id: 1,
       title: "الحسابات",
-      link: "",
+      link: "accounts",
       items: servicesData?.accounts || [],
     },
     {
@@ -29,19 +29,19 @@ const ServicesSection = () => {
     {
       id: 3,
       title: "شحن رصيد",
-      link: "/balance-top-up",
+      link: "/top_up",
       items: servicesData?.top_up || [],
     },
     {
       id: 4,
       title: "كروت الهدايا",
-      link: "/gift-cards",
+      link: "/gift_cards",
       items: servicesData?.gift_cards || [],
     },
     {
       id: 5,
       title: "إضافة لعبه للحساب",
-      link: "/add-game-to-account",
+      link: "/add_game_to_account",
       items: servicesData?.add_game_to_account || [],
     },
   ];
@@ -54,7 +54,7 @@ const ServicesSection = () => {
             <div className="flex items-center justify-between gap-4">
               <h2 className="text-2xl font-bold">{item.title}</h2>
               <Link
-                to={`/services${item.link}`}
+                to={`/games/${item.link}`}
                 className="flex items-center gap-1 group hover:underline"
               >
                 عرض المزيد
