@@ -32,19 +32,21 @@ const LanguageSwitcher = () => {
   return (
     <>
       <Select value={lang} onValueChange={handleChangeLanguage}>
-        <SelectTrigger className="min-w-[120px] rounded-full">
+        <SelectTrigger className="min-w-fit rounded-full cursor-pointer">
           <SelectValue placeholder="اللغة" />
         </SelectTrigger>
 
         <SelectContent>
           <SelectItem value="ar" className="flex gap-2">
             <Globe size={16} />
-            العربية
+            <p className="hidden md:block"> العربية</p>
+            <p className="md:hidden">AR</p>
           </SelectItem>
 
           <SelectItem value="en" className="flex gap-2">
             <Globe size={16} />
-            English
+            <p className="hidden md:block">English</p>
+            <p className="md:hidden">EN</p>
           </SelectItem>
         </SelectContent>
       </Select>

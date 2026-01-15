@@ -4,19 +4,46 @@ import { useParams } from "react-router";
 import GamesNav from "@/components/commonSections/GamesNav";
 import Accounts from "./pages/Accounts/Accounts";
 import ProductsPage from "./pages/ProductsPage/ProductsPage";
+import OffersFilter from "./sections/OffersFilter";
+import { useState } from "react";
+
+const defaultFilters = {
+  min_time: "",
+  max_time: "",
+  country_id: "",
+  platform_id: "",
+  min_price: 0,
+  max_price: 1000,
+};
 
 const GameServices = () => {
   const { service, id } = useParams();
+
+  const [filters, setFilters] = useState(defaultFilters);
+  const [appliedFilters, setAppliedFilters] = useState(defaultFilters);
 
   const {
     data: gameServicesData,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["game-services" + service + id],
+    queryKey: ["game-services", service, id, appliedFilters],
     queryFn: () =>
-      getProductsByGameAndService({ service: service, game_id: id }),
+      getProductsByGameAndService({
+        service,
+        game_id: id,
+        ...appliedFilters,
+      }),
   });
+
+  const applyFilters = () => {
+    setAppliedFilters(filters);
+  };
+
+  const resetFilters = () => {
+    setFilters(defaultFilters);
+    setAppliedFilters(defaultFilters);
+  };
 
   const game = gameServicesData?.extra?.game || null;
   const products = gameServicesData?.items || [];
@@ -50,8 +77,16 @@ const GameServices = () => {
   ];
 
   return (
-    <article>
+    <article className="space-y-6">
       <GamesNav links={links} game={game} />
+
+      <OffersFilter
+        filters={filters}
+        setFilters={setFilters}
+        onApply={applyFilters}
+        onReset={resetFilters}
+        service={game?.service}
+      />
 
       {game?.service === "accounts" ? (
         <Accounts products={products} />

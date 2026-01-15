@@ -10,16 +10,47 @@ import { SlidersHorizontal } from "lucide-react";
 import { getOrders } from "@/services/paymentsServices";
 import { useQuery } from "@tanstack/react-query";
 import MyOrdersCard from "@/pages/Profile/pages/Orders/sections/MyOrdersCard";
+import { useState } from "react";
 
 const Orders = () => {
+  const [status, setStatus] = useState("all");
+
   const {
     data: orders,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["my_orders"],
+    queryKey: ["my_orders", status],
     queryFn: getOrders,
   });
+
+  const list = [
+    {
+      id: 1,
+      label: "إجمالى الطلبات:",
+      value: orders?.extra?.total_count,
+    },
+    {
+      id: 2,
+      label: "قيد المراجعة:",
+      value: orders?.extra?.status_counts?.pending,
+    },
+    {
+      id: 3,
+      label: "قيد التنفيذ:",
+      value: orders?.extra?.status_counts?.processing,
+    },
+    {
+      id: 4,
+      label: "تم التوصيل:",
+      value: orders?.extra?.status_counts?.completed,
+    },
+    {
+      id: 5,
+      label: "ملغاه:",
+      value: orders?.extra?.status_counts?.cancelled,
+    },
+  ];
 
   return (
     <div className="space-y-6">
@@ -37,38 +68,28 @@ const Orders = () => {
             تصفية حسب:
           </div>
 
-          <Select defaultValue="all">
+          <Select value={status} onValueChange={setStatus}>
             <SelectTrigger className="rounded-full bg-input w-full">
               <SelectValue placeholder="اختر الحالة" />
             </SelectTrigger>
+
             <SelectContent className="bg-input rounded-xl">
               <SelectItem value="all">كل الحالات</SelectItem>
-              <SelectItem value="all2">كل الحالات2</SelectItem>
+              <SelectItem value="pending">قيد المراجعة</SelectItem>
+              <SelectItem value="processing">قيد التنفيذ</SelectItem>
+              <SelectItem value="completed">تم التوصيل</SelectItem>
+              <SelectItem value="cancelled">ملغاة</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <ul className="flex flex-wrap items-center gap-4 text-sm">
-          <li className="flex items-center gap-1">
-            <p className="text-muted-foreground">إجمالى الطلبات:</p>
-            <span>8</span>
-          </li>
-          <li className="flex items-center gap-1">
-            <p className="text-muted-foreground">إجمالى الطلبات:</p>
-            <span>8</span>
-          </li>
-          <li className="flex items-center gap-1">
-            <p className="text-muted-foreground">إجمالى الطلبات:</p>
-            <span>8</span>
-          </li>
-          <li className="flex items-center gap-1">
-            <p className="text-muted-foreground">إجمالى الطلبات:</p>
-            <span>8</span>
-          </li>
-          <li className="flex items-center gap-1">
-            <p className="text-muted-foreground">إجمالى الطلبات:</p>
-            <span>8</span>
-          </li>
+          {list.map((item) => (
+            <li key={item.id} className="flex items-center gap-1">
+              <p className="text-muted-foreground">{item.label}</p>
+              <span>{item.value}</span>
+            </li>
+          ))}
         </ul>
       </div>
 

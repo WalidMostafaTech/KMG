@@ -4,6 +4,11 @@ import Footer from "./components/layout/Footer/Footer";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getProfileAct } from "./store/profile/profileSlice";
+import {
+  fetchCountries,
+  fetchPlatforms,
+  fetchProductsMinutesRange,
+} from "./store/setting/setting";
 
 function App() {
   const { pathname } = useLocation();
@@ -11,6 +16,9 @@ function App() {
 
   useEffect(() => {
     dispatch(getProfileAct());
+    dispatch(fetchCountries());
+    dispatch(fetchPlatforms());
+    dispatch(fetchProductsMinutesRange());
   }, [dispatch]);
 
   useEffect(() => {

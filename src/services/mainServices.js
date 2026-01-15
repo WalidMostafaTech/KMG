@@ -5,6 +5,30 @@ export const getSettings = async () => {
   return data?.data || [];
 };
 
+export const getSearch = async (search) => {
+  const { data } = await api.get("/games/search", {
+    params: {
+      search,
+    },
+  });
+  return data?.data || [];
+};
+
+export const getCountries = async () => {
+  const { data } = await api.get("/countries");
+  return data?.data || [];
+};
+
+export const getPlatforms = async () => {
+  const { data } = await api.get("/platforms");
+  return data?.data || [];
+};
+
+export const getProductsMinutesRange = async () => {
+  const { data } = await api.get("/products/minutes-range");
+  return data?.data || [];
+};
+
 export const getFaq = async () => {
   const { data } = await api.get("/fqa");
   return data?.data || [];
@@ -27,6 +51,15 @@ export const getContactUs = async (formData) => {
 
 export const getPolicies = async (type) => {
   const { data } = await api.get(`/policies`, {
+    params: {
+      type,
+    },
+  });
+  return data?.data || [];
+};
+
+export const getUnreadCount = async (type) => {
+  const { data } = await api.get(`/home/unread-count`, {
     params: {
       type,
     },

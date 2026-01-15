@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRef, useState } from "react";
 import FormError from "@/components/form/FormError";
 import { addProfile } from "@/store/profile/profileSlice";
+import { Link } from "react-router";
 
 /* ---------------- schema ---------------- */
 const accountSchema = z.object({
@@ -89,10 +90,12 @@ const Account = () => {
           <h2 className="text-2xl font-bold capitalize">{profile?.name}</h2>
         </div>
 
-        <Button className="sm:w-[200px] gap-2">
-          مراسلة
-          <BsChatLeftText />
-        </Button>
+        <Link to="/chat" className="sm:w-[200px]">
+          <Button className="w-full">
+            مراسلة
+            <BsChatLeftText />
+          </Button>
+        </Link>
       </div>
 
       {/* ===== Form Card ===== */}

@@ -14,6 +14,8 @@ import { z } from "zod";
 import { Link, useNavigate } from "react-router";
 
 import { registerUser } from "@/services/authServices";
+import { useDispatch } from "react-redux";
+import { getProfileAct } from "@/store/profile/profileSlice";
 
 const registerSchema = z
   .object({
@@ -29,6 +31,7 @@ const registerSchema = z
 
 const Register = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const form = useForm({
     resolver: zodResolver(registerSchema),
@@ -47,7 +50,11 @@ const Register = () => {
   } = useMutation({
     mutationFn: registerUser,
     onSuccess: () => {
-      navigate("/verify-email", { replace: true });
+      dispatch(getProfileAct())
+        .unwrap()
+        .then(() => {
+          navigate("/verify-email", { replace: true });
+        });
     },
   });
 

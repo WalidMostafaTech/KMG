@@ -3,17 +3,29 @@ import { Link, useParams } from "react-router";
 import { getAllGamesByService } from "@/services/serviceServices";
 import { useQuery } from "@tanstack/react-query";
 import GamesNav from "@/components/commonSections/GamesNav";
+import { useEffect, useState } from "react";
 
 const Games = () => {
   const { service } = useParams();
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [search]);
 
   const {
     data: gamesData,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["games" + service],
-    queryFn: () => getAllGamesByService(service),
+    queryKey: ["games", service, debouncedSearch],
+    queryFn: () => getAllGamesByService(service, debouncedSearch),
+    enabled: !!service,
   });
 
   const links = [
@@ -48,29 +60,32 @@ const Games = () => {
     <article>
       <GamesNav links={links} />
 
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : isError ? (
-        <div>
-          <h1>Something went wrong</h1>
-        </div>
-      ) : gamesData?.items?.length === 0 ? (
-        <div>
-          <h1 className="text-center">لا يوجد لديك لعبات</h1>
-        </div>
-      ) : (
-        <section className="container py-6 lg:py-10">
-          <div className="w-full flex items-center gap-2 bg-input py-2 px-4 rounded-full">
-            <button>
-              <Search />
-            </button>
-            <input
-              type="search"
-              placeholder="بحث ..."
-              className="flex-1 outline-none border-none"
-            />
-          </div>
+      <section className="container py-6 lg:py-10">
+        <div className="w-full flex items-center gap-2 bg-input py-2 px-4 rounded-full">
+          <button>
+            <Search />
+          </button>
 
+          <input
+            type="search"
+            placeholder="بحث ..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="flex-1 outline-none border-none bg-transparent"
+          />
+        </div>
+
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : isError ? (
+          <div>
+            <h1>Something went wrong</h1>
+          </div>
+        ) : gamesData?.items?.length === 0 ? (
+          <div>
+            <h1 className="text-center">لا يوجد لديك لعبات</h1>
+          </div>
+        ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-8 mt-6 lg:mt-10">
             {gamesData?.items?.map((item) => (
               <Link
@@ -90,8 +105,8 @@ const Games = () => {
               </Link>
             ))}
           </div>
-        </section>
-      )}
+        )}
+      </section>
     </article>
   );
 };

@@ -2,28 +2,19 @@ import { Link } from "react-router";
 import logo from "@/assets/images/logo.png";
 
 import HeaderAction from "./HeaderAction";
-import { Search } from "lucide-react";
+import HeaderSearch from "./HeaderSearch";
 
 const Header = () => {
   return (
     <header className="border-b py-4 sticky top-0 z-50 bg-background">
-      <div className="container flex items-center justify-between gap-4 lg:gap-12">
+      <div className="container flex items-center justify-between gap-2 lg:gap-12">
         <div>
           <Link to={"/"}>
-            <img src={logo} alt="logo" />
+            <img src={logo} alt="logo" className="w-20 lg:w-24" />
           </Link>
         </div>
 
-        <div className="flex-1 items-center gap-2 bg-input py-2 px-4 rounded-full hidden lg:flex">
-          <button>
-            <Search />
-          </button>
-          <input
-            type="search"
-            placeholder="بحث ..."
-            className="flex-1 outline-none border-none"
-          />
-        </div>
+        <HeaderSearch />
 
         <HeaderAction />
       </div>

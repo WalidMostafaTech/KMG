@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getSettings } from "../../services/mainServices";
+import {
+  getCountries,
+  getPlatforms,
+  getProductsMinutesRange,
+  getSettings,
+} from "../../services/mainServices";
 
 export const fetchSetting = createAsyncThunk(
   "setting/fetchSetting",
@@ -9,7 +14,49 @@ export const fetchSetting = createAsyncThunk(
       return data;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data.error_msg || "Failed to load config"
+        error.response?.data.error_msg || "Failed to load settings"
+      );
+    }
+  }
+);
+
+export const fetchCountries = createAsyncThunk(
+  "country/fetchCountries",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await getCountries();
+      return data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data.error_msg || "Failed to load countries"
+      );
+    }
+  }
+);
+
+export const fetchPlatforms = createAsyncThunk(
+  "platform/fetchPlatforms",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await getPlatforms();
+      return data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data.error_msg || "Failed to load platforms"
+      );
+    }
+  }
+);
+
+export const fetchProductsMinutesRange = createAsyncThunk(
+  "productsMinutesRange/fetchProductsMinutesRange",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await getProductsMinutesRange();
+      return data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data.error_msg || "Failed to load productsMinutesRange"
       );
     }
   }
@@ -19,6 +66,9 @@ const appSetting = createSlice({
   name: "setting",
   initialState: {
     setting: {},
+    countries: [],
+    platforms: [],
+    productsMinutesRange: [],
     loading: false,
     error: null,
   },
@@ -36,6 +86,18 @@ const appSetting = createSlice({
       .addCase(fetchSetting.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Something went wrong";
+      })
+
+      .addCase(fetchCountries.fulfilled, (state, action) => {
+        state.countries = action.payload;
+      })
+
+      .addCase(fetchPlatforms.fulfilled, (state, action) => {
+        state.platforms = action.payload;
+      })
+
+      .addCase(fetchProductsMinutesRange.fulfilled, (state, action) => {
+        state.productsMinutesRange = action.payload;
       });
   },
 });

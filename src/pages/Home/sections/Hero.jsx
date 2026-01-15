@@ -21,15 +21,15 @@ const Hero = ({ data }) => {
         >
           {data?.map((slide) => (
             <SwiperSlide key={slide.id}>
-              <img
+              {/* <img
                 src={slide.mobile_image}
                 alt=""
                 className="w-full h-full object-cover lg:hidden"
-              />
+              /> */}
               <img
                 src={slide.web_image}
                 alt=""
-                className="w-full h-full object-cover hidden lg:block"
+                className="w-full h-full object-cover"
               />
             </SwiperSlide>
           ))}

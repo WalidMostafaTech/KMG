@@ -33,7 +33,7 @@ export const logoutAct = createAsyncThunk(
 
 const initialState = {
   profile: null,
-  loading: false,
+  loading: true,
   error: null,
 };
 

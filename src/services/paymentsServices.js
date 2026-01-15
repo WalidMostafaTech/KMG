@@ -15,8 +15,15 @@ export const createOrder = async (formData) => {
   return data?.data;
 };
 
-export const getOrders = async () => {
-  const { data } = await api.get("/orders/my-orders");
+export const getOrders = async ({ queryKey }) => {
+  const [, status] = queryKey;
+
+  const { data } = await api.get("/orders/my-orders", {
+    params: {
+      status: status === "all" ? undefined : status,
+    },
+  });
+
   return data;
 };
 

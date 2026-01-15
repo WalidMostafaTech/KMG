@@ -1,6 +1,16 @@
 import { Link, useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
-import { Bell, MessageSquareText, Search } from "lucide-react";
+import { Bell, MessageSquareText } from "lucide-react";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 import {
   DropdownMenu,
@@ -23,20 +33,17 @@ import { useState } from "react";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutAct } from "@/store/profile/profileSlice";
-
-const notifications = Array.from({ length: 4 }, (_, index) => ({
-  id: index + 1,
-  title:
-    "هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة.هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة.",
-  description: "4 minutes ago",
-  is_read: index % 2 === 0 ? true : false,
-}));
+import { useQuery } from "@tanstack/react-query";
+import { getNotifications } from "@/services/notificationsServices";
+import { getUnreadCount } from "@/services/mainServices";
+import logoutIcon from "@/assets/icons/logout-icon.png";
 
 const HeaderAction = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const [openNotifications, setOpenNotifications] = useState(false);
+  const [showLogout, setShowLogout] = useState(false);
   const { lang } = useSelector((state) => state.language);
   const { profile } = useSelector((state) => state.profile);
 
@@ -44,32 +51,64 @@ const HeaderAction = () => {
     dispatch(logoutAct());
   };
 
+  const {
+    data: notifications,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["notifications"],
+    queryFn: getNotifications,
+    enabled: openNotifications,
+  });
+
+  const { data: unreadNotifications = 0 } = useQuery({
+    queryKey: ["unread-count", "notification"],
+    queryFn: () => getUnreadCount("notification"),
+    enabled: !!profile,
+  });
+
+  const { data: unreadChats = 0 } = useQuery({
+    queryKey: ["unread-count", "chat"],
+    queryFn: () => getUnreadCount("chat"),
+    enabled: !!profile,
+  });
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString("ar-EG", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
   return (
     <div className="flex items-center gap-2">
-      <Button variant="outline" size="icon" className="rounded-full lg:hidden">
-        <Search />
-      </Button>
-
       {profile && (
         <>
           <Button
             variant="outline"
             size="icon"
-            className="rounded-full"
+            className="rounded-full relative"
             onClick={() => navigate("/chat")}
           >
             <MessageSquareText />
+            <Badge count={unreadChats} />
           </Button>
 
           <Popover open={openNotifications} onOpenChange={setOpenNotifications}>
             <PopoverTrigger asChild>
-              <Button variant="outline" size="icon" className="rounded-full">
+              <Button
+                variant="outline"
+                size="icon"
+                className="rounded-full relative"
+              >
                 <Bell />
+                <Badge count={unreadNotifications} />
               </Button>
             </PopoverTrigger>
             <PopoverContent align="end" className={`md:w-[500px]`}>
               <div className="flex flex-col gap-2">
-                {notifications.map((notification) => (
+                {notifications?.items?.map((notification) => (
                   <div
                     key={notification.id}
                     className="flex gap-2 py-2 px-4 border-b last:border-b-0 rounded-lg bg-muted"
@@ -81,7 +120,10 @@ const HeaderAction = () => {
                     <div className="flex flex-col gap-1 flex-1">
                       <p className="font-bold text-xs">{notification.title}</p>
                       <p className="text-xs text-muted-foreground">
-                        {notification.description}
+                        {notification.message}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {formatDate(notification.notification_date)}
                       </p>
                     </div>
                   </div>
@@ -127,10 +169,45 @@ const HeaderAction = () => {
               الطلبات
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="bg-red-500/10" onClick={handleLogout}>
-              <IoIosLogOut />
-              تسجيل الخروج
-            </DropdownMenuItem>
+
+            <Dialog open={showLogout} onOpenChange={setShowLogout}>
+              <DialogTrigger asChild>
+                <button className="bg-red-800/50 hover:bg-red-800/30 transition text-white py-1 px-2 w-full rounded flex items-center gap-2">
+                  <IoIosLogOut />
+                  تسجيل الخروج
+                </button>
+              </DialogTrigger>
+
+              <DialogContent showCloseButton={false} className="sm:max-w-md">
+                <DialogHeader className="text-center">
+                  <DialogDescription>
+                    <img src={logoutIcon} alt="logout" className="mx-auto" />
+                  </DialogDescription>
+                  <DialogTitle className="text-center">
+                    هل أنت متأكد أنك تريد تسجيل الخروج؟
+                  </DialogTitle>
+                </DialogHeader>
+
+                <DialogFooter className="flex gap-3 pt-2">
+                  <Button
+                    type="submit"
+                    className="flex-1"
+                    onClick={handleLogout}
+                  >
+                    تسجيل الخروج
+                  </Button>
+
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="flex-1 rounded-full"
+                    onClick={() => setShowLogout(false)}
+                  >
+                    تراجع
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </DropdownMenuContent>
         </DropdownMenu>
       ) : (
@@ -143,3 +220,16 @@ const HeaderAction = () => {
 };
 
 export default HeaderAction;
+
+const Badge = ({ count }) => {
+  if (!count || count == 0) return null;
+
+  return (
+    <span
+      className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1
+      text-[10px] rounded-full bg-red-500 text-white flex items-center justify-center"
+    >
+      {count > 99 ? "99+" : count}
+    </span>
+  );
+};

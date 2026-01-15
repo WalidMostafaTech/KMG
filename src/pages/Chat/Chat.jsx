@@ -1,34 +1,28 @@
-import { useState } from "react";
 import ChatHeader from "./sections/ChatHeader";
 import ChatMsgs from "./sections/ChatMsgs";
 import ChatInput from "./sections/ChatInput";
-import { useQuery } from "@tanstack/react-query";
-import { getMsgs } from "@/services/chatServices";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { getMsgs, sendMsg } from "@/services/chatServices";
 
 const Chat = () => {
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      sender: "admin",
-      text: "أهلاً بيك 👋 لو محتاج أي مساعدة ابعتلي هنا",
-      created_at: new Date().toLocaleTimeString(),
-    },
-    {
-      id: 2,
-      sender: "user",
-      text: "تمام شكراً ❤️",
-      created_at: new Date().toLocaleTimeString(),
-    },
-  ]);
+  const queryClient = useQueryClient();
 
-    const {
-      data: messagesData,
-      isLoading,
-      isError,
-    } = useQuery({
-      queryKey: ["get_msgs"],
-      queryFn: getMsgs,
-    });
+  const {
+    data: messagesData,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["get_msgs"],
+    queryFn: getMsgs,
+  });
+
+  const sendMsgMutation = useMutation({
+    mutationFn: sendMsg,
+    onSuccess: () => {
+      // Refresh messages after sending
+      queryClient.invalidateQueries(["get_msgs"]);
+    },
+  });
 
   return (
     <section className="container py-4 h-[90vh]">
@@ -37,10 +31,13 @@ const Chat = () => {
         <ChatHeader />
 
         {/* Messages */}
-        <ChatMsgs messages={messages} />
+        <ChatMsgs messages={messagesData?.items || []} isLoading={isLoading} />
 
         {/* Input */}
-        <ChatInput setMessages={setMessages} />
+        <ChatInput
+          sendMsgMutation={sendMsgMutation}
+          isLoading={sendMsgMutation.isPending}
+        />
       </div>
     </section>
   );

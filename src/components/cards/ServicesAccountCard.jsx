@@ -30,7 +30,7 @@ const ServicesAccountCard = ({ item }) => {
         </div>
 
         <p className="py-1 px-4 bg-accent rounded-lg w-fit">
-          {item.duration_minutes}
+          {item.from_time} - {item.to_time} دقايق
         </p>
 
         <div className="flex items-center flex-wrap gap-1">

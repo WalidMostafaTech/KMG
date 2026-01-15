@@ -23,29 +23,55 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Logs } from "lucide-react";
+import { useState } from "react";
+import { logoutAct } from "@/store/profile/profileSlice";
 
 const ProfileSideBar = () => {
+  const [openSideBar, setOpenSideBar] = useState(false);
+  const [showLogout, setShowLogout] = useState(false);
   const { lang } = useSelector((state) => state.language);
+
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logoutAct());
+  };
 
   const sideContent = (
     <div className="flex flex-col gap-2">
-      <NavLink to={"/profile"} end className="sideBarLink">
+      <NavLink
+        to={"/profile"}
+        end
+        className="sideBarLink"
+        onClick={() => setOpenSideBar(false)}
+      >
         <FaRegUser />
         الملف الشخصى
       </NavLink>
 
-      <NavLink to={"/profile/orders"} end className="sideBarLink">
+      <NavLink
+        to={"/profile/orders"}
+        end
+        className="sideBarLink"
+        onClick={() => setOpenSideBar(false)}
+      >
         <FiShoppingCart />
         الطلبات
       </NavLink>
 
-      <NavLink to={"/profile/notifications"} end className="sideBarLink">
+      <NavLink
+        to={"/profile/notifications"}
+        end
+        className="sideBarLink"
+        onClick={() => setOpenSideBar(false)}
+      >
         <FaRegBell />
         الاشعارات
       </NavLink>
 
-      <Dialog>
+      <Dialog open={showLogout} onOpenChange={setShowLogout}>
         <DialogTrigger asChild>
           <button className="rounded-full sideBarLink">
             <IoIosLogOut />
@@ -64,7 +90,7 @@ const ProfileSideBar = () => {
           </DialogHeader>
 
           <DialogFooter className="flex gap-3 pt-2">
-            <Button type="submit" className="flex-1">
+            <Button type="submit" className="flex-1" onClick={handleLogout}>
               تسجيل الخروج
             </Button>
 
@@ -72,6 +98,7 @@ const ProfileSideBar = () => {
               type="button"
               variant="outline"
               className="flex-1 rounded-full"
+              onClick={() => setShowLogout(false)}
             >
               تراجع
             </Button>
@@ -87,9 +114,12 @@ const ProfileSideBar = () => {
         <div className="sticky top-28">{sideContent}</div>
       </aside>
 
-      <Sheet>
+      <Sheet open={openSideBar} onOpenChange={setOpenSideBar}>
         <SheetTrigger asChild className="lg:hidden w-fit mt-4 ms-4">
-          <Button>القائمة</Button>
+          <Button>
+            <Logs />
+            القائمة
+          </Button>
         </SheetTrigger>
 
         <SheetContent side={lang === "ar" ? "right" : "left"}>

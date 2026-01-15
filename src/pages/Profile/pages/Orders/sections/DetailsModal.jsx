@@ -8,8 +8,11 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getSingleOrder } from "@/services/paymentsServices";
 import { useQuery } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
 
 const DetailsModal = ({ order_id, open, onClose }) => {
+  const { lang } = useSelector((state) => state.language);
+
   const {
     data: orderDetails,
     isLoading,
@@ -28,50 +31,44 @@ const DetailsModal = ({ order_id, open, onClose }) => {
         {
           id: 1,
           title: "اسم الحساب:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
+          content: orderDetails?.product?.title,
         },
         {
           id: 2,
           title: "المنصة:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
+          content: orderDetails?.product?.platforms
+            .map((item) => item.name)
+            .join(", "),
         },
         {
           id: 3,
           title: "المنطقة:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
+          content: orderDetails?.product?.country_name,
         },
         {
           id: 4,
           title: "البريد الحساب:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
+          content: orderDetails?.account_email,
         },
         {
           id: 5,
           title: "كلمة مرور الحساب:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
+          content: orderDetails?.account_password,
         },
         {
           id: 6,
           title: "البريد الالكترونى:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
+          content: orderDetails?.email,
         },
         {
-          id: 6,
+          id: 7,
           title: "كلمة المرور:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
+          content: orderDetails?.password,
         },
         {
-          id: 6,
+          id: 8,
           title: "ملاحظة:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
+          content: orderDetails?.note,
         },
       ],
     },
@@ -81,51 +78,23 @@ const DetailsModal = ({ order_id, open, onClose }) => {
       items: [
         {
           id: 1,
-          title: "اسم الحساب:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
+          title: "اسم الاشتراك:",
+          content: orderDetails?.product?.title,
         },
         {
           id: 2,
-          title: "المنصة:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
+          title: "بيانات الدخول:",
+          content: orderDetails?.login_data,
         },
         {
           id: 3,
-          title: "المنطقة:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
+          title: "كلمة المرور:",
+          content: orderDetails?.password,
         },
         {
           id: 4,
-          title: "البريد الحساب:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
-        },
-        {
-          id: 5,
-          title: "كلمة مرور الحساب:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
-        },
-        {
-          id: 6,
-          title: "البريد الالكترونى:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
-        },
-        {
-          id: 6,
-          title: "كلمة المرور:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
-        },
-        {
-          id: 6,
           title: "ملاحظة:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
+          content: orderDetails?.note,
         },
       ],
     },
@@ -135,51 +104,23 @@ const DetailsModal = ({ order_id, open, onClose }) => {
       items: [
         {
           id: 1,
-          title: "اسم الحساب:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
+          title: "عدد العملات:",
+          content: orderDetails?.product?.price,
         },
         {
           id: 2,
-          title: "المنصة:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
+          title: "بيانات الدخول:",
+          content: orderDetails?.login_data,
         },
         {
           id: 3,
-          title: "المنطقة:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
+          title: "كلمة المرور:",
+          content: orderDetails?.password,
         },
         {
           id: 4,
-          title: "البريد الحساب:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
-        },
-        {
-          id: 5,
-          title: "كلمة مرور الحساب:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
-        },
-        {
-          id: 6,
-          title: "البريد الالكترونى:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
-        },
-        {
-          id: 6,
-          title: "كلمة المرور:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
-        },
-        {
-          id: 6,
           title: "ملاحظة:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
+          content: orderDetails?.note,
         },
       ],
     },
@@ -189,51 +130,18 @@ const DetailsModal = ({ order_id, open, onClose }) => {
       items: [
         {
           id: 1,
-          title: "اسم الحساب:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
+          title: "قيمة الكارت:",
+          content: orderDetails?.product?.price,
         },
         {
           id: 2,
-          title: "المنصة:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
+          title: "الكود:",
+          content: orderDetails?.gift_code,
         },
         {
           id: 3,
-          title: "المنطقة:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
-        },
-        {
-          id: 4,
-          title: "البريد الحساب:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
-        },
-        {
-          id: 5,
-          title: "كلمة مرور الحساب:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
-        },
-        {
-          id: 6,
-          title: "البريد الالكترونى:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
-        },
-        {
-          id: 6,
-          title: "كلمة المرور:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
-        },
-        {
-          id: 6,
           title: "ملاحظة:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
+          content: orderDetails?.note,
         },
       ],
     },
@@ -243,60 +151,37 @@ const DetailsModal = ({ order_id, open, onClose }) => {
       items: [
         {
           id: 1,
-          title: "اسم الحساب:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
+          title: "اسم اللعبة:",
+          content: orderDetails?.product?.title,
         },
         {
           id: 2,
-          title: "المنصة:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
+          title: "بيانات الدخول:",
+          content: orderDetails?.login_data,
         },
         {
           id: 3,
-          title: "المنطقة:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
+          title: "كلمة المرور:",
+          content: orderDetails?.password,
         },
         {
           id: 4,
-          title: "البريد الحساب:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
-        },
-        {
-          id: 5,
-          title: "كلمة مرور الحساب:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
-        },
-        {
-          id: 6,
-          title: "البريد الالكترونى:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
-        },
-        {
-          id: 6,
-          title: "كلمة المرور:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
-        },
-        {
-          id: 6,
           title: "ملاحظة:",
-          content:
-            "حساب GTA 5 مودد كامل  500 مليون دولار + جميع الأسلحة + مستوى 500",
+          content: orderDetails?.note,
         },
       ],
     },
   ];
 
+  const order = list.find((order) => order.service === orderDetails?.service);
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="md:max-w-3xl">
-        <ScrollArea className="h-[90vh] px-2">
+        <ScrollArea
+          className="max-h-[90vh] px-2"
+          dir={lang === "ar" ? "rtl" : "ltr"}
+        >
           <DialogHeader className={`mb-4`}>
             <DialogTitle className={`text-center`}>تفاصيل الطلب</DialogTitle>
             <DialogDescription className={`mt-2`}>
@@ -308,13 +193,27 @@ const DetailsModal = ({ order_id, open, onClose }) => {
             </DialogDescription>
           </DialogHeader>
 
-          <div className="flex flex-col gap-2">
-            {Array.from({ length: 10 }).map(() => (
-              <div className="flex flex-col gap-1 card">
-                <p className="text-muted-foreground text-sm">اسم الحساب:</p>
-                <h3 className="font-bold">FIFA Ultimate Team Pro</h3>
-              </div>
-            ))}
+          <div className="flex flex-col gap-3">
+            {order?.items?.length ? (
+              order.items
+                .filter((item) => item.content)
+                .map((item) => (
+                  <div>
+                    <h3 className="text-muted-foreground font-bold mb-1">
+                      {item.title}
+                    </h3>
+
+                    <div
+                      className="card"
+                      dangerouslySetInnerHTML={{ __html: item?.content }}
+                    />
+                  </div>
+                ))
+            ) : (
+              <p className="text-center text-muted-foreground">
+                لا توجد تفاصيل متاحة
+              </p>
+            )}
           </div>
         </ScrollArea>
       </DialogContent>
