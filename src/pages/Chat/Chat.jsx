@@ -7,11 +7,7 @@ import { getMsgs, sendMsg } from "@/services/chatServices";
 const Chat = () => {
   const queryClient = useQueryClient();
 
-  const {
-    data: messagesData,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: messagesData, isLoading } = useQuery({
     queryKey: ["get_msgs"],
     queryFn: getMsgs,
   });

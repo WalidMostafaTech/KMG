@@ -1,15 +1,18 @@
+import EmptyDataSection from "@/components/commonSections/EmptyDataSection";
+import PaymentListSkeleton from "@/components/Loading/SkeletonLoading/PaymentListSkeleton";
 import { getPaymentSettings } from "@/services/paymentsServices";
 import { useQuery } from "@tanstack/react-query";
 
 const PaymentList = ({ onPaymentClick, currentPayment }) => {
-  const {
-    data: paymentData,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: paymentData, isLoading } = useQuery({
     queryKey: ["payment-settings"],
     queryFn: getPaymentSettings,
   });
+
+  if (isLoading) return <PaymentListSkeleton />;
+
+  if (!paymentData || paymentData.length === 0)
+    return <EmptyDataSection msg={"لا توجد طرق دفع لعرضها حالياً."} />;
 
   return (
     <div>

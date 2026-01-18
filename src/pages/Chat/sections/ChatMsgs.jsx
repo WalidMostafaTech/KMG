@@ -1,3 +1,4 @@
+import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useRef } from "react";
 
 const ChatMsgs = ({ messages, isLoading }) => {
@@ -69,15 +70,15 @@ const ChatMsgs = ({ messages, isLoading }) => {
               order.status === "pending"
                 ? "bg-yellow-500/20 text-yellow-400"
                 : order.status === "completed"
-                ? "bg-green-500/20 text-green-400"
-                : "bg-red-500/20 text-red-400"
+                  ? "bg-green-500/20 text-green-400"
+                  : "bg-red-500/20 text-red-400"
             }`}
           >
             {order.status === "pending"
               ? "قيد الانتظار"
               : order.status === "completed"
-              ? "مكتمل"
-              : "ملغي"}
+                ? "مكتمل"
+                : "ملغي"}
           </span>
         </div>
 
@@ -104,8 +105,21 @@ const ChatMsgs = ({ messages, isLoading }) => {
 
   if (isLoading) {
     return (
-      <div className="flex-1 flex items-center justify-center">
-        <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full" />
+      <div className="flex-1 flex flex-col gap-3 px-2 py-4">
+        <Skeleton className="h-20 w-1/4 rounded-xl" />
+        <Skeleton className="h-30 w-1/2 rounded-xl" />
+        <Skeleton className="h-40 w-2/3 rounded-xl" />
+        <Skeleton className="h-20 w-1/4 rounded-xl" />
+        <Skeleton className="h-30 w-1/2 rounded-xl" />
+        <Skeleton className="h-40 w-2/3 rounded-xl" />
+      </div>
+    );
+  }
+
+  if (!messages || messages.length === 0) {
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center px-2 py-4">
+        <p className="text-center">لا توجد رسائل حاليا.</p>
       </div>
     );
   }
