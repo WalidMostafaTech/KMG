@@ -7,9 +7,11 @@ import SwiperNavigation from "@/components/common/SwiperNavigation";
 import TestimonialsCard from "@/components/cards/TestimonialsCard";
 import { useSelector } from "react-redux";
 import TestimonialsSkeleton from "@/components/Loading/SkeletonLoading/TestimonialsSkeleton";
+import { useTranslation } from "react-i18next";
 
 const Testimonials = ({ data = [], isLoading }) => {
   const { lang } = useSelector((state) => state.language);
+  const { t } = useTranslation();
 
   if (isLoading) {
     return <TestimonialsSkeleton />;
@@ -19,7 +21,7 @@ const Testimonials = ({ data = [], isLoading }) => {
 
   return (
     <section className="sectionPadding container">
-      <SectionTitle title={"اراء العملاء"} />
+      <SectionTitle title={t("testimonials.title")} />
 
       <Swiper
         dir={lang === "ar" ? "rtl" : "ltr"}

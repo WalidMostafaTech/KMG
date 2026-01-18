@@ -1,7 +1,10 @@
 import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 
 const ServicesAccountCard = ({ item }) => {
+  const { t } = useTranslation();
+
   return (
     <div key={item.id} className="flex flex-col gap-4 card">
       <div className="flex items-center justify-between gap-2">
@@ -30,20 +33,23 @@ const ServicesAccountCard = ({ item }) => {
         </div>
 
         <p className="py-1 px-4 bg-accent rounded-lg w-fit">
-          {item.from_time} - {item.to_time} دقايق
+          {item.from_time} - {item.to_time} {t("ServicesAccountCard.minutes")}
         </p>
 
         <div className="flex items-center flex-wrap gap-1">
-          {item?.platforms?.map((item) => (
-            <p className="py-1 px-4 bg-accent rounded-lg w-fit" key={item.id}>
-              {item.name}
+          {item?.platforms?.map((platform) => (
+            <p
+              key={platform.id}
+              className="py-1 px-4 bg-accent rounded-lg w-fit"
+            >
+              {platform.name}
             </p>
           ))}
         </div>
       </div>
 
       <Link to={`/games/accounts/details/${item.id}`}>
-        <Button className="w-full">اشتري الان</Button>
+        <Button className="w-full">{t("ServicesAccountCard.buyNow")}</Button>
       </Link>
     </div>
   );

@@ -12,8 +12,11 @@ import ContactUsModal from "./ContactUsModal";
 import { getFooter } from "@/services/mainServices";
 import { useQuery } from "@tanstack/react-query";
 import FooterSkeleton from "@/components/Loading/SkeletonLoading/FooterSkeleton";
+import { useTranslation } from "react-i18next";
 
 const Footer = () => {
+  const { t } = useTranslation();
+
   const { data: footerData, isLoading } = useQuery({
     queryKey: ["footer"],
     queryFn: getFooter,
@@ -84,13 +87,14 @@ const Footer = () => {
             to="/join-as-partner"
             className="text-sm underline hover:text-primary transition"
           >
-            انضم كاشريك
+            {t("footer.joinPartner")}
           </Link>
+
           <Link
             to="/refund-policy"
             className="text-sm underline hover:text-primary transition"
           >
-            سياسة الاسترداد
+            {t("footer.refundPolicy")}
           </Link>
           <ContactUsModal />
         </div>

@@ -13,12 +13,15 @@ import { Mail } from "lucide-react";
 import { Link } from "react-router";
 import { z } from "zod";
 import { sendOtp } from "@/services/forgotPasswordServices";
-
-const forgotPasswordSchema = z.object({
-  email: z.string().email("البريد الإلكتروني غير صحيح"),
-});
+import { useTranslation } from "react-i18next";
 
 const CheckEmail = ({ goNext, setParentData }) => {
+  const { t } = useTranslation();
+
+  const forgotPasswordSchema = z.object({
+    email: z.string().email(t("checkEmail.invalidEmail")),
+  });
+
   const form = useForm({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
@@ -45,8 +48,8 @@ const CheckEmail = ({ goNext, setParentData }) => {
 
   return (
     <AuthContainer
-      title="نسيت كلمة المرور"
-      description="أدخل بريدك الإلكتروني لإعادة تعيين كلمة المرور"
+      title={t("checkEmail.title")}
+      description={t("checkEmail.description")}
     >
       <Form {...form}>
         <form
@@ -57,30 +60,32 @@ const CheckEmail = ({ goNext, setParentData }) => {
           <MainInput
             control={form.control}
             name="email"
-            label="البريد الإلكتروني"
-            placeholder="example@email.com"
+            label={t("checkEmail.emailLabel")}
+            placeholder={t("checkEmail.emailPlaceholder")}
             icon={<Mail size={18} />}
           />
 
           <Button type="submit" className="w-full" disabled={isPending}>
-            {isPending ? "جاري الإرسال..." : "إرسال رابط إعادة التعيين"}
+            {isPending
+              ? t("checkEmail.sending")
+              : t("checkEmail.sendResetLink")}
           </Button>
 
           <p className="text-sm text-center">
-            تذكرت كلمة المرور؟
+            {t("checkEmail.rememberPassword")}
             <Link
               to="/login"
               className="text-purple-500 cursor-pointer hover:underline"
             >
               {" "}
-              تسجيل الدخول
+              {t("checkEmail.login")}
             </Link>
           </p>
 
           {error && (
             <FormError
               errorMsg={
-                error.response?.data?.message || "حدث خطأ، حاول مرة أخرى"
+                error.response?.data?.message || t("checkEmail.genericError")
               }
             />
           )}

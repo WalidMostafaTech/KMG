@@ -1,8 +1,10 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 const ChatMsgs = ({ messages, isLoading }) => {
   const containerRef = useRef(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (containerRef.current) {
@@ -75,10 +77,10 @@ const ChatMsgs = ({ messages, isLoading }) => {
             }`}
           >
             {order.status === "pending"
-              ? "قيد الانتظار"
+              ? t("chatMsgs.status.pending")
               : order.status === "completed"
-                ? "مكتمل"
-                : "ملغي"}
+                ? t("chatMsgs.status.completed")
+                : t("chatMsgs.status.cancelled")}
           </span>
         </div>
 
@@ -119,7 +121,7 @@ const ChatMsgs = ({ messages, isLoading }) => {
   if (!messages || messages.length === 0) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center px-2 py-4">
-        <p className="text-center">لا توجد رسائل حاليا.</p>
+        <p className="text-center">{t("chatMsgs.noMessages")}</p>
       </div>
     );
   }

@@ -3,8 +3,11 @@ import { getGamesByService } from "@/services/homeServices";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft } from "lucide-react";
 import { Link } from "react-router";
+import { useTranslation } from "react-i18next";
 
 const ServicesSection = () => {
+  const { t } = useTranslation();
+
   const { data: servicesData, isLoading } = useQuery({
     queryKey: ["services-games"],
     queryFn: getGamesByService,
@@ -21,31 +24,31 @@ const ServicesSection = () => {
   const list = [
     {
       id: 1,
-      title: "الحسابات",
+      title: t("servicesSection.accounts"),
       link: "accounts",
       items: servicesData?.accounts || [],
     },
     {
       id: 2,
-      title: "الإشتراكات",
+      title: t("servicesSection.subscriptions"),
       link: "/subscriptions",
       items: servicesData?.subscriptions || [],
     },
     {
       id: 3,
-      title: "شحن رصيد",
+      title: t("servicesSection.topUp"),
       link: "/top_up",
       items: servicesData?.top_up || [],
     },
     {
       id: 4,
-      title: "كروت الهدايا",
+      title: t("servicesSection.giftCards"),
       link: "/gift_cards",
       items: servicesData?.gift_cards || [],
     },
     {
       id: 5,
-      title: "إضافة لعبه للحساب",
+      title: t("servicesSection.addGameToAccount"),
       link: "/add_game_to_account",
       items: servicesData?.add_game_to_account || [],
     },
@@ -62,7 +65,7 @@ const ServicesSection = () => {
                 to={`/games/${item.link}`}
                 className="flex items-center gap-1 group hover:underline"
               >
-                عرض المزيد
+                {t("servicesSection.seeMore")}
                 <ChevronLeft className="group-hover:-translate-x-2 ltr:group-hover:translate-x-2 transition-all ltr:rotate-180" />
               </Link>
             </div>

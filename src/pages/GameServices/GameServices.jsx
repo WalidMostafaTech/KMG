@@ -7,6 +7,7 @@ import ProductsPage from "./pages/ProductsPage/ProductsPage";
 import OffersFilter from "./sections/OffersFilter";
 import { useState } from "react";
 import AccountsSkeleton from "@/components/Loading/SkeletonLoading/AccountsSkeleton";
+import { useTranslation } from "react-i18next";
 
 const defaultFilters = {
   min_time: "",
@@ -52,14 +53,24 @@ const GameServices = () => {
   const game = gameServicesData?.extra?.game || null;
   const products = gameServicesData?.items || [];
 
+  const { t } = useTranslation();
+
   const links = [
-    { id: 1, title: "الحسابات", link: `/games/accounts/${id}` },
-    { id: 2, title: "الإشتراكات", link: `/games/subscriptions/${id}` },
-    { id: 3, title: "شحن رصيد", link: `/games/top_up/${id}` },
-    { id: 4, title: "كروت الهدايا", link: `/games/gift_cards/${id}` },
+    { id: 1, title: t("Games.list.accounts"), link: `/games/accounts/${id}` },
+    {
+      id: 2,
+      title: t("Games.list.subscriptions"),
+      link: `/games/subscriptions/${id}`,
+    },
+    { id: 3, title: t("Games.list.topUp"), link: `/games/top_up/${id}` },
+    {
+      id: 4,
+      title: t("Games.list.giftCards"),
+      link: `/games/gift_cards/${id}`,
+    },
     {
       id: 5,
-      title: "إضافة لعبه للحساب",
+      title: t("Games.list.addGameToAccount"),
       link: `/games/add_game_to_account/${id}`,
     },
   ];

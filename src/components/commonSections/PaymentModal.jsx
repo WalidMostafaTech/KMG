@@ -14,12 +14,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useNavigate } from "react-router";
-
-const Schema = z.object({
-  login_data: z.string().min(6, "بيانات الدخول قصيرة"),
-  password: z.string().min(6, "كلمة المرور قصيرة"),
-  gift_code: z.string().optional(),
-});
+import { useTranslation } from "react-i18next";
 
 const PaymentModal = ({
   open,
@@ -29,6 +24,13 @@ const PaymentModal = ({
   gift_code = false,
 }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  const Schema = z.object({
+    login_data: z.string().min(6, t("PaymentModal.validation.loginDataShort")),
+    password: z.string().min(6, t("PaymentModal.validation.passwordShort")),
+    gift_code: z.string().optional(),
+  });
 
   const form = useForm({
     resolver: zodResolver(Schema),
@@ -58,40 +60,37 @@ const PaymentModal = ({
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader className="text-center">
-          <DialogTitle className="text-xl">بيانات الحساب</DialogTitle>
+          <DialogTitle className="text-xl text-center">
+            {t("PaymentModal.title")}
+          </DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4"
-            dir="rtl"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <MainInput
               control={form.control}
               name="login_data"
-              label="بيانات الدخول"
+              label={t("PaymentModal.loginData")}
             />
 
             <MainInput
               control={form.control}
               name="password"
-              label="كلمة المرور"
               type="password"
+              label={t("PaymentModal.password")}
             />
 
-            {/* 👇 يظهر بس لو gift_code === true */}
             {gift_code && (
               <MainInput
                 control={form.control}
                 name="gift_code"
-                label="كود الهدية"
+                label={t("PaymentModal.giftCode")}
               />
             )}
 
             <DialogFooter className="flex gap-3 pt-2">
               <Button type="submit" className="flex-1">
-                حفظ
+                {t("PaymentModal.save")}
               </Button>
 
               <Button
@@ -103,7 +102,7 @@ const PaymentModal = ({
                   onClose();
                 }}
               >
-                تراجع
+                {t("PaymentModal.cancel")}
               </Button>
             </DialogFooter>
           </form>

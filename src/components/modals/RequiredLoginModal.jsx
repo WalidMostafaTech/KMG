@@ -8,8 +8,10 @@ import {
 import { AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 
 const RequiredLoginModal = ({ open, onClose }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleCreateAccount = () => {
@@ -29,23 +31,25 @@ const RequiredLoginModal = ({ open, onClose }) => {
           </div>
 
           <DialogTitle className="text-xl font-semibold text-center">
-            تسجيل الدخول مطلوب
+            {t("requiredLoginModal.title")}
           </DialogTitle>
 
           <DialogDescription className="text-center text-zinc-400 text-sm">
-            يجب عليك تسجيل الدخول لتتمكن من المواصلة
+            {t("requiredLoginModal.description")}
           </DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-wrap gap-2 mt-4" dir="rtl">
-          <Button onClick={handleLogin} className="flex-1">تسجيل دخول</Button>
+          <Button onClick={handleLogin} className="flex-1">
+            {t("requiredLoginModal.login")}
+          </Button>
 
           <Button
             variant="outline"
             onClick={handleCreateAccount}
             className="rounded-full flex-1"
           >
-            إنشاء حساب
+            {t("requiredLoginModal.createAccount")}
           </Button>
         </div>
       </DialogContent>

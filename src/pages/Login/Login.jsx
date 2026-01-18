@@ -15,15 +15,17 @@ import { z } from "zod";
 import { loginUser } from "@/services/authServices";
 import { useDispatch } from "react-redux";
 import { addProfile } from "@/store/profile/profileSlice";
-
-const loginSchema = z.object({
-  email: z.string().email("البريد الإلكتروني غير صحيح"),
-  password: z.string().min(6, "كلمة المرور قصيرة"),
-});
+import { useTranslation } from "react-i18next";
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+
+  const loginSchema = z.object({
+    email: z.string().email(t("auth.login.invalidEmail")),
+    password: z.string().min(6, t("auth.login.shortPassword")),
+  });
 
   const form = useForm({
     resolver: zodResolver(loginSchema),
@@ -51,8 +53,8 @@ const Login = () => {
 
   return (
     <AuthContainer
-      title="تسجيل الدخول"
-      description="قم بتسجيل الدخول إلى حسابك"
+      title={t("auth.login.title")}
+      description={t("auth.login.description")}
     >
       <Form {...form}>
         <form
@@ -63,15 +65,15 @@ const Login = () => {
           <MainInput
             control={form.control}
             name="email"
-            label="البريد الإلكتروني"
-            placeholder="example@email.com"
+            label={t("auth.login.emailLabel")}
+            placeholder={t("auth.login.emailPlaceholder")}
             icon={<Mail size={18} />}
           />
 
           <MainInput
             control={form.control}
             name="password"
-            label="كلمة المرور"
+            label={t("auth.login.passwordLabel")}
             type="password"
             icon={<Lock size={18} />}
           />
@@ -80,28 +82,26 @@ const Login = () => {
             to="/forgot-password"
             className="text-sm hover:underline block w-fit ms-auto"
           >
-            نسيت كلمة المرور؟
+            {t("auth.login.forgotPassword")}
           </Link>
 
           <Button type="submit" className="w-full" disabled={isPending}>
-            {isPending ? "جاري تسجيل الدخول..." : "تسجيل الدخول"}
+            {isPending ? t("auth.login.loading") : t("auth.login.submit")}
           </Button>
 
           <p className="text-sm text-center">
-            ليس لديك حساب؟{" "}
+            {t("auth.login.subText")}{" "}
             <Link
               to="/register"
               className="text-purple-500 cursor-pointer hover:underline"
             >
-              إنشاء حساب جديد
+              {t("auth.login.register")}
             </Link>
           </p>
 
           {error && (
             <FormError
-              errorMsg={
-                error.response?.data?.message || "بيانات الدخول غير صحيحة"
-              }
+              errorMsg={error.response?.data?.message || t("auth.login.error")}
             />
           )}
         </form>

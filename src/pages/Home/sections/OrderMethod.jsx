@@ -1,15 +1,19 @@
 import SectionTitle from "@/components/common/SectionTitle";
 import OrderMethodSkeleton from "@/components/Loading/SkeletonLoading/OrderMethodSkeleton";
+import { useTranslation } from "react-i18next";
 
 const OrderMethod = ({ data = [], isLoading }) => {
+  const { t } = useTranslation();
+
   if (isLoading) {
     return <OrderMethodSkeleton />;
   }
 
   if (!data) return null;
+
   return (
     <section className="container sectionPadding">
-      <SectionTitle title={"طرق الطلب"} />
+      <SectionTitle title={t("orderMethod.title")} />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
         {data?.map((item, index) => (

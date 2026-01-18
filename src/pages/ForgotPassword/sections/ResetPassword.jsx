@@ -17,20 +17,23 @@ import { getPasswordStrength, strengthLabel } from "@/utils/PasswordStrength";
 import { z } from "zod";
 import { useNavigate } from "react-router";
 import { resetPassword } from "@/services/forgotPasswordServices";
-
-
-const resetPasswordSchema = z
-  .object({
-    password: z.string().min(6, "كلمة المرور قصيرة"),
-    password_confirmation: z.string().min(6, "تأكيد كلمة المرور مطلوب"),
-  })
-  .refine((data) => data.password === data.password_confirmation, {
-    message: "كلمتا المرور غير متطابقتين",
-    path: ["password_confirmation"],
-  });
+import { useTranslation } from "react-i18next";
 
 const ResetPasswordPage = ({ parentData }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
+
+  const resetPasswordSchema = z
+    .object({
+      password: z.string().min(6, t("resetPassword.passwordShort")),
+      password_confirmation: z
+        .string()
+        .min(6, t("resetPassword.confirmRequired")),
+    })
+    .refine((data) => data.password === data.password_confirmation, {
+      message: t("resetPassword.notMatched"),
+      path: ["password_confirmation"],
+    });
 
   const form = useForm({
     resolver: zodResolver(resetPasswordSchema),
@@ -70,15 +73,15 @@ const ResetPasswordPage = ({ parentData }) => {
     strength <= 1
       ? "#ef4444"
       : strength === 2
-      ? "#fbbf24"
-      : strength === 3
-      ? "#84cc16"
-      : "#22c55e";
+        ? "#fbbf24"
+        : strength === 3
+          ? "#84cc16"
+          : "#22c55e";
 
   return (
     <AuthContainer
-      title="إعادة تعيين كلمة المرور"
-      description="أدخل كلمة مرور جديدة لحسابك"
+      title={t("resetPassword.title")}
+      description={t("resetPassword.description")}
     >
       <Form {...form}>
         <form
@@ -89,7 +92,7 @@ const ResetPasswordPage = ({ parentData }) => {
           {error && (
             <FormError
               errorMsg={
-                error.response?.data?.message || "حدث خطأ، حاول مرة أخرى"
+                error.response?.data?.message || t("resetPassword.error")
               }
             />
           )}
@@ -97,7 +100,7 @@ const ResetPasswordPage = ({ parentData }) => {
           <MainInput
             control={form.control}
             name="password"
-            label="كلمة المرور الجديدة"
+            label={t("resetPassword.newPassword")}
             type="password"
             icon={<Lock size={18} />}
           />
@@ -105,7 +108,7 @@ const ResetPasswordPage = ({ parentData }) => {
           <MainInput
             control={form.control}
             name="password_confirmation"
-            label="تأكيد كلمة المرور"
+            label={t("resetPassword.confirmPassword")}
             type="password"
             icon={<Lock size={18} />}
           />
@@ -120,7 +123,7 @@ const ResetPasswordPage = ({ parentData }) => {
 
             {strength > 0 && (
               <p className="text-sm text-muted-foreground">
-                قوة كلمة المرور:
+                {t("resetPassword.strength")}
                 <span
                   className="font-semibold ms-1"
                   style={{ color: progressColor }}
@@ -132,7 +135,7 @@ const ResetPasswordPage = ({ parentData }) => {
           </div>
 
           <Button type="submit" className="w-full" disabled={isPending}>
-            {isPending ? "جاري إعادة التعيين..." : "حفظ كلمة المرور الجديدة"}
+            {isPending ? t("resetPassword.resetting") : t("resetPassword.save")}
           </Button>
         </form>
       </Form>

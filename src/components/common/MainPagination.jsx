@@ -1,6 +1,9 @@
 import { TfiArrowCircleLeft, TfiArrowCircleRight } from "react-icons/tfi";
+import { useTranslation } from "react-i18next";
 
 const MainPagination = ({ totalPages, currentPage, onPageChange }) => {
+  const { t } = useTranslation();
+
   if (!totalPages || totalPages === 0) return null;
 
   const handlePageClick = (page) => {
@@ -9,7 +12,6 @@ const MainPagination = ({ totalPages, currentPage, onPageChange }) => {
     }
   };
 
-  // تحديد الصفحات المعروضة (بحد أقصى 5)
   const getVisiblePages = () => {
     const pages = [];
     let start = Math.max(1, currentPage - 2);
@@ -37,6 +39,7 @@ const MainPagination = ({ totalPages, currentPage, onPageChange }) => {
   return (
     <div className="pagination">
       <button
+        aria-label={t("MainPagination.previous")}
         onClick={() => handlePageClick(currentPage - 1)}
         disabled={currentPage === 1}
         className={`pagination-btn ${
@@ -51,6 +54,7 @@ const MainPagination = ({ totalPages, currentPage, onPageChange }) => {
       {visiblePages.map((page) => (
         <button
           key={page}
+          aria-label={`${t("MainPagination.page")} ${page}`}
           onClick={() => handlePageClick(page)}
           className={`pagination-btn ${
             currentPage === page
@@ -63,6 +67,7 @@ const MainPagination = ({ totalPages, currentPage, onPageChange }) => {
       ))}
 
       <button
+        aria-label={t("MainPagination.next")}
         onClick={() => handlePageClick(currentPage + 1)}
         disabled={currentPage === totalPages}
         className={`pagination-btn ${
@@ -76,4 +81,5 @@ const MainPagination = ({ totalPages, currentPage, onPageChange }) => {
     </div>
   );
 };
+
 export default MainPagination;

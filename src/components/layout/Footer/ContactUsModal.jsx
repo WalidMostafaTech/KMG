@@ -22,20 +22,25 @@ import { getContactUs } from "@/services/mainServices";
 import { useState } from "react";
 import FormSuccess from "@/components/form/FormSuccess";
 import FormError from "@/components/form/FormError";
-
-const FormSchema = z.object({
-  name: z.string().min(2, "الاسم يجب أن يكون حرفين على الأقل"),
-  email: z.string().email("البريد الإلكتروني غير صالح"),
-  phone: z
-    .string()
-    .min(1, "رقم الهاتف مطلوب")
-    .refine((val) => isValidPhoneNumber(val), "رقم الهاتف غير صالح"),
-  message: z.string().min(10, "الرسالة يجب ان تكون على الاقل 10 حروف"),
-});
+import { useTranslation } from "react-i18next";
 
 const ContactUsModal = () => {
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  const { t } = useTranslation();
+
+  const FormSchema = z.object({
+    name: z.string().min(2, t("ContactUsModal.validation.nameMin")),
+    email: z.string().email(t("ContactUsModal.validation.emailInvalid")),
+    phone: z
+      .string()
+      .min(1, t("ContactUsModal.validation.phoneRequired"))
+      .refine(
+        (val) => isValidPhoneNumber(val),
+        t("ContactUsModal.validation.phoneInvalid"),
+      ),
+    message: z.string().min(10, t("ContactUsModal.validation.messageMin")),
+  });
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -51,12 +56,11 @@ const ContactUsModal = () => {
     mutationFn: getContactUs,
     onSuccess: () => {
       form.reset();
-      setSuccessMsg("تم الارسال بنجاح");
+      setSuccessMsg(t("ContactUsModal.success"));
       setErrorMsg("");
     },
     onError: (error) => {
-      console.error("حصل خطأ ❌", error);
-      setErrorMsg(error?.response?.data?.message || "حصل خطاء");
+      setErrorMsg(error?.response?.data?.message || t("ContactUsModal.error"));
       setSuccessMsg("");
     },
   });
@@ -69,13 +73,15 @@ const ContactUsModal = () => {
     <Dialog>
       <DialogTrigger asChild>
         <button className="text-sm underline hover:text-primary transition cursor-pointer">
-          اتصل بنا
+          {t("ContactUsModal.trigger")}
         </button>
       </DialogTrigger>
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="text-center">تواصل معنا</DialogTitle>
+          <DialogTitle className="text-center">
+            {t("ContactUsModal.title")}
+          </DialogTitle>
           <DialogDescription />
         </DialogHeader>
 
@@ -83,37 +89,38 @@ const ContactUsModal = () => {
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-4 w-full"
-            dir="rtl"
           >
             <MainInput
               control={form.control}
               name="name"
-              label="الاسم"
-              placeholder="أدخل الاسم"
+              label={t("ContactUsModal.fields.name.label")}
+              placeholder={t("ContactUsModal.fields.name.placeholder")}
             />
 
             <MainInput
               control={form.control}
               name="email"
-              label="البريد الإلكتروني"
-              placeholder="example@email.com"
+              label={t("ContactUsModal.fields.email.label")}
+              placeholder={t("ContactUsModal.fields.email.placeholder")}
             />
 
             <PhoneInputField
               control={form.control}
               name="phone"
-              label="رقم الهاتف"
+              label={t("ContactUsModal.fields.phone.label")}
             />
 
             <MainInput
               type="textarea"
               control={form.control}
               name="message"
-              label="الرسالة"
+              label={t("ContactUsModal.fields.message.label")}
             />
 
             <Button type="submit" className="w-full" disabled={isPending}>
-              {isPending ? "جاري الإرسال..." : "إرسال"}
+              {isPending
+                ? t("ContactUsModal.sending")
+                : t("ContactUsModal.submit")}
             </Button>
 
             {successMsg && <FormSuccess successMsg={successMsg} />}

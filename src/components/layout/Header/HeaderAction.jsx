@@ -1,7 +1,6 @@
 import { Link, useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Bell, MessageSquareText } from "lucide-react";
-
 import {
   Dialog,
   DialogContent,
@@ -11,7 +10,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -39,8 +37,10 @@ import { getUnreadCount } from "@/services/mainServices";
 import logoutIcon from "@/assets/icons/logout-icon.png";
 import { Skeleton } from "@/components/ui/skeleton";
 import NotificationsSkeleton from "@/components/Loading/SkeletonLoading/NotificationsSkeleton";
+import { useTranslation } from "react-i18next";
 
 const HeaderAction = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -104,6 +104,7 @@ const HeaderAction = () => {
                 <Badge count={unreadNotifications} />
               </Button>
             </PopoverTrigger>
+
             <PopoverContent align="end" className="md:w-[500px]">
               {isLoading ? (
                 <NotificationsSkeleton />
@@ -134,7 +135,7 @@ const HeaderAction = () => {
                 </div>
               ) : (
                 <p className="text-center text-sm text-muted-foreground py-6">
-                  لا توجد إشعارات
+                  {t("headerAction.noNotifications")}
                 </p>
               )}
 
@@ -143,7 +144,9 @@ const HeaderAction = () => {
                   to="/profile/notifications"
                   onClick={() => setOpenNotifications(false)}
                 >
-                  <Button className="w-full">المزيد من التنبيهات</Button>
+                  <Button className="w-full">
+                    {t("headerAction.moreNotifications")}
+                  </Button>
                 </Link>
               </div>
             </PopoverContent>
@@ -165,30 +168,35 @@ const HeaderAction = () => {
               className="cursor-pointer"
             />
           </DropdownMenuTrigger>
+
           <DropdownMenuContent align="end" dir={lang === "ar" ? "rtl" : "ltr"}>
             <DropdownMenuLabel className="flex items-center gap-2">
               <UserAvatar name={profile?.name} image={profile?.image} />
               <h3 className="font-semibold">{profile?.name}</h3>
             </DropdownMenuLabel>
+
             <DropdownMenuSeparator />
+
             <DropdownMenuItem
               onClick={() => navigate("/profile")}
               className="justify-start"
             >
               <FaRegUser />
-              الملف الشخصي
+              {t("headerAction.profile")}
             </DropdownMenuItem>
+
             <DropdownMenuItem onClick={() => navigate("/profile/orders")}>
               <FiShoppingCart />
-              الطلبات
+              {t("headerAction.orders")}
             </DropdownMenuItem>
+
             <DropdownMenuSeparator />
 
             <Dialog open={showLogout} onOpenChange={setShowLogout}>
               <DialogTrigger asChild>
                 <button className="bg-red-800/50 hover:bg-red-800/30 transition text-white py-1 px-2 w-full rounded flex items-center gap-2">
                   <IoIosLogOut />
-                  تسجيل الخروج
+                  {t("headerAction.logout")}
                 </button>
               </DialogTrigger>
 
@@ -198,7 +206,7 @@ const HeaderAction = () => {
                     <img src={logoutIcon} alt="logout" className="mx-auto" />
                   </DialogDescription>
                   <DialogTitle className="text-center">
-                    هل أنت متأكد أنك تريد تسجيل الخروج؟
+                    {t("headerAction.logoutConfirm")}
                   </DialogTitle>
                 </DialogHeader>
 
@@ -208,7 +216,7 @@ const HeaderAction = () => {
                     className="flex-1"
                     onClick={handleLogout}
                   >
-                    تسجيل الخروج
+                    {t("headerAction.logout")}
                   </Button>
 
                   <Button
@@ -217,7 +225,7 @@ const HeaderAction = () => {
                     className="flex-1 rounded-full"
                     onClick={() => setShowLogout(false)}
                   >
-                    تراجع
+                    {t("headerAction.cancel")}
                   </Button>
                 </DialogFooter>
               </DialogContent>
@@ -226,7 +234,7 @@ const HeaderAction = () => {
         </DropdownMenu>
       ) : (
         <Link to="/login">
-          <Button>تسجيل الدخول</Button>
+          <Button>{t("headerAction.login")}</Button>
         </Link>
       )}
     </div>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PaymentList from "./sections/PaymentList";
 import PaymentCard from "./sections/PaymentCard";
-import { useLocation } from "react-router";
+import { Navigate, useLocation } from "react-router";
 
 const Payment = () => {
   const [currentPayment, setCurrentPayment] = useState(null);

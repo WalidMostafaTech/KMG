@@ -4,8 +4,10 @@ import PaymentModal from "@/components/commonSections/PaymentModal";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import RequiredLoginModal from "@/components/modals/RequiredLoginModal";
+import { useTranslation } from "react-i18next";
 
 const PaymentCard = ({ currentOffer }) => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState({
     paymentModal: false,
     loginModal: false,
@@ -30,36 +32,42 @@ const PaymentCard = ({ currentOffer }) => {
 
         <ul className="flex flex-col gap-2 text-sm">
           <li className="flex justify-between">
-            <p>المنطقة</p>
-            <span>{currentOffer.country_name || "غير محدد"}</span>
+            <p>{t("paymentCard.region")}</p>
+            <span>
+              {currentOffer.country_name || t("paymentCard.notSpecified")}
+            </span>
           </li>
           <li className="flex justify-between">
-            <p>المنصة</p>
+            <p>{t("paymentCard.platform")}</p>
             <span>
               {currentOffer.platforms.map((item) => item.name).join(", ") ||
-                "غير محدد"}
+                t("paymentCard.notSpecified")}
             </span>
           </li>
         </ul>
       </div>
 
       <div>
-        <h3 className="text-lg font-bold mb-2">ملخص الطلب</h3>
+        <h3 className="text-lg font-bold mb-2">
+          {t("paymentCard.orderSummary")}
+        </h3>
         <ul className="flex flex-col divide-y-2 text-sm">
           <li className="flex justify-between gap-2 py-1 text-muted-foreground">
-            <p>وقت التسليم</p>{" "}
+            <p>{t("paymentCard.deliveryTime")}</p>{" "}
             <span>
-              {currentOffer.from_time} - {currentOffer.to_time} دقايق
+              {currentOffer.from_time} - {currentOffer.to_time}{" "}
+              {t("paymentCard.minutes")}
             </span>
           </li>
 
           <li className="flex justify-between gap-2 py-1">
-            <p>السعر الاجمالى</p> <span>{currentOffer.price} $</span>
+            <p>{t("paymentCard.totalPrice")}</p>{" "}
+            <span>{currentOffer.price} $</span>
           </li>
         </ul>
       </div>
 
-      <Button onClick={handlePayment}>اشتري الان</Button>
+      <Button onClick={handlePayment}>{t("paymentCard.buyNow")}</Button>
 
       <ServicesPaymentCards />
 

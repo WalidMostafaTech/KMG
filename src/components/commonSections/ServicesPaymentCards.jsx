@@ -11,40 +11,46 @@ import { BiShieldAlt2 } from "react-icons/bi";
 import { CiCreditCard2 } from "react-icons/ci";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { useState } from "react";
-
-const list = [
-  {
-    id: 1,
-    title: "دعم 7-24",
-    desc: "دائما متاح",
-    icon: <FaHeadset />,
-  },
-  {
-    id: 2,
-    title: "حماية مضمونة",
-    desc: "سرية تامة",
-    icon: <BiShieldAlt2 />,
-  },
-  {
-    id: 3,
-    title: "دفع سريع",
-    desc: "دفع امن",
-    icon: <CiCreditCard2 />,
-  },
-  {
-    id: 4,
-    title: "استرجاع المبلغ",
-    desc: "ضمان كامل",
-    icon: <BsCurrencyDollar />,
-  },
-];
+import { useTranslation } from "react-i18next";
 
 const ServicesPaymentCards = ({ grid = 1 }) => {
+  const { t } = useTranslation();
   const [showModal, setShowModal] = useState(false);
+
+  const list = [
+    {
+      id: 1,
+      title: t("ServicesPaymentCards.items.support.title"),
+      desc: t("ServicesPaymentCards.items.support.desc"),
+      icon: <FaHeadset />,
+    },
+    {
+      id: 2,
+      title: t("ServicesPaymentCards.items.security.title"),
+      desc: t("ServicesPaymentCards.items.security.desc"),
+      icon: <BiShieldAlt2 />,
+    },
+    {
+      id: 3,
+      title: t("ServicesPaymentCards.items.fastPayment.title"),
+      desc: t("ServicesPaymentCards.items.fastPayment.desc"),
+      icon: <CiCreditCard2 />,
+    },
+    {
+      id: 4,
+      title: t("ServicesPaymentCards.items.refund.title"),
+      desc: t("ServicesPaymentCards.items.refund.desc"),
+      icon: <BsCurrencyDollar />,
+    },
+  ];
 
   return (
     <>
-      <div className={`grid grid-cols-1 gap-2 ${grid === 2 ? "sm:grid-cols-2 md:gap-4" : ""}`}>
+      <div
+        className={`grid grid-cols-1 gap-2 ${
+          grid === 2 ? "sm:grid-cols-2 md:gap-4" : ""
+        }`}
+      >
         {list.map((item) => (
           <button
             key={item.id}
@@ -65,14 +71,11 @@ const ServicesPaymentCards = ({ grid = 1 }) => {
       <Dialog open={!!showModal} onOpenChange={() => setShowModal(false)}>
         <DialogContent>
           <VisuallyHidden>
-            <DialogTitle>...</DialogTitle>
+            <DialogTitle>Service details</DialogTitle>
           </VisuallyHidden>
 
           <DialogDescription className="text-sm pt-4 text-white">
-            حساب GTA V مودد + 1 مليار دولار حساب PC Enhanced كامل المميزات 1
-            مليار دولار داخل اللعبة + 50+ سيارة فاخرة رانك 1000+ + جميع الأسلحة
-            والملابس مفتوحة حماية TradeShield كاملة (ضمان عدم الباند) تسليم فوري
-            خلال 5-10 دقائق دعم 24/7 + ضمان استرداد 100% السعر الآن: 74.99 دولار
+            {t("ServicesPaymentCards.modalDescription")}
           </DialogDescription>
         </DialogContent>
       </Dialog>

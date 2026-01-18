@@ -6,10 +6,11 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
 import { Upload, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const ImageInput = ({ control, name, label, disabled = false }) => {
+  const { t } = useTranslation();
   const [preview, setPreview] = useState(null);
 
   const handleFile = (file, fieldOnChange) => {
@@ -68,7 +69,7 @@ const ImageInput = ({ control, name, label, disabled = false }) => {
                 <Upload size={30} />
 
                 <p className="text-center text-sm text-muted-foreground">
-                  اسحب وأسقط الصورة هنا أو اضغط لاختيار صورة
+                  {t("ImageInput.placeholder")}
                 </p>
               </div>
             </FormControl>
@@ -78,10 +79,11 @@ const ImageInput = ({ control, name, label, disabled = false }) => {
             <div className="flex flex-col items-center gap-2 mt-2 relative border-2 border-dashed border-gray-300 bg-muted rounded-xl">
               <img
                 src={preview}
-                alt="preview"
+                alt={t("ImageInput.previewAlt")}
                 className="max-h-40 object-contain rounded-md"
               />
               <button
+                type="button"
                 onClick={() => removeFile(field.onChange)}
                 className="absolute -top-2 -right-2 w-6 h-6 flex items-center justify-center rounded-full bg-red-600 text-white cursor-pointer z-10"
               >

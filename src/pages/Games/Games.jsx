@@ -7,8 +7,10 @@ import { useEffect, useState } from "react";
 import EmptyDataSection from "@/components/commonSections/EmptyDataSection";
 import GamesSkeleton from "@/components/Loading/SkeletonLoading/GamesSkeleton";
 import MainPagination from "@/components/common/MainPagination";
+import { useTranslation } from "react-i18next";
 
 const Games = () => {
+  const { t } = useTranslation();
   const { service } = useParams();
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -32,11 +34,19 @@ const Games = () => {
   });
 
   const links = [
-    { id: 1, title: "الحسابات", link: `/games/accounts` },
-    { id: 2, title: "الإشتراكات", link: "/games/subscriptions" },
-    { id: 3, title: "شحن رصيد", link: "/games/top_up" },
-    { id: 4, title: "كروت الهدايا", link: "/games/gift_cards" },
-    { id: 5, title: "إضافة لعبه للحساب", link: "/games/add_game_to_account" },
+    { id: 1, title: t("Games.list.accounts"), link: `/games/accounts` },
+    {
+      id: 2,
+      title: t("Games.list.subscriptions"),
+      link: "/games/subscriptions",
+    },
+    { id: 3, title: t("Games.list.topUp"), link: "/games/top_up" },
+    { id: 4, title: t("Games.list.giftCards"), link: "/games/gift_cards" },
+    {
+      id: 5,
+      title: t("Games.list.addGameToAccount"),
+      link: "/games/add_game_to_account",
+    },
   ];
 
   const handlePageChange = (page) => {
@@ -55,7 +65,7 @@ const Games = () => {
 
           <input
             type="search"
-            placeholder="بحث ..."
+            placeholder={t("Games.searchPlaceholder")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="flex-1 outline-none border-none bg-transparent"
@@ -65,7 +75,7 @@ const Games = () => {
         {isLoading ? (
           <GamesSkeleton />
         ) : gamesData?.items?.length === 0 ? (
-          <EmptyDataSection msg="لا توجد العاب لعرضها حالياً." />
+          <EmptyDataSection msg={t("Games.noGames")} />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-8">
             {gamesData?.items?.map((item) => (
@@ -88,7 +98,6 @@ const Games = () => {
           </div>
         )}
 
-        {/* هنا هنبعت currentPage و totalPages */}
         <MainPagination
           totalPages={gamesData?.meta?.last_page || 1}
           currentPage={currentPage}

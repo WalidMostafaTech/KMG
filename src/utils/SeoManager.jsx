@@ -3,7 +3,7 @@ import { useEffect } from "react";
 const SeoManager = ({ title, description, keywords }) => {
   useEffect(() => {
     // تحديث title
-    document.title = title || "Al-Moayed";
+    document.title = title || "KMG";
 
     // تحديث أو إنشاء meta description
     let desc = document.querySelector("meta[name='description']");

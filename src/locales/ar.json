@@ -1,1 +1,263 @@
-{}
+{
+  "loading": "جاري التحميل...",
+
+  "ServicesAccountCard": {
+    "buyNow": "اشتري الآن",
+    "minutes": "دقايق"
+  },
+
+  "MainPagination": {
+    "previous": "الصفحة السابقة",
+    "next": "الصفحة التالية",
+    "page": "صفحة"
+  },
+
+  "EmptyDataSection": {
+    "defaultMessage": "لا توجد بيانات لعرضها حالياً."
+  },
+
+  "PaymentModal": {
+    "title": "بيانات الحساب",
+    "loginData": "بيانات الدخول",
+    "password": "كلمة المرور",
+    "giftCode": "كود الهدية",
+    "save": "حفظ",
+    "cancel": "تراجع",
+
+    "validation": {
+      "loginDataShort": "بيانات الدخول قصيرة",
+      "passwordShort": "كلمة المرور قصيرة"
+    }
+  },
+
+  "PurchaseSteps": {
+    "sectionTitle": "عملية شراء سهلة في 3 خطوات"
+  },
+
+  "ServicesPaymentCards": {
+    "items": {
+      "support": {
+        "title": "دعم 7/24",
+        "desc": "دائمًا متاح"
+      },
+      "security": {
+        "title": "حماية مضمونة",
+        "desc": "سرية تامة"
+      },
+      "fastPayment": {
+        "title": "دفع سريع",
+        "desc": "دفع آمن"
+      },
+      "refund": {
+        "title": "استرجاع المبلغ",
+        "desc": "ضمان كامل"
+      }
+    }
+  },
+
+  "ImageInput": {
+    "placeholder": "اسحب وأسقط الصورة هنا أو اضغط لاختيار صورة",
+    "previewAlt": "معاينة الصورة"
+  },
+
+  "ContactUsModal": {
+    "trigger": "اتصل بنا",
+    "title": "تواصل معنا",
+
+    "fields": {
+      "name": {
+        "label": "الاسم",
+        "placeholder": "أدخل الاسم"
+      },
+      "email": {
+        "label": "البريد الإلكتروني",
+        "placeholder": "example@email.com"
+      },
+      "phone": {
+        "label": "رقم الهاتف"
+      },
+      "message": {
+        "label": "الرسالة"
+      }
+    },
+
+    "submit": "إرسال",
+    "sending": "جاري الإرسال...",
+
+    "success": "تم الإرسال بنجاح",
+    "error": "حدث خطأ، حاول مرة أخرى",
+
+    "validation": {
+      "nameMin": "الاسم يجب أن يكون حرفين على الأقل",
+      "emailInvalid": "البريد الإلكتروني غير صالح",
+      "phoneRequired": "رقم الهاتف مطلوب",
+      "phoneInvalid": "رقم الهاتف غير صالح",
+      "messageMin": "الرسالة يجب أن تكون على الأقل 10 حروف"
+    }
+  },
+
+  "footer": {
+    "joinPartner": "انضم كاشريك",
+    "refundPolicy": "سياسة الاسترداد"
+  },
+
+  "headerAction": {
+    "noNotifications": "لا توجد إشعارات",
+    "moreNotifications": "المزيد من التنبيهات",
+    "profile": "الملف الشخصي",
+    "orders": "الطلبات",
+    "logout": "تسجيل الخروج",
+    "logoutConfirm": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+    "cancel": "تراجع",
+    "login": "تسجيل الدخول"
+  },
+
+  "headerSearch": {
+    "placeholder": "بحث ...",
+    "searching": "جاري البحث...",
+    "noResults": "لا توجد نتائج"
+  },
+
+  "requiredLoginModal": {
+    "title": "تسجيل الدخول مطلوب",
+    "description": "يجب عليك تسجيل الدخول لتتمكن من المواصلة",
+    "login": "تسجيل دخول",
+    "createAccount": "إنشاء حساب"
+  },
+
+  "chatHeader": {
+    "title": "KMG | دعم فني"
+  },
+
+  "chatMsgs": {
+    "noMessages": "لا توجد رسائل حاليا.",
+    "status": {
+      "pending": "قيد الانتظار",
+      "completed": "مكتمل",
+      "cancelled": "ملغي"
+    }
+  },
+
+  "checkEmail": {
+    "title": "نسيت كلمة المرور",
+    "description": "أدخل بريدك الإلكتروني لإعادة تعيين كلمة المرور",
+    "emailLabel": "البريد الإلكتروني",
+    "emailPlaceholder": "example@email.com",
+    "sending": "جاري الإرسال...",
+    "sendResetLink": "إرسال رابط إعادة التعيين",
+    "rememberPassword": "تذكرت كلمة المرور؟",
+    "login": "تسجيل الدخول",
+    "invalidEmail": "البريد الإلكتروني غير صحيح",
+    "genericError": "حدث خطأ، حاول مرة أخرى"
+  },
+
+  "otp": {
+    "title": "تأكيد الرمز",
+    "description": "لقد قمنا بارسال كود الاسترجاع الى رقم الواتساب الخاص بك قم بالتحقق من الرسائل وادخل الكود المرسل الى {{email}}",
+    "otpRequired": "أدخل رمز مكوّن من 6 أرقام",
+    "verifying": "جاري التحقق...",
+    "confirm": "تأكيد الرمز",
+    "notReceived": "لم يصلك الرمز؟",
+    "resendIn": "إعادة الإرسال خلال {{countdown}}s",
+    "resend": "إعادة الإرسال",
+    "backToLogin": "الرجوع لتسجيل الدخول",
+    "wrongOtp": "الرمز غير صحيح"
+  },
+
+  "resetPassword": {
+    "title": "إعادة تعيين كلمة المرور",
+    "description": "أدخل كلمة مرور جديدة لحسابك",
+    "newPassword": "كلمة المرور الجديدة",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "strength": "قوة كلمة المرور:",
+    "resetting": "جاري إعادة التعيين...",
+    "save": "حفظ كلمة المرور الجديدة",
+    "error": "حدث خطأ، حاول مرة أخرى",
+    "passwordShort": "كلمة المرور قصيرة",
+    "confirmRequired": "تأكيد كلمة المرور مطلوب",
+    "notMatched": "كلمتا المرور غير متطابقتين"
+  },
+
+  "Games": {
+    "searchPlaceholder": "بحث ...",
+    "noGames": "لا توجد العاب لعرضها حالياً.",
+    "list": {
+      "accounts": "الحسابات",
+      "subscriptions": "الإشتراكات",
+      "topUp": "شحن رصيد",
+      "giftCards": "كروت الهدايا",
+      "addGameToAccount": "إضافة لعبه للحساب"
+    }
+  },
+
+  "OffersFilter": {
+    "priceRange": "نطاق السعر",
+    "from": "من",
+    "to": "إلى",
+    "fromTime": "من الوقت",
+    "toTime": "الى الوقت",
+    "country": "المنطقة",
+    "platform": "المنصة",
+    "reset": "تفريغ الفلاتر",
+    "apply": "فلتره"
+  },
+
+  "paymentCard": {
+    "region": "المنطقة",
+    "platform": "المنصة",
+    "orderSummary": "ملخص الطلب",
+    "deliveryTime": "وقت التسليم",
+    "buyNow": "اشتري الان",
+    "notSpecified": "غير محدد",
+    "minutes": "دقايق",
+    "totalPrice": "السعر الاجمالى",
+    "serviceFee": "مصاريف الخدمة",
+    "finalPrice": "السعر النهائى"
+  },
+
+  "orderMethod": {
+    "title": "طرق الطلب"
+  },
+
+  "servicesSection": {
+    "seeMore": "عرض المزيد",
+    "accounts": "الحسابات",
+    "subscriptions": "الإشتراكات",
+    "topUp": "شحن رصيد",
+    "giftCards": "كروت الهدايا",
+    "addGameToAccount": "إضافة لعبه للحساب"
+  },
+
+  "testimonials": {
+    "title": "اراء العملاء"
+  },
+
+  "auth": {
+    "login": {
+      "title": "تسجيل الدخول",
+      "description": "قم بتسجيل الدخول إلى حسابك",
+      "emailLabel": "البريد الإلكتروني",
+      "emailPlaceholder": "example@email.com",
+      "passwordLabel": "كلمة المرور",
+      "forgotPassword": "نسيت كلمة المرور؟",
+      "submit": "تسجيل الدخول",
+      "subText": "ليس لديك حساب؟",
+      "register": "إنشاء حساب جديد",
+      "loading": "جاري تسجيل الدخول...",
+      "error": "بيانات الدخول غير صحيحة",
+      "invalidEmail": "البريد الإلكتروني غير صحيح",
+      "shortPassword": "كلمة المرور قصيرة"
+    }
+  },
+
+  "notFound": {
+    "title": "404",
+    "subtitle": "الصفحة غير موجودة",
+    "goHome": "العودة للرئيسية"
+  },
+
+  "PaymentList": {
+    "choosePaymentMethod": "اختر طريقة الدفع",
+    "noPaymentMethods": "لا توجد طرق دفع لعرضها حالياً."
+  }
+}

@@ -3,8 +3,11 @@ import { getPurchaseSteps } from "@/services/mainServices";
 import { useQuery } from "@tanstack/react-query";
 import { CreditCard, Package, Search } from "lucide-react";
 import PurchaseStepsSkeleton from "../Loading/SkeletonLoading/PurchaseStepsSkeleton";
+import { useTranslation } from "react-i18next";
 
 const PurchaseSteps = () => {
+  const { t } = useTranslation();
+
   const { data: purchaseStepsData, isLoading } = useQuery({
     queryKey: ["purchase-steps"],
     queryFn: getPurchaseSteps,
@@ -18,7 +21,7 @@ const PurchaseSteps = () => {
     return null;
   }
 
-  const list = purchaseStepsData?.map((item, index) => ({
+  const list = purchaseStepsData.map((item, index) => ({
     id: index + 1,
     title: item.title,
     description: item.description,
@@ -27,10 +30,10 @@ const PurchaseSteps = () => {
 
   return (
     <div>
-      <SectionTitle title={"عملية شراء سهلة فى 3 خطوات"} />
+      <SectionTitle title={t("PurchaseSteps.sectionTitle")} />
 
       <div className="flex flex-wrap gap-4 lg:gap-8">
-        {list?.map((item, index) => (
+        {list.map((item, index) => (
           <div
             key={item.id}
             className="flex flex-col items-center text-center gap-2 card relative flex-1 min-w-[200px]"
@@ -39,10 +42,7 @@ const PurchaseSteps = () => {
               {index + 1}
             </span>
 
-            <h2
-              className="bg-primary rounded-xl w-16 h-16 flex items-center justify-center
-            text-4xl font-bold shadow-lg shadow-accent-foreground/20 mb-4"
-            >
+            <h2 className="bg-primary rounded-xl w-16 h-16 flex items-center justify-center text-4xl font-bold shadow-lg shadow-accent-foreground/20 mb-4">
               {item.icon}
             </h2>
 

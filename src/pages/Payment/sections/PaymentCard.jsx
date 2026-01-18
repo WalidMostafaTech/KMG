@@ -1,22 +1,23 @@
-import VodafoneCashForm from "../forms/VodafoneCashForm";
-import InstaPayForm from "../forms/InstaPayForm";
-import PaypalForm from "../forms/PaypalForm";
-import BinancePayForm from "../forms/BinancePayForm";
+import { useTranslation } from "react-i18next";
 
 const PaymentCard = ({ currentPayment, cancelPayment, state }) => {
+  const { t } = useTranslation();
+
   if (!currentPayment) return null;
 
   return (
     <div className="flex flex-col gap-4 card w-full md:max-w-sm h-fit">
       <ul className="flex flex-col divide-y-2 text-sm">
         <li className="flex justify-between gap-2 py-1 text-muted-foreground">
-          <p>السعر الاجمالى</p> <span>{state.product_price}</span>
+          <p>{t("paymentCard.totalPrice")}</p>
+          <span>{state.product_price}</span>
         </li>
         <li className="flex justify-between gap-2 py-1 text-muted-foreground">
-          <p>مصاريف الخدمة</p> <span>{currentPayment.amount}</span>
+          <p>{t("paymentCard.serviceFee")}</p>
+          <span>{currentPayment.amount}</span>
         </li>
         <li className="flex justify-between gap-2 py-1">
-          <p>السعر النهائى</p>{" "}
+          <p>{t("paymentCard.finalPrice")}</p>
           <span>{state.product_price + currentPayment.amount}</span>
         </li>
       </ul>

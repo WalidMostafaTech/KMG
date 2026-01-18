@@ -10,8 +10,11 @@ import {
 } from "@/components/ui/dialog";
 import { getSearch } from "@/services/mainServices";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 
 const HeaderSearch = () => {
+  const { t } = useTranslation();
+
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -39,7 +42,6 @@ const HeaderSearch = () => {
     setIsModalOpen(false);
     setSearchTerm("");
     setDebouncedSearch("");
-    // Add your navigation logic here
   };
 
   const clearSearch = () => {
@@ -55,7 +57,7 @@ const HeaderSearch = () => {
         <div
           className={`p-4 text-center text-gray-500 ${mobile ? "" : "card"}`}
         >
-          جاري البحث...
+          {t("headerSearch.searching")}
         </div>
       );
     }
@@ -65,7 +67,7 @@ const HeaderSearch = () => {
         <div
           className={`p-4 text-center text-gray-500 ${mobile ? "" : "card"}`}
         >
-          لا توجد نتائج
+          {t("headerSearch.noResults")}
         </div>
       );
     }
@@ -115,7 +117,7 @@ const HeaderSearch = () => {
           <div className="w-full flex items-center gap-2 bg-input py-2 px-4 rounded-full">
             <Search className="text-gray-500" />
             <input
-              placeholder="بحث ..."
+              placeholder={t("headerSearch.placeholder")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="flex-1 outline-none border-none bg-transparent"
@@ -147,7 +149,7 @@ const HeaderSearch = () => {
             <div className="flex items-center gap-2 bg-input py-2 px-4 rounded-full">
               <Search className="text-gray-500" />
               <input
-                placeholder="بحث ..."
+                placeholder={t("headerSearch.placeholder")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="flex-1 outline-none border-none bg-transparent"

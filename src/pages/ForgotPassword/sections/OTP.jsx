@@ -19,12 +19,15 @@ import { z } from "zod";
 
 import FormError from "@/components/form/FormError";
 import { verifyOtp, resendOtp } from "@/services/forgotPasswordServices";
-
-const otpSchema = z.object({
-  otp: z.string().length(6, "أدخل رمز مكوّن من 6 أرقام"),
-});
+import { useTranslation } from "react-i18next";
 
 const OTP = ({ goNext, parentData, setParentData }) => {
+  const { t } = useTranslation();
+
+  const otpSchema = z.object({
+    otp: z.string().length(6, t("otp.otpRequired")),
+  });
+
   const form = useForm({
     resolver: zodResolver(otpSchema),
     defaultValues: {
@@ -80,8 +83,8 @@ const OTP = ({ goNext, parentData, setParentData }) => {
 
   return (
     <AuthContainer
-      title="تأكيد الرمز"
-      description={`لقد قمنا بارسال كود الاسترجاع الى رقم الواتساب الخاص بك قم بالتحقق من الرسائل وادخل الكود المرسل الى ${parentData.email}`}
+      title={t("otp.title")}
+      description={t("otp.description", { email: parentData.email })}
     >
       <Form {...form}>
         <form
@@ -119,11 +122,11 @@ const OTP = ({ goNext, parentData, setParentData }) => {
           />
 
           <Button type="submit" className="w-full" disabled={isPending}>
-            {isPending ? "جاري التحقق..." : "تأكيد الرمز"}
+            {isPending ? t("otp.verifying") : t("otp.confirm")}
           </Button>
 
           <p className="text-sm text-center">
-            لم يصلك الرمز؟
+            {t("otp.notReceived")}
             <button
               type="button"
               className={`text-purple-500 hover:underline ms-1 ${
@@ -133,8 +136,8 @@ const OTP = ({ goNext, parentData, setParentData }) => {
               onClick={handleResend}
             >
               {countdown > 0
-                ? `إعادة الإرسال خلال ${countdown}s`
-                : "إعادة الإرسال"}
+                ? t("otp.resendIn", { countdown })
+                : t("otp.resend")}
             </button>
           </p>
 
@@ -142,12 +145,12 @@ const OTP = ({ goNext, parentData, setParentData }) => {
             to="/login"
             className="text-sm hover:underline text-muted-foreground"
           >
-            الرجوع لتسجيل الدخول
+            {t("otp.backToLogin")}
           </Link>
 
           {error && (
             <FormError
-              errorMsg={error.response?.data?.message || "الرمز غير صحيح"}
+              errorMsg={error.response?.data?.message || t("otp.wrongOtp")}
             />
           )}
         </form>
