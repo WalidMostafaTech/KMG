@@ -7,22 +7,18 @@ import { useQuery } from "@tanstack/react-query";
 import { getHome } from "@/services/homeServices";
 
 const Home = () => {
-  const {
-    data: homeData,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: homeData, isLoading } = useQuery({
     queryKey: ["home"],
     queryFn: getHome,
   });
 
   return (
     <article>
-      <Hero data={homeData?.sliders} />
+      <Hero data={homeData?.sliders} isLoading={isLoading} />
       <ServicesSection />
-      <Testimonials data={homeData?.testimonials} />
-      <OrderMethod data={homeData?.order_ways} />
-      <DiscoverByPlatform data={homeData?.platforms} />
+      <Testimonials data={homeData?.testimonials} isLoading={isLoading} />
+      <OrderMethod data={homeData?.order_ways} isLoading={isLoading} />
+      <DiscoverByPlatform data={homeData?.platforms} isLoading={isLoading} />
     </article>
   );
 };

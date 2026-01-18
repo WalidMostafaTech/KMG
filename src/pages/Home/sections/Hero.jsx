@@ -4,9 +4,16 @@ import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import { useSelector } from "react-redux";
+import HeroSkeleton from "@/components/Loading/SkeletonLoading/HeroSkeleton";
 
-const Hero = ({ data }) => {
+const Hero = ({ data = [], isLoading }) => {
   const { lang } = useSelector((state) => state.language);
+
+  if (isLoading) {
+    return <HeroSkeleton />;
+  }
+
+  if (!data) return null;
 
   return (
     <section className="container py-10">
@@ -21,11 +28,6 @@ const Hero = ({ data }) => {
         >
           {data?.map((slide) => (
             <SwiperSlide key={slide.id}>
-              {/* <img
-                src={slide.mobile_image}
-                alt=""
-                className="w-full h-full object-cover lg:hidden"
-              /> */}
               <img
                 src={slide.web_image}
                 alt=""

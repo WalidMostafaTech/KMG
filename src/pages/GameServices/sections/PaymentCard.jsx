@@ -1,11 +1,25 @@
 import { Button } from "@/components/ui/button";
-
 import ServicesPaymentCards from "@/components/commonSections/ServicesPaymentCards";
 import PaymentModal from "@/components/commonSections/PaymentModal";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import RequiredLoginModal from "@/components/modals/RequiredLoginModal";
 
 const PaymentCard = ({ currentOffer }) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState({
+    paymentModal: false,
+    loginModal: false,
+  });
+
+  const { profile } = useSelector((state) => state.profile);
+
+  const handlePayment = () => {
+    if (profile) {
+      setOpen({ ...open, paymentModal: true });
+    } else {
+      setOpen({ ...open, loginModal: true });
+    }
+  };
 
   if (!currentOffer) return null;
 
@@ -45,15 +59,20 @@ const PaymentCard = ({ currentOffer }) => {
         </ul>
       </div>
 
-      <Button onClick={() => setOpen(true)}>اشتري الان</Button>
+      <Button onClick={handlePayment}>اشتري الان</Button>
 
       <ServicesPaymentCards />
 
       <PaymentModal
-        open={open}
-        onClose={() => setOpen(false)}
+        open={open.paymentModal}
+        onClose={() => setOpen({ ...open, paymentModal: false })}
         product_id={currentOffer.id}
         product_price={currentOffer.price}
+      />
+
+      <RequiredLoginModal
+        open={open.loginModal}
+        onClose={() => setOpen({ ...open, loginModal: false })}
       />
     </div>
   );

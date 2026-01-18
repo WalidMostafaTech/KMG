@@ -9,11 +9,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { getSearch } from "@/services/mainServices";
+import { useNavigate } from "react-router";
 
 const HeaderSearch = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [debouncedSearch, setDebouncedSearch] = useState("");
+  const navigate = useNavigate();
 
   // Debounce effect
   useEffect(() => {
@@ -33,7 +35,7 @@ const HeaderSearch = () => {
   });
 
   const handleGameClick = (game) => {
-    console.log("Selected game:", game);
+    navigate(`/games/accounts/${game.id}`);
     setIsModalOpen(false);
     setSearchTerm("");
     setDebouncedSearch("");
@@ -49,11 +51,23 @@ const HeaderSearch = () => {
     if (!debouncedSearch) return null;
 
     if (isLoading) {
-      return <div className="p-4 text-center text-gray-500">جاري البحث...</div>;
+      return (
+        <div
+          className={`p-4 text-center text-gray-500 ${mobile ? "" : "card"}`}
+        >
+          جاري البحث...
+        </div>
+      );
     }
 
     if (!searchResults || searchResults.length === 0) {
-      return <div className="p-4 text-center text-gray-500">لا توجد نتائج</div>;
+      return (
+        <div
+          className={`p-4 text-center text-gray-500 ${mobile ? "" : "card"}`}
+        >
+          لا توجد نتائج
+        </div>
+      );
     }
 
     return (

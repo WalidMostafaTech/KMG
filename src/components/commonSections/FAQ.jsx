@@ -6,16 +6,17 @@ import {
 } from "@/components/ui/accordion";
 import { getFaq } from "@/services/mainServices";
 import { useQuery } from "@tanstack/react-query";
+import FAQSkeleton from "../Loading/SkeletonLoading/FAQSkeleton";
 
 const FAQ = () => {
-  const {
-    data: faqData,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: faqData, isLoading } = useQuery({
     queryKey: ["faq"],
     queryFn: getFaq,
   });
+
+  if (isLoading) return <FAQSkeleton />;
+
+  if (!faqData?.length) return null;
 
   return (
     <div className="w-full max-w-2xl mx-auto">

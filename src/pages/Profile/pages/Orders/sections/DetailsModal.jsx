@@ -1,3 +1,4 @@
+import DetailsModalSkeleton from "@/components/Loading/SkeletonLoading/DetailsModalSkeleton";
 import {
   Dialog,
   DialogContent,
@@ -13,11 +14,7 @@ import { useSelector } from "react-redux";
 const DetailsModal = ({ order_id, open, onClose }) => {
   const { lang } = useSelector((state) => state.language);
 
-  const {
-    data: orderDetails,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: orderDetails, isLoading } = useQuery({
     queryKey: ["order-details" + order_id],
     queryFn: () => getSingleOrder(order_id),
     enabled: open,
@@ -182,39 +179,47 @@ const DetailsModal = ({ order_id, open, onClose }) => {
           className="max-h-[90vh] px-2"
           dir={lang === "ar" ? "rtl" : "ltr"}
         >
-          <DialogHeader className={`mb-4`}>
-            <DialogTitle className={`text-center`}>تفاصيل الطلب</DialogTitle>
-            <DialogDescription className={`mt-2`}>
-              <img
-                src={orderDetails?.product?.offer_image}
-                alt="order"
-                className="w-full h-[200px] md:h-[300px] object-cover rounded-xl"
-              />
-            </DialogDescription>
-          </DialogHeader>
+          {isLoading ? (
+            <DetailsModalSkeleton />
+          ) : (
+            <>
+              <DialogHeader className={`mb-4`}>
+                <DialogTitle className={`text-center`}>
+                  تفاصيل الطلب
+                </DialogTitle>
+                <DialogDescription className={`mt-2`}>
+                  <img
+                    src={orderDetails?.product?.offer_image}
+                    alt="order"
+                    className="w-full h-[200px] md:h-[300px] object-cover rounded-xl"
+                  />
+                </DialogDescription>
+              </DialogHeader>
 
-          <div className="flex flex-col gap-3">
-            {order?.items?.length ? (
-              order.items
-                .filter((item) => item.content)
-                .map((item) => (
-                  <div>
-                    <h3 className="text-muted-foreground font-bold mb-1">
-                      {item.title}
-                    </h3>
+              <div className="flex flex-col gap-3">
+                {order?.items?.length ? (
+                  order.items
+                    .filter((item) => item.content)
+                    .map((item) => (
+                      <div>
+                        <h3 className="text-muted-foreground font-bold mb-1">
+                          {item.title}
+                        </h3>
 
-                    <div
-                      className="card"
-                      dangerouslySetInnerHTML={{ __html: item?.content }}
-                    />
-                  </div>
-                ))
-            ) : (
-              <p className="text-center text-muted-foreground">
-                لا توجد تفاصيل متاحة
-              </p>
-            )}
-          </div>
+                        <div
+                          className="card"
+                          dangerouslySetInnerHTML={{ __html: item?.content }}
+                        />
+                      </div>
+                    ))
+                ) : (
+                  <p className="text-center text-muted-foreground">
+                    لا توجد تفاصيل متاحة
+                  </p>
+                )}
+              </div>
+            </>
+          )}
         </ScrollArea>
       </DialogContent>
     </Dialog>

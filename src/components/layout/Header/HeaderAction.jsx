@@ -37,6 +37,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getNotifications } from "@/services/notificationsServices";
 import { getUnreadCount } from "@/services/mainServices";
 import logoutIcon from "@/assets/icons/logout-icon.png";
+import { Skeleton } from "@/components/ui/skeleton";
+import NotificationsSkeleton from "@/components/Loading/SkeletonLoading/NotificationsSkeleton";
 
 const HeaderAction = () => {
   const navigate = useNavigate();
@@ -45,17 +47,13 @@ const HeaderAction = () => {
   const [openNotifications, setOpenNotifications] = useState(false);
   const [showLogout, setShowLogout] = useState(false);
   const { lang } = useSelector((state) => state.language);
-  const { profile } = useSelector((state) => state.profile);
+  const { profile, loading } = useSelector((state) => state.profile);
 
   const handleLogout = () => {
     dispatch(logoutAct());
   };
 
-  const {
-    data: notifications,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: notifications, isLoading } = useQuery({
     queryKey: ["notifications"],
     queryFn: getNotifications,
     enabled: openNotifications,
@@ -106,36 +104,46 @@ const HeaderAction = () => {
                 <Badge count={unreadNotifications} />
               </Button>
             </PopoverTrigger>
-            <PopoverContent align="end" className={`md:w-[500px]`}>
-              <div className="flex flex-col gap-2">
-                {notifications?.items?.map((notification) => (
-                  <div
-                    key={notification.id}
-                    className="flex gap-2 py-2 px-4 border-b last:border-b-0 rounded-lg bg-muted"
-                  >
-                    <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white text-primary">
-                      <Bell />
-                    </div>
+            <PopoverContent align="end" className="md:w-[500px]">
+              {isLoading ? (
+                <NotificationsSkeleton />
+              ) : notifications?.items?.length ? (
+                <div className="flex flex-col gap-2">
+                  {notifications.items.map((notification) => (
+                    <div
+                      key={notification.id}
+                      className="flex gap-2 py-2 px-4 border-b last:border-b-0 rounded-lg bg-muted"
+                    >
+                      <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white text-primary">
+                        <Bell />
+                      </div>
 
-                    <div className="flex flex-col gap-1 flex-1">
-                      <p className="font-bold text-xs">{notification.title}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {notification.message}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {formatDate(notification.notification_date)}
-                      </p>
+                      <div className="flex flex-col gap-1 flex-1">
+                        <p className="font-bold text-xs">
+                          {notification.title}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {notification.message}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {formatDate(notification.notification_date)}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-center text-sm text-muted-foreground py-6">
+                  لا توجد إشعارات
+                </p>
+              )}
 
               <div className="block mt-4">
                 <Link
                   to="/profile/notifications"
                   onClick={() => setOpenNotifications(false)}
                 >
-                  <Button className={`w-full`}>المزيد من التنبيهات</Button>
+                  <Button className="w-full">المزيد من التنبيهات</Button>
                 </Link>
               </div>
             </PopoverContent>
@@ -146,10 +154,16 @@ const HeaderAction = () => {
       {/* Language Select */}
       <LanguageSwitcher />
 
-      {profile ? (
+      {loading ? (
+        <Skeleton className="h-9 w-9 rounded-full" />
+      ) : profile ? (
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <UserAvatar name={profile?.name} image={profile?.image} />
+            <UserAvatar
+              name={profile?.name}
+              image={profile?.image}
+              className="cursor-pointer"
+            />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" dir={lang === "ar" ? "rtl" : "ltr"}>
             <DropdownMenuLabel className="flex items-center gap-2">

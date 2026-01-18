@@ -11,16 +11,17 @@ import { Link } from "react-router";
 import ContactUsModal from "./ContactUsModal";
 import { getFooter } from "@/services/mainServices";
 import { useQuery } from "@tanstack/react-query";
+import FooterSkeleton from "@/components/Loading/SkeletonLoading/FooterSkeleton";
 
 const Footer = () => {
-  const {
-    data: footerData,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: footerData, isLoading } = useQuery({
     queryKey: ["footer"],
     queryFn: getFooter,
   });
+
+  if (isLoading) {
+    return <FooterSkeleton />;
+  }
 
   const socials = [
     {
@@ -60,7 +61,7 @@ const Footer = () => {
       <section className="flex flex-col items-center gap-6 py-4">
         <div className="flex items-center gap-4">
           {footerData?.payment_platforms.map((item, index) => (
-            <div key={item.id} className="w-12 h-8 overflow-hidden rounded">
+            <div key={index} className="w-12 h-8 overflow-hidden rounded">
               <img
                 src={item.image}
                 alt={index + 1}
@@ -95,17 +96,19 @@ const Footer = () => {
         </div>
 
         <div className="flex items-center gap-4">
-          {socials.map((item) => (
-            <Link
-              target="_blank"
-              rel="noopener noreferrer"
-              href={item.link}
-              key={item.id}
-              className="hover:text-primary hover:scale-110 transition text-xl"
-            >
-              {item.icon}
-            </Link>
-          ))}
+          {socials
+            .filter((item) => item.link)
+            .map((item) => (
+              <Link
+                target="_blank"
+                rel="noopener noreferrer"
+                to={item.link}
+                key={item.id}
+                className="hover:text-primary hover:scale-110 transition text-xl"
+              >
+                {item.icon}
+              </Link>
+            ))}
         </div>
       </section>
 

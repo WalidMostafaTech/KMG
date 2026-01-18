@@ -1,20 +1,30 @@
 import { NavLink } from "react-router";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const GamesNav = ({ links, game = null }) => {
+const GamesNav = ({ links, game = null, isLoading }) => {
   return (
     <nav className="bg-input">
       <div className="container py-2 flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-8">
-        {game && (
+        {isLoading ? (
           <div className="flex items-center gap-2">
             <div className="w-10 h-10 overflow-hidden rounded">
-              <img
-                src={game.image}
-                alt={game.name}
-                className="w-full h-full object-cover"
-              />
+              <Skeleton className="w-full h-full" />
             </div>
-            <h2 className="text-lg font-bold capitalize">{game.name}</h2>
+            <Skeleton className="h-6 w-32" />
           </div>
+        ) : (
+          game && (
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 overflow-hidden rounded">
+                <img
+                  src={game.image}
+                  alt={game.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h2 className="text-lg font-bold capitalize">{game.name}</h2>
+            </div>
+          )
         )}
 
         <ul className="flex flex-wrap items-center justify-center gap-4 py-2">

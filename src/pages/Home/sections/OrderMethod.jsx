@@ -1,6 +1,12 @@
 import SectionTitle from "@/components/common/SectionTitle";
+import OrderMethodSkeleton from "@/components/Loading/SkeletonLoading/OrderMethodSkeleton";
 
-const OrderMethod = ({ data }) => {
+const OrderMethod = ({ data = [], isLoading }) => {
+  if (isLoading) {
+    return <OrderMethodSkeleton />;
+  }
+
+  if (!data) return null;
   return (
     <section className="container sectionPadding">
       <SectionTitle title={"طرق الطلب"} />

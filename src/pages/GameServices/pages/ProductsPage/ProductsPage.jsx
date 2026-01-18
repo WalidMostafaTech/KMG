@@ -1,9 +1,13 @@
 import { useState } from "react";
 import OffersList from "../../sections/OffersList";
 import PaymentCard from "../../sections/PaymentCard";
+import EmptyDataSection from "@/components/commonSections/EmptyDataSection";
 
-const ProductsPage = ({ products }) => {
+const ProductsPage = ({ products = [] }) => {
   const [currentOffer, setCurrentOffer] = useState(null);
+
+  if (!products || products.length === 0)
+    return <EmptyDataSection msg={"لا توجد عناصر لعرضها حالياً."} />;
 
   const handleOfferClick = (offer) => {
     if (currentOffer?.id === offer?.id) setCurrentOffer(null);

@@ -6,6 +6,7 @@ import Accounts from "./pages/Accounts/Accounts";
 import ProductsPage from "./pages/ProductsPage/ProductsPage";
 import OffersFilter from "./sections/OffersFilter";
 import { useState } from "react";
+import AccountsSkeleton from "@/components/Loading/SkeletonLoading/AccountsSkeleton";
 
 const defaultFilters = {
   min_time: "",
@@ -22,11 +23,7 @@ const GameServices = () => {
   const [filters, setFilters] = useState(defaultFilters);
   const [appliedFilters, setAppliedFilters] = useState(defaultFilters);
 
-  const {
-    data: gameServicesData,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: gameServicesData, isLoading } = useQuery({
     queryKey: ["game-services", service, id, appliedFilters],
     queryFn: () =>
       getProductsByGameAndService({
@@ -78,7 +75,7 @@ const GameServices = () => {
 
   return (
     <article className="space-y-6">
-      <GamesNav links={links} game={game} />
+      <GamesNav links={links} game={game} isLoading={isLoading} />
 
       <OffersFilter
         filters={filters}
@@ -88,7 +85,9 @@ const GameServices = () => {
         service={game?.service}
       />
 
-      {game?.service === "accounts" ? (
+      {isLoading ? (
+        <AccountsSkeleton />
+      ) : game?.service === "accounts" ? (
         <Accounts products={products} />
       ) : (
         <ProductsPage products={products} />

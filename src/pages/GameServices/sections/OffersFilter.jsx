@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 
 const OffersFilter = ({ filters, setFilters, onApply, onReset, service }) => {
   const { countries, platforms, productsMinutesRange } = useSelector(
-    (state) => state.setting
+    (state) => state.setting,
   );
 
   return (
@@ -115,19 +115,23 @@ const OffersFilter = ({ filters, setFilters, onApply, onReset, service }) => {
             ))}
           </SelectContent>
         </Select>
-      </div>
 
-      {/* الأزرار */}
-      <div className="flex gap-3 justify-end">
-        <Button variant="outline" onClick={onReset}>
-          تفريغ الفلاتر
-          <RefreshCcw />
-        </Button>
+        {/* الأزرار */}
+        <div className="flex gap-3 w-full col-span-2">
+          <Button
+            variant="outline"
+            onClick={onReset}
+            className="flex-1 rounded-full"
+          >
+            تفريغ الفلاتر
+            <RefreshCcw />
+          </Button>
 
-        <Button onClick={onApply}>
-          فلتره
-          <Search />
-        </Button>
+          <Button onClick={onApply} className="flex-1">
+            فلتره
+            <Search />
+          </Button>
+        </div>
       </div>
     </div>
   );

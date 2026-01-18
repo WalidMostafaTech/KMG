@@ -11,15 +11,13 @@ import { getOrders } from "@/services/paymentsServices";
 import { useQuery } from "@tanstack/react-query";
 import MyOrdersCard from "@/pages/Profile/pages/Orders/sections/MyOrdersCard";
 import { useState } from "react";
+import MyOrdersCardSkeleton from "@/components/Loading/SkeletonLoading/MyOrdersCardSkeleton";
+import EmptyDataSection from "@/components/commonSections/EmptyDataSection";
 
 const Orders = () => {
   const [status, setStatus] = useState("all");
 
-  const {
-    data: orders,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: orders, isLoading } = useQuery({
     queryKey: ["my_orders", status],
     queryFn: getOrders,
   });
@@ -94,9 +92,17 @@ const Orders = () => {
       </div>
 
       <div className="space-y-4">
-        {orders?.items?.map((order) => (
-          <MyOrdersCard key={order.id} order={order} />
-        ))}
+        {isLoading ? (
+          Array.from({ length: 3 }).map((_, idx) => (
+            <MyOrdersCardSkeleton key={idx} />
+          ))
+        ) : orders?.items?.length === 0 ? (
+          <EmptyDataSection msg="لا يوجد طلبات" />
+        ) : (
+          orders?.items?.map((order) => (
+            <MyOrdersCard key={order.id} order={order} />
+          ))
+        )}
       </div>
     </div>
   );

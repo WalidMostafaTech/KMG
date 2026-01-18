@@ -4,6 +4,8 @@ import { getAllGamesByService } from "@/services/serviceServices";
 import { useQuery } from "@tanstack/react-query";
 import GamesNav from "@/components/commonSections/GamesNav";
 import { useEffect, useState } from "react";
+import EmptyDataSection from "@/components/commonSections/EmptyDataSection";
+import GamesSkeleton from "@/components/Loading/SkeletonLoading/GamesSkeleton";
 
 const Games = () => {
   const { service } = useParams();
@@ -18,11 +20,7 @@ const Games = () => {
     return () => clearTimeout(timer);
   }, [search]);
 
-  const {
-    data: gamesData,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: gamesData, isLoading } = useQuery({
     queryKey: ["games", service, debouncedSearch],
     queryFn: () => getAllGamesByService(service, debouncedSearch),
     enabled: !!service,
@@ -76,15 +74,9 @@ const Games = () => {
         </div>
 
         {isLoading ? (
-          <div>Loading...</div>
-        ) : isError ? (
-          <div>
-            <h1>Something went wrong</h1>
-          </div>
+          <GamesSkeleton />
         ) : gamesData?.items?.length === 0 ? (
-          <div>
-            <h1 className="text-center">لا يوجد لديك لعبات</h1>
-          </div>
+          <EmptyDataSection msg="لا توجد العاب لعرضها حالياً." />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-8 mt-6 lg:mt-10">
             {gamesData?.items?.map((item) => (

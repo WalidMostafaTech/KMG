@@ -2,37 +2,28 @@ import SectionTitle from "@/components/common/SectionTitle";
 import { getPurchaseSteps } from "@/services/mainServices";
 import { useQuery } from "@tanstack/react-query";
 import { CreditCard, Package, Search } from "lucide-react";
+import PurchaseStepsSkeleton from "../Loading/SkeletonLoading/PurchaseStepsSkeleton";
 
 const PurchaseSteps = () => {
-  const {
-    data: purchaseStepsData,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: purchaseStepsData, isLoading } = useQuery({
     queryKey: ["purchase-steps"],
     queryFn: getPurchaseSteps,
   });
 
-  const list = [
-    {
-      id: 1,
-      title: purchaseStepsData?.[0]?.title,
-      description: purchaseStepsData?.[0]?.description,
-      icon: <Search />,
-    },
-    {
-      id: 2,
-      title: purchaseStepsData?.[1]?.title,
-      description: purchaseStepsData?.[1]?.description,
-      icon: <CreditCard />,
-    },
-    {
-      id: 3,
-      title: purchaseStepsData?.[2]?.title,
-      description: purchaseStepsData?.[2]?.description,
-      icon: <Package />,
-    },
-  ];
+  if (isLoading) {
+    return <PurchaseStepsSkeleton />;
+  }
+
+  if (!purchaseStepsData?.length) {
+    return null;
+  }
+
+  const list = purchaseStepsData?.map((item, index) => ({
+    id: index + 1,
+    title: item.title,
+    description: item.description,
+    icon: index === 0 ? <Search /> : index === 1 ? <CreditCard /> : <Package />,
+  }));
 
   return (
     <div>

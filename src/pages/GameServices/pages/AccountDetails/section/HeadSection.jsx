@@ -1,11 +1,25 @@
-import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
 import ServicesPaymentCards from "@/components/commonSections/ServicesPaymentCards";
 import PaymentModal from "@/components/commonSections/PaymentModal";
 import { useState } from "react";
+import RequiredLoginModal from "@/components/modals/RequiredLoginModal";
+import { useSelector } from "react-redux";
 
 const HeadSection = ({ data }) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState({
+    paymentModal: false,
+    loginModal: false,
+  });
+
+  const { profile } = useSelector((state) => state.profile);
+
+  const handlePayment = () => {
+    if (profile) {
+      setOpen({ ...open, paymentModal: true });
+    } else {
+      setOpen({ ...open, loginModal: true });
+    }
+  };
 
   return (
     <div className="card lg:p-8 grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
@@ -53,7 +67,7 @@ const HeadSection = ({ data }) => {
             )}
           </div>
 
-          <Button onClick={() => setOpen(true)} className="w-full">
+          <Button onClick={handlePayment} className="w-full">
             اشتري الان
           </Button>
         </div>
@@ -62,10 +76,15 @@ const HeadSection = ({ data }) => {
       </div>
 
       <PaymentModal
-        open={open}
-        onClose={() => setOpen(false)}
+        open={open.paymentModal}
+        onClose={() => setOpen({ ...open, paymentModal: false })}
         product_id={data?.id}
         product_price={data?.price_after}
+      />
+
+      <RequiredLoginModal
+        open={open.loginModal}
+        onClose={() => setOpen({ ...open, loginModal: false })}
       />
     </div>
   );

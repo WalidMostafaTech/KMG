@@ -22,7 +22,13 @@ const UserAvatar = ({
         fontSize: size / 2.5,
       }}
     >
-      {image && <AvatarImage src={image} alt={name} className={`object-cover`} />}
+      {image && (
+        <AvatarImage
+          src={image}
+          alt={name}
+          className={`object-cover cursor-pointer`}
+        />
+      )}
       <AvatarFallback>{getInitials(name)}</AvatarFallback>
     </Avatar>
   );

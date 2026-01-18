@@ -6,9 +6,16 @@ import "swiper/css";
 import SwiperNavigation from "@/components/common/SwiperNavigation";
 import TestimonialsCard from "@/components/cards/TestimonialsCard";
 import { useSelector } from "react-redux";
+import TestimonialsSkeleton from "@/components/Loading/SkeletonLoading/TestimonialsSkeleton";
 
-const Testimonials = ({ data }) => {
+const Testimonials = ({ data = [], isLoading }) => {
   const { lang } = useSelector((state) => state.language);
+
+  if (isLoading) {
+    return <TestimonialsSkeleton />;
+  }
+
+  if (!data) return null;
 
   return (
     <section className="sectionPadding container">

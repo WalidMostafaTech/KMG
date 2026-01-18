@@ -1,17 +1,22 @@
+import ServicesSectionSkeleton from "@/components/Loading/SkeletonLoading/ServicesSectionSkeleton";
 import { getGamesByService } from "@/services/homeServices";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft } from "lucide-react";
 import { Link } from "react-router";
 
 const ServicesSection = () => {
-  const {
-    data: servicesData,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: servicesData, isLoading } = useQuery({
     queryKey: ["services-games"],
     queryFn: getGamesByService,
   });
+
+  if (isLoading) {
+    return <ServicesSectionSkeleton />;
+  }
+
+  if (!servicesData) {
+    return null;
+  }
 
   const list = [
     {
@@ -65,7 +70,7 @@ const ServicesSection = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
               {item.items.map((i) => (
                 <Link
-                  to={`/services/accounts/${i.link}`}
+                  to={`/games/${item.link}/${i.id}`}
                   key={i.id}
                   className="flex gap-2 hover:bg-accent rounded transition"
                 >
@@ -79,7 +84,6 @@ const ServicesSection = () => {
 
                   <div>
                     <h3 className="font-bold">{i.name}</h3>
-                    {/* <p className="text-sm text-muted-foreground">{i.disc}</p> */}
                   </div>
                 </Link>
               ))}
