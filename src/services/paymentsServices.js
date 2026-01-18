@@ -16,16 +16,18 @@ export const createOrder = async (formData) => {
 };
 
 export const getOrders = async ({ queryKey }) => {
-  const [, status] = queryKey;
+  const [, status, page] = queryKey;
 
   const { data } = await api.get("/orders/my-orders", {
     params: {
       status: status === "all" ? undefined : status,
+      page: page || 1,
     },
   });
 
   return data;
 };
+
 
 export const getSingleOrder = async (id) => {
   const { data } = await api.get(`/orders/${id}`);

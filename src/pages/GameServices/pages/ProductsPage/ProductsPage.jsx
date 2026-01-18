@@ -3,7 +3,7 @@ import OffersList from "../../sections/OffersList";
 import PaymentCard from "../../sections/PaymentCard";
 import EmptyDataSection from "@/components/commonSections/EmptyDataSection";
 
-const ProductsPage = ({ products = [] }) => {
+const ProductsPage = ({ products = [], meta, currentPage, onPageChange }) => {
   const [currentOffer, setCurrentOffer] = useState(null);
 
   if (!products || products.length === 0)
@@ -21,6 +21,9 @@ const ProductsPage = ({ products = [] }) => {
           onOfferClick={handleOfferClick}
           currentOffer={currentOffer}
           offers={products}
+          meta={meta}
+          currentPage={currentPage}
+          onPageChange={onPageChange}
         />
 
         <PaymentCard currentOffer={currentOffer} />

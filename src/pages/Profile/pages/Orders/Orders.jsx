@@ -13,14 +13,23 @@ import MyOrdersCard from "@/pages/Profile/pages/Orders/sections/MyOrdersCard";
 import { useState } from "react";
 import MyOrdersCardSkeleton from "@/components/Loading/SkeletonLoading/MyOrdersCardSkeleton";
 import EmptyDataSection from "@/components/commonSections/EmptyDataSection";
+import MainPagination from "@/components/common/MainPagination";
+import { useSearchParams } from "react-router";
 
 const Orders = () => {
   const [status, setStatus] = useState("all");
 
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentPage = Number(searchParams.get("page") || 1);
+
   const { data: orders, isLoading } = useQuery({
-    queryKey: ["my_orders", status],
+    queryKey: ["my_orders", status, currentPage],
     queryFn: getOrders,
   });
+
+  const applyPage = (page) => {
+    setSearchParams({ page });
+  };
 
   const list = [
     {
@@ -104,6 +113,12 @@ const Orders = () => {
           ))
         )}
       </div>
+
+      <MainPagination
+        totalPages={orders?.meta?.last_page || 1}
+        currentPage={currentPage}
+        onPageChange={applyPage}
+      />
     </div>
   );
 };

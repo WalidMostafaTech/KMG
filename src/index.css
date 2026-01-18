@@ -13,6 +13,13 @@
 /* fix hover in mobile */
 @custom-variant hover (&:hover);
 
+/* Hide number input arrows */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -168,11 +175,21 @@
       @apply bg-accent text-gray-500 cursor-not-allowed px-2;
     }
   }
-}
 
-/* Hide number input arrows */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+  /* Pagination Styles */
+  .pagination {
+    @apply flex items-center justify-center gap-2;
+
+    .pagination-btn {
+      @apply w-8 h-8 flex items-center justify-center border rounded-md bg-input text-muted cursor-pointer hover:bg-primary/50 transition-all duration-200;
+    }
+
+    .pagination-btn--disabled {
+      @apply pointer-events-none cursor-not-allowed opacity-50 text-accent-foreground;
+    }
+
+    .pagination-btn--active {
+      @apply border-primary bg-primary text-white;
+    }
+  }
 }

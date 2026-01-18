@@ -1,64 +1,53 @@
 import { Search } from "lucide-react";
-import { Link, useParams } from "react-router";
+import { Link, useParams, useSearchParams } from "react-router";
 import { getAllGamesByService } from "@/services/serviceServices";
 import { useQuery } from "@tanstack/react-query";
 import GamesNav from "@/components/commonSections/GamesNav";
 import { useEffect, useState } from "react";
 import EmptyDataSection from "@/components/commonSections/EmptyDataSection";
 import GamesSkeleton from "@/components/Loading/SkeletonLoading/GamesSkeleton";
+import MainPagination from "@/components/common/MainPagination";
 
 const Games = () => {
   const { service } = useParams();
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
 
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentPage = Number(searchParams.get("page") || 1);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(search);
+      setSearchParams({ page: 1, search });
     }, 500);
 
     return () => clearTimeout(timer);
   }, [search]);
 
   const { data: gamesData, isLoading } = useQuery({
-    queryKey: ["games", service, debouncedSearch],
-    queryFn: () => getAllGamesByService(service, debouncedSearch),
+    queryKey: ["games", service, debouncedSearch, currentPage],
+    queryFn: () => getAllGamesByService(service, debouncedSearch, currentPage),
     enabled: !!service,
   });
 
   const links = [
-    {
-      id: 1,
-      title: "الحسابات",
-      link: `/games/accounts`,
-    },
-    {
-      id: 2,
-      title: "الإشتراكات",
-      link: "/games/subscriptions",
-    },
-    {
-      id: 3,
-      title: "شحن رصيد",
-      link: "/games/top_up",
-    },
-    {
-      id: 4,
-      title: "كروت الهدايا",
-      link: "/games/gift_cards",
-    },
-    {
-      id: 5,
-      title: "إضافة لعبه للحساب",
-      link: "/games/add_game_to_account",
-    },
+    { id: 1, title: "الحسابات", link: `/games/accounts` },
+    { id: 2, title: "الإشتراكات", link: "/games/subscriptions" },
+    { id: 3, title: "شحن رصيد", link: "/games/top_up" },
+    { id: 4, title: "كروت الهدايا", link: "/games/gift_cards" },
+    { id: 5, title: "إضافة لعبه للحساب", link: "/games/add_game_to_account" },
   ];
+
+  const handlePageChange = (page) => {
+    setSearchParams({ page, search: debouncedSearch });
+  };
 
   return (
     <article>
       <GamesNav links={links} />
 
-      <section className="container py-6 lg:py-10">
+      <section className="container py-6 lg:py-10 space-y-6 lg:space-y-10">
         <div className="w-full flex items-center gap-2 bg-input py-2 px-4 rounded-full">
           <button>
             <Search />
@@ -78,7 +67,7 @@ const Games = () => {
         ) : gamesData?.items?.length === 0 ? (
           <EmptyDataSection msg="لا توجد العاب لعرضها حالياً." />
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-8 mt-6 lg:mt-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-8">
             {gamesData?.items?.map((item) => (
               <Link
                 to={`/games/${item.service}/${item.id}`}
@@ -98,6 +87,13 @@ const Games = () => {
             ))}
           </div>
         )}
+
+        {/* هنا هنبعت currentPage و totalPages */}
+        <MainPagination
+          totalPages={gamesData?.meta?.last_page || 1}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+        />
       </section>
     </article>
   );

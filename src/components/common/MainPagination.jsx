@@ -1,7 +1,7 @@
 import { TfiArrowCircleLeft, TfiArrowCircleRight } from "react-icons/tfi";
 
 const MainPagination = ({ totalPages, currentPage, onPageChange }) => {
-  if (totalPages === 0) return null;
+  if (!totalPages || totalPages === 0) return null;
 
   const handlePageClick = (page) => {
     if (page >= 1 && page <= totalPages && page !== currentPage) {
@@ -35,72 +35,43 @@ const MainPagination = ({ totalPages, currentPage, onPageChange }) => {
   const visiblePages = getVisiblePages();
 
   return (
-    <div className="flex items-center justify-center gap-2">
-      {/* First Button */}
-      <button
-        onClick={() => handlePageClick(1)}
-        disabled={currentPage === 1}
-        className={`px-1 lg:px-3 h-8 text-sm flex items-center justify-center border font-medium ${
-          currentPage === 1
-            ? "border-transparent bg-stone-200 text-stone-400 cursor-not-allowed"
-            : "border-transparent bg-stone-200 text-gray-600 hover:bg-stone-300 cursor-pointer"
-        }`}
-      >
-        FIRST
-      </button>
-
-      {/* Previous Button */}
+    <div className="pagination">
       <button
         onClick={() => handlePageClick(currentPage - 1)}
         disabled={currentPage === 1}
-        className={`w-8 h-8 flex items-center justify-center border ${
+        className={`pagination-btn ${
           currentPage === 1
-            ? "border-transparent bg-stone-200 text-stone-400 cursor-not-allowed"
-            : "border-transparent bg-stone-200 text-gray-600 hover:bg-stone-300 cursor-pointer"
+            ? "pagination-btn--disabled"
+            : "pagination-btn--normal"
         }`}
       >
         <TfiArrowCircleLeft className="text-lg rtl:rotate-180" />
       </button>
 
-      {/* Pages */}
       {visiblePages.map((page) => (
         <button
           key={page}
           onClick={() => handlePageClick(page)}
-          className={`w-8 h-8 flex items-center justify-center border cursor-pointer ${
+          className={`pagination-btn ${
             currentPage === page
-              ? "border-myBlue-2 bg-white text-myBlue-2"
-              : "border-transparent bg-stone-200 text-gray-600 hover:bg-stone-300"
+              ? "pagination-btn--active"
+              : "pagination-btn--normal"
           }`}
         >
           {page}
         </button>
       ))}
 
-      {/* Next Button */}
       <button
         onClick={() => handlePageClick(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className={`w-8 h-8 flex items-center justify-center border ${
+        className={`pagination-btn ${
           currentPage === totalPages
-            ? "border-transparent bg-stone-200 text-stone-400 cursor-not-allowed"
-            : "border-transparent bg-stone-200 text-gray-600 hover:bg-stone-300 cursor-pointer"
+            ? "pagination-btn--disabled"
+            : "pagination-btn--normal"
         }`}
       >
         <TfiArrowCircleRight className="text-lg rtl:rotate-180" />
-      </button>
-
-      {/* Last Button */}
-      <button
-        onClick={() => handlePageClick(totalPages)}
-        disabled={currentPage === totalPages}
-        className={`px-1 lg:px-3 h-8 text-sm flex items-center justify-center border font-medium ${
-          currentPage === totalPages
-            ? "border-transparent bg-stone-200 text-stone-400 cursor-not-allowed"
-            : "border-transparent bg-stone-200 text-gray-600 hover:bg-stone-300 cursor-pointer"
-        }`}
-      >
-        LAST
       </button>
     </div>
   );

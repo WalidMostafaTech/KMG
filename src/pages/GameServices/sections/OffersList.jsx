@@ -1,8 +1,15 @@
 import MainPagination from "@/components/common/MainPagination";
 
-const OffersList = ({ onOfferClick, currentOffer, offers }) => {
+const OffersList = ({
+  onOfferClick,
+  currentOffer,
+  offers = [],
+  meta,
+  currentPage,
+  onPageChange,
+}) => {
   return (
-    <div>
+    <div className="space-y-6">
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 h-fit">
         {offers?.map((item) => (
           <div
@@ -23,7 +30,11 @@ const OffersList = ({ onOfferClick, currentOffer, offers }) => {
         ))}
       </div>
 
-      <MainPagination page={1} totalPages={10} onChange={() => {}} />
+      <MainPagination
+        totalPages={meta?.last_page || 1}
+        currentPage={currentPage}
+        onPageChange={onPageChange}
+      />
     </div>
   );
 };
