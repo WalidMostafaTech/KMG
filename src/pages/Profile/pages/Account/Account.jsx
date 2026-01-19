@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRef, useState } from "react";
 import { addProfile } from "@/store/profile/profileSlice";
 import { Link } from "react-router";
+import { toast } from "sonner";
 
 const Account = () => {
   const { t } = useTranslation();
@@ -66,7 +67,7 @@ const Account = () => {
     onSuccess: (data) => {
       dispatch(addProfile(data));
       setErrorMsg("");
-      alert(t("account.messages.success"));
+      toast.success(t("account.messages.success"));
     },
     onError: (error) => {
       setErrorMsg(error?.response?.data?.message);

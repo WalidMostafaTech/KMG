@@ -9,6 +9,7 @@ import {
   fetchPlatforms,
   fetchProductsMinutesRange,
 } from "./store/setting/setting";
+import { Toaster } from "@/components/ui/sonner";
 
 function App() {
   const { pathname } = useLocation();
@@ -34,6 +35,8 @@ function App() {
       </div>
 
       <Footer />
+
+      <Toaster position="top-center" />
     </main>
   );
 }

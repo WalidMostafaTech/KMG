@@ -11,6 +11,7 @@ import { createOrder } from "@/services/paymentsServices";
 import { useState } from "react";
 import FormError from "@/components/form/FormError";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
 const VodafoneCashForm = ({ cancelPayment, currentPayment, state }) => {
   const { t } = useTranslation();
@@ -38,9 +39,8 @@ const VodafoneCashForm = ({ cancelPayment, currentPayment, state }) => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: createOrder,
-    onSuccess: (data) => {
-      console.log(t("VodafoneCashForm.orderConfirmed"), data);
-      alert(t("VodafoneCashForm.paymentConfirmed"));
+    onSuccess: () => {
+      toast.success(t("VodafoneCashForm.paymentConfirmed"));
       setErrorMsg("");
       form.reset();
     },

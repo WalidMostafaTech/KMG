@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   FormField,
   FormItem,
@@ -8,10 +8,21 @@ import {
 } from "@/components/ui/form";
 import { Upload, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useWatch } from "react-hook-form";
 
 const ImageInput = ({ control, name, label, disabled = false }) => {
   const { t } = useTranslation();
   const [preview, setPreview] = useState(null);
+
+  // مراقبة قيمة الـ field
+  const fieldValue = useWatch({ control, name });
+
+  // لما الـ field value يبقى null، امسح الـ preview
+  useEffect(() => {
+    if (!fieldValue) {
+      setPreview(null);
+    }
+  }, [fieldValue]);
 
   const handleFile = (file, fieldOnChange) => {
     if (file) {

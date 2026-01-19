@@ -21,6 +21,7 @@ import { useMutation } from "@tanstack/react-query";
 import { updateProfile } from "@/services/authServices";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
 const ChangePasswordModal = ({ open, onClose }) => {
   const { t } = useTranslation();
@@ -58,7 +59,7 @@ const ChangePasswordModal = ({ open, onClose }) => {
   const changePasswordMutation = useMutation({
     mutationFn: updateProfile,
     onSuccess: () => {
-      alert(t("changePassword.messages.success"));
+      toast.success(t("changePassword.messages.success"));
       form.reset();
       onClose();
       setErrorMsg("");

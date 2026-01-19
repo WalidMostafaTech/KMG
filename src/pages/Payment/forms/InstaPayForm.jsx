@@ -12,6 +12,7 @@ import { createOrder } from "@/services/paymentsServices";
 import { useState } from "react";
 import FormError from "@/components/form/FormError";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
 const InstaPayForm = ({ cancelPayment, currentPayment, state }) => {
   const { t } = useTranslation();
@@ -35,9 +36,8 @@ const InstaPayForm = ({ cancelPayment, currentPayment, state }) => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: createOrder,
-    onSuccess: (data) => {
-      console.log(t("InstaPayForm.orderConfirmed"), data);
-      alert(t("InstaPayForm.paymentConfirmed"));
+    onSuccess: () => {
+      toast.success(t("InstaPayForm.paymentConfirmed"));
       setErrorMsg("");
       form.reset();
     },

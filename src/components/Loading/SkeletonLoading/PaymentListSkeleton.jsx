@@ -7,8 +7,8 @@ const PaymentListSkeleton = () => {
         <Skeleton className="w-40 h-8 mx-auto" />
       </h3>
 
-      <div className="grid grid-cols-2 gap-4">
-        {Array.from({ length: 6 }).map((_, idx) => (
+      <div className="grid grid-cols-2 gap-4 h-fit">
+        {Array.from({ length: 4 }).map((_, idx) => (
           <div
             key={idx}
             className="card flex flex-col items-center text-center gap-2"

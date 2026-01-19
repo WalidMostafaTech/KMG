@@ -11,6 +11,7 @@ import { createOrder } from "@/services/paymentsServices";
 import { useState } from "react";
 import FormError from "@/components/form/FormError";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
 const BinancePayForm = ({ cancelPayment, currentPayment, state }) => {
   const { t } = useTranslation();
@@ -35,9 +36,8 @@ const BinancePayForm = ({ cancelPayment, currentPayment, state }) => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: createOrder,
-    onSuccess: (data) => {
-      console.log(t("BinancePayForm.orderConfirmed"), data);
-      alert(t("BinancePayForm.paymentConfirmed"));
+    onSuccess: () => {
+      toast.success(t("BinancePayForm.paymentConfirmed"));
       setErrorMsg("");
       form.reset();
     },
