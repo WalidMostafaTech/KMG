@@ -1,5 +1,5 @@
 import { Search } from "lucide-react";
-import { Link, useParams, useSearchParams } from "react-router";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router";
 import { getAllGamesByService } from "@/services/serviceServices";
 import { useQuery } from "@tanstack/react-query";
 import GamesNav from "@/components/commonSections/GamesNav";
@@ -12,11 +12,19 @@ import { useTranslation } from "react-i18next";
 const Games = () => {
   const { t } = useTranslation();
   const { service } = useParams();
+  const activeService = service || "accounts";
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
 
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = Number(searchParams.get("page") || 1);
+
+  useEffect(() => {
+    if (!service) {
+      navigate("/games/accounts", { replace: true });
+    }
+  }, [service, navigate]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -28,9 +36,10 @@ const Games = () => {
   }, [search]);
 
   const { data: gamesData, isLoading } = useQuery({
-    queryKey: ["games", service, debouncedSearch, currentPage],
-    queryFn: () => getAllGamesByService(service, debouncedSearch, currentPage),
-    enabled: !!service,
+    queryKey: ["games", activeService, debouncedSearch, currentPage],
+    queryFn: () =>
+      getAllGamesByService(activeService, debouncedSearch, currentPage),
+    enabled: !!activeService,
   });
 
   const links = [

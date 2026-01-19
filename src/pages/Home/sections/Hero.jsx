@@ -13,7 +13,7 @@ const Hero = ({ data = [], isLoading }) => {
     return <HeroSkeleton />;
   }
 
-  if (!data) return null;
+  if (!data || data.length === 0) return null;
 
   return (
     <section className="container py-6 lg:py-10">

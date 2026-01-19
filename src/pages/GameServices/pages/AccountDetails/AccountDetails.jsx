@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import EmptyDataSection from "@/components/commonSections/EmptyDataSection";
 import OfferDetailsSkeleton from "@/components/Loading/SkeletonLoading/OfferDetailsSkeleton";
 import HeadSectionSkeleton from "@/components/Loading/SkeletonLoading/HeadSectionSkeleton";
+import SeoManager from "@/utils/SeoManager";
 
 const AccountDetails = () => {
   const { id } = useParams();
@@ -30,15 +31,25 @@ const AccountDetails = () => {
     return <EmptyDataSection msg={"لا توجد بيانات لعرضها حالياً."} />;
 
   return (
-    <section className="container py-6 lg:py-10 space-y-8 lg:space-y-16">
-      <HeadSection data={productDetailsData} />
+    <>
+      <SeoManager
+        title={productDetailsData?.seo?.meta_title}
+        description={productDetailsData?.seo?.meta_description}
+        keywords={productDetailsData?.seo?.keywords}
+        canonical={productDetailsData?.seo?.canonical_url}
+        ogImage={productDetailsData?.seo?.og_image}
+      />
 
-      <OfferDetails data={productDetailsData} />
+      <section className="container py-6 lg:py-10 space-y-8 lg:space-y-16">
+        <HeadSection data={productDetailsData} />
 
-      <PurchaseSteps />
+        <OfferDetails data={productDetailsData} />
 
-      <FAQ />
-    </section>
+        <PurchaseSteps />
+
+        <FAQ />
+      </section>
+    </>
   );
 };
 

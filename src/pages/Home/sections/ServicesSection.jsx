@@ -17,9 +17,7 @@ const ServicesSection = () => {
     return <ServicesSectionSkeleton />;
   }
 
-  if (!servicesData) {
-    return null;
-  }
+  if (!servicesData) return null;
 
   const list = [
     {

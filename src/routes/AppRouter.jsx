@@ -46,11 +46,13 @@ const JoinAsPartner = React.lazy(
 const Payment = React.lazy(() => import("../pages/Payment/Payment"));
 
 const NotFound = React.lazy(() => import("../pages/NotFound/NotFound"));
+import ErrorPage from "../pages/ErrorPage/ErrorPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <ErrorPage />,
     children: [
       { index: true, element: <Home /> },
 
