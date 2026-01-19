@@ -548,5 +548,11 @@
     "description": "There was a problem loading the page. Please try again later.",
     "reload": "Reload page",
     "goHome": "Go to Home"
+  },
+
+  "checkVerifiedEmailGuard": {
+    "title": "Your email is not verified!",
+    "description": "You need to verify your email to access this page.",
+    "button": "Verify your email"
   }
 }

@@ -38,7 +38,7 @@ const HeaderSearch = () => {
   });
 
   const handleGameClick = (game) => {
-    navigate(`/games/accounts/${game.id}`);
+    navigate(`/games/accounts/${game.slug}`);
     setIsModalOpen(false);
     setSearchTerm("");
     setDebouncedSearch("");

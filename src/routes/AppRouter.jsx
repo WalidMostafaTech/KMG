@@ -5,6 +5,7 @@ import LoadingPage from "../components/Loading/LoadingPage";
 import ProtectedRoute from "@/components/protectRoutes/ProtectedRoute";
 import AuthGuard from "@/components/protectRoutes/AuthGuard";
 import VerifyEmailGuard from "@/components/protectRoutes/VerifyEmailGuard";
+import CheckVerifiedEmailGuard from "@/components/protectRoutes/CheckVerifiedEmailGuard";
 
 const Home = React.lazy(() => import("../pages/Home/Home"));
 
@@ -46,7 +47,7 @@ const JoinAsPartner = React.lazy(
 const Payment = React.lazy(() => import("../pages/Payment/Payment"));
 
 const NotFound = React.lazy(() => import("../pages/NotFound/NotFound"));
-import ErrorPage from "../pages/ErrorPage/ErrorPage";
+const ErrorPage = React.lazy(() => import("../pages/ErrorPage/ErrorPage"));
 
 const router = createBrowserRouter([
   {
@@ -81,12 +82,24 @@ const router = createBrowserRouter([
               { path: "notifications", element: <Notifications /> },
             ],
           },
-          { path: "/chat/:id?", element: <Chat /> },
-          { path: "/payment", element: <Payment /> },
+          {
+            path: "/chat/:id?",
+            element: (
+              <CheckVerifiedEmailGuard>
+                <Chat />
+              </CheckVerifiedEmailGuard>
+            ),
+          },
+          {
+            path: "/payment",
+            element: (
+              <CheckVerifiedEmailGuard>
+                <Payment />
+              </CheckVerifiedEmailGuard>
+            ),
+          },
         ],
       },
-
-      { path: "/chat/:id?", element: <Chat /> },
 
       { path: "/refund-policy", element: <RefundPolicy /> },
       { path: "/join-as-partner", element: <JoinAsPartner /> },
