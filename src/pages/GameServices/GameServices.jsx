@@ -8,6 +8,7 @@ import OffersFilter from "./sections/OffersFilter";
 import { useState } from "react";
 import AccountsSkeleton from "@/components/Loading/SkeletonLoading/AccountsSkeleton";
 import { useTranslation } from "react-i18next";
+import SeoManager from "@/utils/SeoManager";
 
 const defaultFilters = {
   min_time: "",
@@ -32,7 +33,7 @@ const GameServices = () => {
     queryFn: () =>
       getProductsByGameAndService({
         service,
-        game_id: id,
+        game_slug: id,
         page: currentPage,
         ...appliedFilters,
       }),
@@ -80,35 +81,45 @@ const GameServices = () => {
   };
 
   return (
-    <article className="space-y-6 lg:space-y-10 pb-6">
-      <GamesNav links={links} game={game} isLoading={isLoading} />
-
-      <OffersFilter
-        filters={filters}
-        setFilters={setFilters}
-        onApply={applyFilters}
-        onReset={resetFilters}
-        service={game?.service}
+    <>
+      <SeoManager
+        title={game?.seo?.meta_title}
+        description={game?.seo?.meta_description}
+        keywords={game?.seo?.keywords}
+        canonical={game?.seo?.canonical_url}
+        ogImage={game?.seo?.og_image}
       />
 
-      {isLoading ? (
-        <AccountsSkeleton />
-      ) : game?.service === "accounts" ? (
-        <Accounts
-          products={products}
-          meta={gameServicesData?.meta}
-          currentPage={currentPage}
-          onPageChange={handlePageChange}
+      <article className="space-y-6 lg:space-y-10 pb-6">
+        <GamesNav links={links} game={game} isLoading={isLoading} />
+
+        <OffersFilter
+          filters={filters}
+          setFilters={setFilters}
+          onApply={applyFilters}
+          onReset={resetFilters}
+          service={game?.service}
         />
-      ) : (
-        <ProductsPage
-          products={products}
-          meta={gameServicesData?.meta}
-          currentPage={currentPage}
-          onPageChange={handlePageChange}
-        />
-      )}
-    </article>
+
+        {isLoading ? (
+          <AccountsSkeleton />
+        ) : game?.service === "accounts" ? (
+          <Accounts
+            products={products}
+            meta={gameServicesData?.meta}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        ) : (
+          <ProductsPage
+            products={products}
+            meta={gameServicesData?.meta}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        )}
+      </article>
+    </>
   );
 };
 

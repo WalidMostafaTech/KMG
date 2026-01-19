@@ -71,9 +71,9 @@ const ServicesSection = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
               {item.items.map((i) => (
                 <Link
-                  to={`/games/${item.link}/${i.id}`}
+                  to={`/games/${item.link}/${i.slug}`}
                   key={i.id}
-                  className="flex gap-2 hover:bg-accent rounded transition"
+                  className="flex items-center gap-2 hover:bg-accent rounded transition"
                 >
                   <div className="w-12 h-12 overflow-hidden rounded">
                     <img

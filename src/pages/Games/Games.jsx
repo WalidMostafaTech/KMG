@@ -89,7 +89,7 @@ const Games = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-8">
             {gamesData?.items?.map((item) => (
               <Link
-                to={`/games/${item.service}/${item.id}`}
+                to={`/games/${item.service}/${item.slug}`}
                 key={item.id}
                 className="flex flex-col gap-2 card"
               >

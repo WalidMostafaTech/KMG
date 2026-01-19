@@ -1,7 +1,7 @@
 import api from "./api";
 
 export const getAllGamesByService = async (service, search, page) => {
-  const { data } = await api.get("/all-games-by-service", {
+  const { data } = await api.get(`/all-games-by-service`, {
     params: {
       service,
       search,
@@ -13,19 +13,21 @@ export const getAllGamesByService = async (service, search, page) => {
 };
 
 export const getProductsByGameAndService = async (payload) => {
-  const { data } = await api.get("/products/by-game-and-service", {
-    params: {
-      service: payload.service,
-      game_id: payload.game_id,
-      min_time: payload.min_time,
-      max_time: payload.max_time,
-      country_id: payload.country_id,
-      platform_id: payload.platform_id,
-      min_price: payload.min_price,
-      max_price: payload.max_price,
-      page: payload.page || 1,
+  const { data } = await api.get(
+    `/products/by-game-and-service/${payload.game_slug}`,
+    {
+      params: {
+        service: payload.service,
+        min_time: payload.min_time,
+        max_time: payload.max_time,
+        country_id: payload.country_id,
+        platform_id: payload.platform_id,
+        min_price: payload.min_price,
+        max_price: payload.max_price,
+        page: payload.page || 1,
+      },
     },
-  });
+  );
 
   return data;
 };

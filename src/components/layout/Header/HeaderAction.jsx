@@ -169,7 +169,11 @@ const HeaderAction = () => {
             />
           </DropdownMenuTrigger>
 
-          <DropdownMenuContent align="end" dir={lang === "ar" ? "rtl" : "ltr"} className={`w-52`}>
+          <DropdownMenuContent
+            align="end"
+            dir={lang === "ar" ? "rtl" : "ltr"}
+            className={`w-52`}
+          >
             <DropdownMenuLabel className="flex items-center gap-2">
               <UserAvatar name={profile?.name} image={profile?.image} />
               <h3 className="font-semibold">{profile?.name}</h3>
@@ -212,20 +216,20 @@ const HeaderAction = () => {
 
                 <DialogFooter className="flex gap-3 pt-2">
                   <Button
-                    type="submit"
-                    className="flex-1"
-                    onClick={handleLogout}
-                  >
-                    {t("headerAction.logout")}
-                  </Button>
-
-                  <Button
                     type="button"
                     variant="outline"
                     className="flex-1 rounded-full"
                     onClick={() => setShowLogout(false)}
                   >
                     {t("headerAction.cancel")}
+                  </Button>
+
+                  <Button
+                    type="submit"
+                    className="flex-1"
+                    onClick={handleLogout}
+                  >
+                    {t("headerAction.logout")}
                   </Button>
                 </DialogFooter>
               </DialogContent>
