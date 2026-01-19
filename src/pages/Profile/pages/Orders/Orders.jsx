@@ -15,8 +15,11 @@ import MyOrdersCardSkeleton from "@/components/Loading/SkeletonLoading/MyOrdersC
 import EmptyDataSection from "@/components/commonSections/EmptyDataSection";
 import MainPagination from "@/components/common/MainPagination";
 import { useSearchParams } from "react-router";
+import { useTranslation } from "react-i18next";
 
 const Orders = () => {
+  const { t } = useTranslation();
+
   const [status, setStatus] = useState("all");
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -34,27 +37,27 @@ const Orders = () => {
   const list = [
     {
       id: 1,
-      label: "إجمالى الطلبات:",
+      label: t("orders.stats.total"),
       value: orders?.extra?.total_count,
     },
     {
       id: 2,
-      label: "قيد المراجعة:",
+      label: t("orders.stats.pending"),
       value: orders?.extra?.status_counts?.pending,
     },
     {
       id: 3,
-      label: "قيد التنفيذ:",
+      label: t("orders.stats.processing"),
       value: orders?.extra?.status_counts?.processing,
     },
     {
       id: 4,
-      label: "تم التوصيل:",
+      label: t("orders.stats.completed"),
       value: orders?.extra?.status_counts?.completed,
     },
     {
       id: 5,
-      label: "ملغاه:",
+      label: t("orders.stats.cancelled"),
       value: orders?.extra?.status_counts?.cancelled,
     },
   ];
@@ -62,30 +65,36 @@ const Orders = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold">الطلبات المشتراة</h2>
-        <p className="text-muted-foreground text-sm">
-          تتبع طلباتك وتفاصيل مشترياتك
-        </p>
+        <h2 className="text-2xl font-bold">{t("orders.title")}</h2>
+        <p className="text-muted-foreground text-sm">{t("orders.subtitle")}</p>
       </div>
 
       <div className="card flex flex-col gap-4">
         <div className="flex items-center gap-2 sm:w-fit">
           <div className="flex items-center gap-2 min-w-fit text-sm">
             <SlidersHorizontal size={20} />
-            تصفية حسب:
+            {t("orders.filter.label")}
           </div>
 
           <Select value={status} onValueChange={setStatus}>
             <SelectTrigger className="rounded-full bg-input w-full">
-              <SelectValue placeholder="اختر الحالة" />
+              <SelectValue placeholder={t("orders.filter.placeholder")} />
             </SelectTrigger>
 
             <SelectContent className="bg-input rounded-xl">
-              <SelectItem value="all">كل الحالات</SelectItem>
-              <SelectItem value="pending">قيد المراجعة</SelectItem>
-              <SelectItem value="processing">قيد التنفيذ</SelectItem>
-              <SelectItem value="completed">تم التوصيل</SelectItem>
-              <SelectItem value="cancelled">ملغاة</SelectItem>
+              <SelectItem value="all">{t("orders.filter.all")}</SelectItem>
+              <SelectItem value="pending">
+                {t("orders.filter.pending")}
+              </SelectItem>
+              <SelectItem value="processing">
+                {t("orders.filter.processing")}
+              </SelectItem>
+              <SelectItem value="completed">
+                {t("orders.filter.completed")}
+              </SelectItem>
+              <SelectItem value="cancelled">
+                {t("orders.filter.cancelled")}
+              </SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -106,7 +115,7 @@ const Orders = () => {
             <MyOrdersCardSkeleton key={idx} />
           ))
         ) : orders?.items?.length === 0 ? (
-          <EmptyDataSection msg="لا يوجد طلبات" />
+          <EmptyDataSection msg={t("orders.empty")} />
         ) : (
           orders?.items?.map((order) => (
             <MyOrdersCard key={order.id} order={order} />

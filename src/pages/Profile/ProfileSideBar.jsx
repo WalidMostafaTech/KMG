@@ -27,8 +27,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Logs } from "lucide-react";
 import { useState } from "react";
 import { logoutAct } from "@/store/profile/profileSlice";
+import { useTranslation } from "react-i18next";
 
 const ProfileSideBar = () => {
+  const { t } = useTranslation();
   const [openSideBar, setOpenSideBar] = useState(false);
   const [showLogout, setShowLogout] = useState(false);
   const { lang } = useSelector((state) => state.language);
@@ -48,7 +50,7 @@ const ProfileSideBar = () => {
         onClick={() => setOpenSideBar(false)}
       >
         <FaRegUser />
-        الملف الشخصى
+        {t("ProfileSideBar.profile")}
       </NavLink>
 
       <NavLink
@@ -58,7 +60,7 @@ const ProfileSideBar = () => {
         onClick={() => setOpenSideBar(false)}
       >
         <FiShoppingCart />
-        الطلبات
+        {t("ProfileSideBar.orders")}
       </NavLink>
 
       <NavLink
@@ -68,14 +70,14 @@ const ProfileSideBar = () => {
         onClick={() => setOpenSideBar(false)}
       >
         <FaRegBell />
-        الاشعارات
+        {t("ProfileSideBar.notifications")}
       </NavLink>
 
       <Dialog open={showLogout} onOpenChange={setShowLogout}>
         <DialogTrigger asChild>
           <button className="rounded-full sideBarLink">
             <IoIosLogOut />
-            تسجيل الخروج
+            {t("ProfileSideBar.logout")}
           </button>
         </DialogTrigger>
 
@@ -85,13 +87,13 @@ const ProfileSideBar = () => {
               <img src={logoutIcon} alt="logout" className="mx-auto" />
             </DialogDescription>
             <DialogTitle className="text-center">
-              هل أنت متأكد أنك تريد تسجيل الخروج؟
+              {t("ProfileSideBar.logoutConfirmTitle")}
             </DialogTitle>
           </DialogHeader>
 
           <DialogFooter className="flex gap-3 pt-2">
             <Button type="submit" className="flex-1" onClick={handleLogout}>
-              تسجيل الخروج
+              {t("ProfileSideBar.logout")}
             </Button>
 
             <Button
@@ -100,7 +102,7 @@ const ProfileSideBar = () => {
               className="flex-1 rounded-full"
               onClick={() => setShowLogout(false)}
             >
-              تراجع
+              {t("ProfileSideBar.cancel")}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -118,17 +120,19 @@ const ProfileSideBar = () => {
         <SheetTrigger asChild className="lg:hidden w-fit mt-4 ms-4">
           <Button>
             <Logs />
-            القائمة
+            {t("ProfileSideBar.menu")}
           </Button>
         </SheetTrigger>
 
         <SheetContent side={lang === "ar" ? "right" : "left"}>
-          {/* Accessible but hidden */}
-          <SheetTitle className={`flex items-center justify-center`}>
+          <SheetTitle className="flex items-center justify-center">
             <img src={logo} alt="logo" className="w-20 h-20 object-contain" />
           </SheetTitle>
+
           <VisuallyHidden>
-            <SheetDescription>روابط حساب المستخدم</SheetDescription>
+            <SheetDescription>
+              {t("ProfileSideBar.sheetDescription")}
+            </SheetDescription>
           </VisuallyHidden>
 
           <div className="p-4">{sideContent}</div>

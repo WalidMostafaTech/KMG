@@ -10,8 +10,10 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { getSingleOrder } from "@/services/paymentsServices";
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const DetailsModal = ({ order_id, open, onClose }) => {
+  const { t } = useTranslation();
   const { lang } = useSelector((state) => state.language);
 
   const { data: orderDetails, isLoading } = useQuery({
@@ -27,143 +29,147 @@ const DetailsModal = ({ order_id, open, onClose }) => {
       items: [
         {
           id: 1,
-          title: "اسم الحساب:",
+          title: t("detailsModal.services.accounts.accountName"),
           content: orderDetails?.product?.title,
         },
         {
           id: 2,
-          title: "المنصة:",
+          title: t("detailsModal.services.accounts.platform"),
           content: orderDetails?.product?.platforms
             .map((item) => item.name)
             .join(", "),
         },
         {
           id: 3,
-          title: "المنطقة:",
+          title: t("detailsModal.services.accounts.country"),
           content: orderDetails?.product?.country_name,
         },
         {
           id: 4,
-          title: "البريد الحساب:",
+          title: t("detailsModal.services.accounts.accountEmail"),
           content: orderDetails?.account_email,
         },
         {
           id: 5,
-          title: "كلمة مرور الحساب:",
+          title: t("detailsModal.services.accounts.accountPassword"),
           content: orderDetails?.account_password,
         },
         {
           id: 6,
-          title: "البريد الالكترونى:",
+          title: t("detailsModal.services.accounts.email"),
           content: orderDetails?.email,
         },
         {
           id: 7,
-          title: "كلمة المرور:",
+          title: t("detailsModal.services.accounts.password"),
           content: orderDetails?.password,
         },
         {
           id: 8,
-          title: "ملاحظة:",
+          title: t("detailsModal.services.accounts.note"),
           content: orderDetails?.note,
         },
       ],
     },
+
     {
       id: 2,
       service: "subscriptions",
       items: [
         {
           id: 1,
-          title: "اسم الاشتراك:",
+          title: t("detailsModal.services.subscriptions.subscriptionName"),
           content: orderDetails?.product?.title,
         },
         {
           id: 2,
-          title: "بيانات الدخول:",
+          title: t("detailsModal.services.subscriptions.loginData"),
           content: orderDetails?.login_data,
         },
         {
           id: 3,
-          title: "كلمة المرور:",
+          title: t("detailsModal.services.subscriptions.password"),
           content: orderDetails?.password,
         },
         {
           id: 4,
-          title: "ملاحظة:",
+          title: t("detailsModal.services.subscriptions.note"),
           content: orderDetails?.note,
         },
       ],
     },
+
     {
       id: 3,
       service: "top_up",
       items: [
         {
           id: 1,
-          title: "عدد العملات:",
+          title: t("detailsModal.services.top_up.coinsCount"),
           content: orderDetails?.product?.price,
         },
         {
           id: 2,
-          title: "بيانات الدخول:",
+          title: t("detailsModal.services.top_up.loginData"),
           content: orderDetails?.login_data,
         },
         {
           id: 3,
-          title: "كلمة المرور:",
+          title: t("detailsModal.services.top_up.password"),
           content: orderDetails?.password,
         },
         {
           id: 4,
-          title: "ملاحظة:",
+          title: t("detailsModal.services.top_up.note"),
           content: orderDetails?.note,
         },
       ],
     },
+
     {
       id: 4,
       service: "gift_cards",
       items: [
         {
           id: 1,
-          title: "قيمة الكارت:",
+          title: t("detailsModal.services.gift_cards.cardValue"),
           content: orderDetails?.product?.price,
         },
         {
           id: 2,
-          title: "الكود:",
+          title: t("detailsModal.services.gift_cards.code"),
           content: orderDetails?.gift_code,
         },
         {
           id: 3,
-          title: "ملاحظة:",
+          title: t("detailsModal.services.gift_cards.note"),
           content: orderDetails?.note,
         },
       ],
     },
+
     {
       id: 5,
       service: "add_game_to_account",
       items: [
         {
           id: 1,
-          title: "اسم اللعبة:",
+          title: t("detailsModal.services.add_game_to_account.gameName"),
           content: orderDetails?.product?.title,
         },
         {
           id: 2,
-          title: "بيانات الدخول:",
+          title: t("detailsModal.services.add_game_to_account.loginData"),
           content: orderDetails?.login_data,
         },
         {
           id: 3,
-          title: "كلمة المرور:",
+          title: t("detailsModal.services.add_game_to_account.password"),
           content: orderDetails?.password,
         },
         {
           id: 4,
-          title: "ملاحظة:",
+          title: t("detailsModal.services.add_game_to_account.note"),
           content: orderDetails?.note,
         },
       ],
@@ -185,7 +191,7 @@ const DetailsModal = ({ order_id, open, onClose }) => {
             <>
               <DialogHeader className={`mb-4`}>
                 <DialogTitle className={`text-center`}>
-                  تفاصيل الطلب
+                  {t("detailsModal.title")}
                 </DialogTitle>
                 <DialogDescription className={`mt-2`}>
                   <img
@@ -201,7 +207,7 @@ const DetailsModal = ({ order_id, open, onClose }) => {
                   order.items
                     .filter((item) => item.content)
                     .map((item) => (
-                      <div>
+                      <div key={item.id}>
                         <h3 className="text-muted-foreground font-bold mb-1">
                           {item.title}
                         </h3>
@@ -214,7 +220,7 @@ const DetailsModal = ({ order_id, open, onClose }) => {
                     ))
                 ) : (
                   <p className="text-center text-muted-foreground">
-                    لا توجد تفاصيل متاحة
+                    {t("detailsModal.noDetails")}
                   </p>
                 )}
               </div>

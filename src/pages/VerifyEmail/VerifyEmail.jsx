@@ -29,12 +29,15 @@ import {
   logoutAct,
 } from "@/store/profile/profileSlice";
 
-const otpSchema = z.object({
-  otp: z.string().length(6, "أدخل رمز مكوّن من 6 أرقام"),
-});
+import { useTranslation } from "react-i18next";
 
 const VerifyEmail = () => {
+  const { t } = useTranslation();
   const { profile } = useSelector((state) => state.profile);
+
+  const otpSchema = z.object({
+    otp: z.string().length(6, t("verifyEmail.otpError")),
+  });
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -102,8 +105,8 @@ const VerifyEmail = () => {
 
   return (
     <AuthContainer
-      title="تأكيد البريد الإلكتروني"
-      description={`قمنا بإرسال رمز التفعيل إلى بريدك الإلكتروني ${profile?.email}`}
+      title={t("verifyEmail.title")}
+      description={t("verifyEmail.description", { email: profile?.email })}
     >
       <Form {...form}>
         <form
@@ -140,11 +143,11 @@ const VerifyEmail = () => {
           />
 
           <Button type="submit" className="w-full" disabled={isPending}>
-            {isPending ? "جاري التحقق..." : "تأكيد الحساب"}
+            {isPending ? t("verifyEmail.submitting") : t("verifyEmail.submit")}
           </Button>
 
           <p className="text-sm text-center">
-            لم يصلك الرمز؟
+            {t("verifyEmail.notReceived")}
             <button
               type="button"
               onClick={handleResend}
@@ -154,8 +157,8 @@ const VerifyEmail = () => {
               }`}
             >
               {countdown > 0
-                ? `إعادة الإرسال خلال ${countdown}s`
-                : "إعادة الإرسال"}
+                ? t("verifyEmail.resendIn", { seconds: countdown })
+                : t("verifyEmail.resend")}
             </button>
           </p>
 
@@ -164,12 +167,14 @@ const VerifyEmail = () => {
             onClick={handleBackToRegister}
             className="text-sm hover:underline text-muted-foreground cursor-pointer"
           >
-            الرجوع لتسجيل الدخول
+            {t("verifyEmail.back")}
           </button>
 
           {error && (
             <FormError
-              errorMsg={error.response?.data?.message || "الرمز غير صحيح"}
+              errorMsg={
+                error.response?.data?.message || t("verifyEmail.invalidCode")
+              }
             />
           )}
         </form>

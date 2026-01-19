@@ -1,4 +1,3 @@
-import MainInput from "@/components/form/MainInput";
 import ImageInput from "@/components/form/ImageInput";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -11,16 +10,21 @@ import { useMutation } from "@tanstack/react-query";
 import { createOrder } from "@/services/paymentsServices";
 import { useState } from "react";
 import FormError from "@/components/form/FormError";
-
-// schema
-const binancePaySchema = z.object({
-  transfer_image: z
-    .any()
-    .refine((file) => file instanceof File, "الصورة مطلوبة"),
-});
+import { useTranslation } from "react-i18next";
 
 const BinancePayForm = ({ cancelPayment, currentPayment, state }) => {
+  const { t } = useTranslation();
   const [errorMsg, setErrorMsg] = useState("");
+
+  // schema
+  const binancePaySchema = z.object({
+    transfer_image: z
+      .any()
+      .refine(
+        (file) => file instanceof File,
+        t("BinancePayForm.imageRequired"),
+      ),
+  });
 
   const form = useForm({
     resolver: zodResolver(binancePaySchema),
@@ -32,27 +36,29 @@ const BinancePayForm = ({ cancelPayment, currentPayment, state }) => {
   const { mutate, isPending } = useMutation({
     mutationFn: createOrder,
     onSuccess: (data) => {
-      console.log("تم تأكيد الطلب", data);
-      alert("تم تأكيد الدفع");
+      console.log(t("BinancePayForm.orderConfirmed"), data);
+      alert(t("BinancePayForm.paymentConfirmed"));
       setErrorMsg("");
       form.reset();
     },
     onError: (error) => {
       console.error(error);
-      setErrorMsg(error?.response?.data?.message || "حصل خطأ");
+      setErrorMsg(
+        error?.response?.data?.message || t("BinancePayForm.genericError"),
+      );
     },
   });
 
   const onSubmit = (data) => {
     const formData = new FormData();
 
-    // بيانات الفورم
+    // form data
     formData.append("transfer_image", data.transfer_image);
 
-    // بيانات الدفع
+    // payment data
     formData.append("payment_method", currentPayment.paymentMethod);
 
-    // كل اللي جاي من state
+    // state data
     formData.append("product_id", state.product_id);
     formData.append("login_data", state.login_data);
     formData.append("gift_code", state.gift_code);
@@ -70,7 +76,7 @@ const BinancePayForm = ({ cancelPayment, currentPayment, state }) => {
       >
         {currentPayment.transfer_number && (
           <div className="flex flex-col gap-2">
-            <p className="font-bold">رقم التحويل</p>
+            <p className="font-bold">{t("BinancePayForm.transferNumber")}</p>
             <span className="bg-muted p-2 rounded-lg">
               {currentPayment.transfer_number}
             </span>
@@ -79,7 +85,7 @@ const BinancePayForm = ({ cancelPayment, currentPayment, state }) => {
 
         {currentPayment.binance_id && (
           <div className="flex flex-col gap-2">
-            <p className="font-bold">Binance ID</p>
+            <p className="font-bold">{t("BinancePayForm.binanceId")}</p>
             <span className="bg-muted p-2 rounded-lg">
               {currentPayment.binance_id}
             </span>
@@ -90,7 +96,9 @@ const BinancePayForm = ({ cancelPayment, currentPayment, state }) => {
 
         <div className="flex items-center gap-2">
           <Button type="submit" className="flex-1" disabled={isPending}>
-            {isPending ? "جاري التأكيد..." : "تأكيد الدفع"}
+            {isPending
+              ? t("BinancePayForm.confirming")
+              : t("BinancePayForm.confirmPayment")}
           </Button>
 
           <Button
@@ -99,7 +107,7 @@ const BinancePayForm = ({ cancelPayment, currentPayment, state }) => {
             className="rounded-full flex-1"
             onClick={cancelPayment}
           >
-            تراجع
+            {t("BinancePayForm.cancel")}
           </Button>
         </div>
 

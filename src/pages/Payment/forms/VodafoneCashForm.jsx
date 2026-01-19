@@ -10,16 +10,23 @@ import { useMutation } from "@tanstack/react-query";
 import { createOrder } from "@/services/paymentsServices";
 import { useState } from "react";
 import FormError from "@/components/form/FormError";
-
-const vodafoneCashSchema = z.object({
-  sender_number: z.string().min(1, "رقم المحول منه مطلوب"),
-  transfer_image: z
-    .any()
-    .refine((file) => file instanceof File, "الصورة مطلوبة"),
-});
+import { useTranslation } from "react-i18next";
 
 const VodafoneCashForm = ({ cancelPayment, currentPayment, state }) => {
+  const { t } = useTranslation();
   const [errorMsg, setErrorMsg] = useState("");
+
+  const vodafoneCashSchema = z.object({
+    sender_number: z
+      .string()
+      .min(1, t("VodafoneCashForm.senderNumberRequired")),
+    transfer_image: z
+      .any()
+      .refine(
+        (file) => file instanceof File,
+        t("VodafoneCashForm.imageRequired"),
+      ),
+  });
 
   const form = useForm({
     resolver: zodResolver(vodafoneCashSchema),
@@ -32,14 +39,16 @@ const VodafoneCashForm = ({ cancelPayment, currentPayment, state }) => {
   const { mutate, isPending } = useMutation({
     mutationFn: createOrder,
     onSuccess: (data) => {
-      console.log("تم تأكيد الطلب", data);
-      alert("تم تأكيد الدفع");
+      console.log(t("VodafoneCashForm.orderConfirmed"), data);
+      alert(t("VodafoneCashForm.paymentConfirmed"));
       setErrorMsg("");
       form.reset();
     },
     onError: (error) => {
       console.error(error);
-      setErrorMsg(error?.response?.data?.message || "حصل خطاء");
+      setErrorMsg(
+        error?.response?.data?.message || t("VodafoneCashForm.genericError"),
+      );
     },
   });
 
@@ -65,7 +74,7 @@ const VodafoneCashForm = ({ cancelPayment, currentPayment, state }) => {
       >
         {currentPayment.transfer_number && (
           <div className="flex flex-col gap-2">
-            <p className="font-bold">رقم التحويل</p>
+            <p className="font-bold">{t("VodafoneCashForm.transferNumber")}</p>
             <span className="bg-muted p-2 rounded-lg">
               {currentPayment.transfer_number}
             </span>
@@ -75,16 +84,17 @@ const VodafoneCashForm = ({ cancelPayment, currentPayment, state }) => {
         <MainInput
           control={form.control}
           name="sender_number"
-          label="رقم المحول منه"
-          placeholder="ادخل رقم المحول منه"
+          label={t("VodafoneCashForm.senderNumberLabel")}
+          placeholder={t("VodafoneCashForm.senderNumberPlaceholder")}
         />
 
-        {/* ImageInput */}
         <ImageInput control={form.control} name="transfer_image" />
 
         <div className="flex items-center gap-2">
           <Button type="submit" className="flex-1" disabled={isPending}>
-            {isPending ? "جاري التأكيد..." : "تأكيد الدفع"}
+            {isPending
+              ? t("VodafoneCashForm.confirming")
+              : t("VodafoneCashForm.confirmPayment")}
           </Button>
 
           <Button
@@ -93,7 +103,7 @@ const VodafoneCashForm = ({ cancelPayment, currentPayment, state }) => {
             className="rounded-full flex-1"
             onClick={cancelPayment}
           >
-            تراجع
+            {t("VodafoneCashForm.cancel")}
           </Button>
         </div>
 

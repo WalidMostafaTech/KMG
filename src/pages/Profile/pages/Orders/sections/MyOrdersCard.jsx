@@ -18,8 +18,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import DetailsModal from "./DetailsModal";
+import { useTranslation } from "react-i18next";
 
 const MyOrdersCard = ({ order }) => {
+  const { t } = useTranslation();
+
   const [open, setOpen] = useState(false);
   const [chatDialogOpen, setChatDialogOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -33,19 +36,14 @@ const MyOrdersCard = ({ order }) => {
       setChatDialogOpen(false);
       setMessage("");
       navigate("/chat");
-      // toast.success("تم إرسال الرسالة بنجاح");
     },
     onError: (error) => {
-      // toast.error("حدث خطأ أثناء إرسال الرسالة");
       console.error("Error sending order to chat:", error);
     },
   });
 
   const handleSendToChat = () => {
-    if (!message.trim()) {
-      // toast.error("الرجاء كتابة رسالة");
-      return;
-    }
+    if (!message.trim()) return;
 
     const formData = new FormData();
     formData.append("order_id", order.id);
@@ -69,7 +67,7 @@ const MyOrdersCard = ({ order }) => {
           <div className="flex flex-col gap-2 max-w-sm flex-1">
             <h3 className="text-lg font-bold">{order?.product?.title}</h3>
             <p className="text-muted-foreground text-sm">
-              رقم الطلب: {order.order_code}
+              {t("myOrdersCard.messageDialog.orderCode")} {order.order_code}
             </p>
             <p className="text-lg font-bold">${order?.product?.price}</p>
           </div>
@@ -80,9 +78,10 @@ const MyOrdersCard = ({ order }) => {
             onClick={() => setChatDialogOpen(true)}
             className="w-full gap-2"
           >
-            مراسلة
+            {t("myOrdersCard.buttons.chat")}
             <BsChatLeftText />
           </Button>
+
           <div className="flex items-center gap-2">
             <Badge variant={`outline`} className="gap-2 rounded-full">
               <BadgeCheck />
@@ -95,7 +94,7 @@ const MyOrdersCard = ({ order }) => {
               className="gap-2 rounded-full"
             >
               <NotebookTabs />
-              تفاصيل الطلب
+              {t("myOrdersCard.buttons.details")}
             </Button>
 
             <DetailsModal
@@ -111,9 +110,9 @@ const MyOrdersCard = ({ order }) => {
       <Dialog open={chatDialogOpen} onOpenChange={setChatDialogOpen}>
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader className={`text-center!`}>
-            <DialogTitle>مراسلة بخصوص الطلب</DialogTitle>
+            <DialogTitle>{t("myOrdersCard.messageDialog.title")}</DialogTitle>
             <DialogDescription>
-              أرسل رسالتك للدعم بخصوص هذا الطلب
+              {t("myOrdersCard.messageDialog.description")}
             </DialogDescription>
           </DialogHeader>
 
@@ -135,19 +134,23 @@ const MyOrdersCard = ({ order }) => {
               </div>
 
               <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">السعر:</span>
+                <span className="text-muted-foreground">
+                  {t("myOrdersCard.messageDialog.price")}
+                </span>
                 <span className="font-bold">${order?.total_price}</span>
               </div>
 
               <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">الحالة:</span>
+                <span className="text-muted-foreground">
+                  {t("myOrdersCard.messageDialog.status")}
+                </span>
                 <Badge variant="outline" className="gap-1">
                   <BadgeCheck size={14} />
                   {order.status === "pending"
-                    ? "قيد الانتظار"
+                    ? t("myOrdersCard.status.pending")
                     : order.status === "completed"
-                    ? "مكتمل"
-                    : order.status}
+                      ? t("myOrdersCard.status.completed")
+                      : order.status}
                 </Badge>
               </div>
 
@@ -155,7 +158,7 @@ const MyOrdersCard = ({ order }) => {
                 order.product.platforms.length > 0 && (
                   <div className="flex items-center gap-2">
                     <span className="text-sm text-muted-foreground">
-                      المنصات:
+                      {t("myOrdersCard.messageDialog.platforms")}
                     </span>
                     <div className="flex gap-1">
                       {order.product.platforms.map((platform) => (
@@ -174,10 +177,12 @@ const MyOrdersCard = ({ order }) => {
 
             {/* Message Input */}
             <div className="space-y-2">
-              <Label htmlFor="message">رسالتك</Label>
+              <Label htmlFor="message">
+                {t("myOrdersCard.messageDialog.yourMessage")}
+              </Label>
               <Input
                 id="message"
-                placeholder="اكتب رسالتك هنا..."
+                placeholder={t("myOrdersCard.messageDialog.messagePlaceholder")}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyDown={(e) => {
@@ -197,7 +202,7 @@ const MyOrdersCard = ({ order }) => {
               onClick={() => setChatDialogOpen(false)}
               disabled={sendOrderToChat.isPending}
             >
-              إلغاء
+              {t("myOrdersCard.messageDialog.cancel")}
             </Button>
             <Button
               onClick={handleSendToChat}
@@ -206,12 +211,12 @@ const MyOrdersCard = ({ order }) => {
             >
               {sendOrderToChat.isPending ? (
                 <>
-                  جاري الإرسال...
+                  {t("myOrdersCard.messageDialog.sending")}
                   <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full" />
                 </>
               ) : (
                 <>
-                  إرسال
+                  {t("myOrdersCard.messageDialog.send")}
                   <Send size={16} />
                 </>
               )}

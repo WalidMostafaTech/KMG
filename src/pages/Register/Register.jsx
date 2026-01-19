@@ -17,21 +17,26 @@ import { registerUser } from "@/services/authServices";
 import { useDispatch } from "react-redux";
 import { getProfileAct } from "@/store/profile/profileSlice";
 
-const registerSchema = z
-  .object({
-    name: z.string().min(3, "الاسم قصير"),
-    email: z.string().email("البريد الإلكتروني غير صحيح"),
-    password: z.string().min(6, "كلمة المرور قصيرة"),
-    password_confirmation: z.string().min(6, "تأكيد كلمة المرور مطلوب"),
-  })
-  .refine((data) => data.password === data.password_confirmation, {
-    message: "كلمتا المرور غير متطابقتين",
-    path: ["password_confirmation"],
-  });
+import { useTranslation } from "react-i18next";
 
 const Register = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const registerSchema = z
+    .object({
+      name: z.string().min(3, t("register.errors.nameShort")),
+      email: z.string().email(t("register.errors.emailInvalid")),
+      password: z.string().min(6, t("register.errors.passwordShort")),
+      password_confirmation: z
+        .string()
+        .min(6, t("register.errors.passwordConfirmationRequired")),
+    })
+    .refine((data) => data.password === data.password_confirmation, {
+      message: t("register.errors.passwordMismatch"),
+      path: ["password_confirmation"],
+    });
 
   const form = useForm({
     resolver: zodResolver(registerSchema),
@@ -68,7 +73,10 @@ const Register = () => {
   };
 
   return (
-    <AuthContainer title="إنشاء حساب" description="قم بإنشاء حساب جديد الآن">
+    <AuthContainer
+      title={t("register.title")}
+      description={t("register.description")}
+    >
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -78,23 +86,23 @@ const Register = () => {
           <MainInput
             control={form.control}
             name="name"
-            label="الاسم"
-            placeholder="أدخل الاسم"
+            label={t("register.name")}
+            placeholder={t("register.namePlaceholder")}
             icon={<User size={18} />}
           />
 
           <MainInput
             control={form.control}
             name="email"
-            label="البريد الإلكتروني"
-            placeholder="example@email.com"
+            label={t("register.email")}
+            placeholder={t("register.emailPlaceholder")}
             icon={<Mail size={18} />}
           />
 
           <MainInput
             control={form.control}
             name="password"
-            label="كلمة المرور"
+            label={t("register.password")}
             type="password"
             icon={<Lock size={18} />}
           />
@@ -102,29 +110,31 @@ const Register = () => {
           <MainInput
             control={form.control}
             name="password_confirmation"
-            label="تأكيد كلمة المرور"
+            label={t("register.passwordConfirmation")}
             type="password"
             icon={<Lock size={18} />}
           />
 
           <Button type="submit" className="w-full" disabled={isPending}>
-            {isPending ? "جاري إنشاء الحساب..." : "إنشاء حساب"}
+            {isPending ? t("register.submitting") : t("register.submit")}
           </Button>
 
           <p className="text-sm text-center">
-            لديك حساب؟
+            {t("register.haveAccount")}
             <Link
               to="/login"
               className="text-purple-500 cursor-pointer hover:underline"
             >
               {" "}
-              تسجيل الدخول
+              {t("register.login")}
             </Link>
           </p>
 
           {error && (
             <FormError
-              errorMsg={error.response?.data?.message || "حدث خطأ ما"}
+              errorMsg={
+                error.response?.data?.message || t("register.errors.generic")
+              }
             />
           )}
         </form>

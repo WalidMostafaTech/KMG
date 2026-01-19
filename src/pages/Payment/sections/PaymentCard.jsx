@@ -1,4 +1,8 @@
 import { useTranslation } from "react-i18next";
+import VodafoneCashForm from "../forms/VodafoneCashForm";
+import InstaPayForm from "../forms/InstaPayForm";
+import PaypalForm from "../forms/PaypalForm";
+import BinancePayForm from "../forms/BinancePayForm";
 
 const PaymentCard = ({ currentPayment, cancelPayment, state }) => {
   const { t } = useTranslation();

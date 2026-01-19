@@ -9,8 +9,8 @@ import {
 } from "@/components/ui/dialog";
 
 import { Form } from "@/components/ui/form";
-
 import MainInput from "@/components/form/MainInput";
+import FormError from "@/components/form/FormError";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,22 +20,31 @@ import { Lock } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { updateProfile } from "@/services/authServices";
 import { useState } from "react";
-import FormError from "@/components/form/FormError";
-
-const changePasswordSchema = z
-  .object({
-    current_password: z.string().min(6, "كلمة المرور قصيرة"),
-    password: z.string().min(6, "كلمة المرور الجديدة قصيرة"),
-    password_confirmation: z.string().min(6, "كلمة المرور قصيرة"),
-  })
-  .refine((data) => data.password === data.password_confirmation, {
-    message: "كلمتا المرور غير متطابقتين",
-    path: ["password_confirmation"],
-  });
+import { useTranslation } from "react-i18next";
 
 const ChangePasswordModal = ({ open, onClose }) => {
+  const { t } = useTranslation();
   const [errorMsg, setErrorMsg] = useState("");
 
+  /* ---------------- schema ---------------- */
+  const changePasswordSchema = z
+    .object({
+      current_password: z
+        .string()
+        .min(6, t("changePassword.form.currentPassword.validation.min")),
+      password: z
+        .string()
+        .min(6, t("changePassword.form.newPassword.validation.min")),
+      password_confirmation: z
+        .string()
+        .min(6, t("changePassword.form.confirmPassword.validation.min")),
+    })
+    .refine((data) => data.password === data.password_confirmation, {
+      message: t("changePassword.form.confirmPassword.validation.match"),
+      path: ["password_confirmation"],
+    });
+
+  /* ---------------- form ---------------- */
   const form = useForm({
     resolver: zodResolver(changePasswordSchema),
     defaultValues: {
@@ -45,28 +54,27 @@ const ChangePasswordModal = ({ open, onClose }) => {
     },
   });
 
+  /* ---------------- mutation ---------------- */
   const changePasswordMutation = useMutation({
     mutationFn: updateProfile,
     onSuccess: () => {
-      alert("تم تغيير كلمة المرور بنجاح");
-      // toast.success("تم تغيير كلمة المرور بنجاح");
+      alert(t("changePassword.messages.success"));
       form.reset();
-      onClose(); // 🔴 يقفل المودال
+      onClose();
       setErrorMsg("");
     },
     onError: (error) => {
       setErrorMsg(error?.response?.data?.message);
-      // toast.error(error?.response?.data?.message || "حدث خطأ");
     },
   });
 
+  /* ---------------- submit ---------------- */
   const onSubmit = (data) => {
     changePasswordMutation.mutate({
       current_password: data.current_password,
       password: data.password,
       password_confirmation: data.password_confirmation,
     });
-    console.log("Change Password Data:", data);
   };
 
   return (
@@ -78,9 +86,9 @@ const ChangePasswordModal = ({ open, onClose }) => {
         }}
       >
         <DialogHeader className="text-center">
-          <DialogDescription></DialogDescription>
+          <DialogDescription />
           <DialogTitle className="text-xl text-center">
-            تغيير كلمة المرور
+            {t("changePassword.title")}
           </DialogTitle>
         </DialogHeader>
 
@@ -93,7 +101,7 @@ const ChangePasswordModal = ({ open, onClose }) => {
             <MainInput
               control={form.control}
               name="current_password"
-              label="كلمة المرور الحالية"
+              label={t("changePassword.form.currentPassword.label")}
               type="password"
               icon={<Lock size={18} />}
             />
@@ -101,7 +109,7 @@ const ChangePasswordModal = ({ open, onClose }) => {
             <MainInput
               control={form.control}
               name="password"
-              label="كلمة المرور الجديدة"
+              label={t("changePassword.form.newPassword.label")}
               type="password"
               icon={<Lock size={18} />}
             />
@@ -109,7 +117,7 @@ const ChangePasswordModal = ({ open, onClose }) => {
             <MainInput
               control={form.control}
               name="password_confirmation"
-              label="تأكيد كلمة المرور الجديدة"
+              label={t("changePassword.form.confirmPassword.label")}
               type="password"
               icon={<Lock size={18} />}
             />
@@ -121,8 +129,8 @@ const ChangePasswordModal = ({ open, onClose }) => {
                 disabled={changePasswordMutation.isPending}
               >
                 {changePasswordMutation.isPending
-                  ? "جاري التغيير..."
-                  : "تغيير كلمة المرور"}
+                  ? t("changePassword.buttons.submitting")
+                  : t("changePassword.buttons.submit")}
               </Button>
 
               <Button
@@ -134,7 +142,7 @@ const ChangePasswordModal = ({ open, onClose }) => {
                   onClose();
                 }}
               >
-                تراجع
+                {t("changePassword.buttons.cancel")}
               </Button>
             </DialogFooter>
 

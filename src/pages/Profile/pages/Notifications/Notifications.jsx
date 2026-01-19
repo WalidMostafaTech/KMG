@@ -1,13 +1,17 @@
 import EmptyDataSection from "@/components/commonSections/EmptyDataSection";
 import NotificationsSkeleton from "@/components/Loading/SkeletonLoading/NotificationsSkeleton";
+
 import {
   getNotifications,
   readNotification,
 } from "@/services/notificationsServices";
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Bell } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const Notifications = () => {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
 
   const { data: notifications, isLoading } = useQuery({
@@ -18,7 +22,6 @@ const Notifications = () => {
   const { mutate: markAsRead } = useMutation({
     mutationFn: readNotification,
     onSuccess: () => {
-      // إعادة جلب الإشعارات بعد التحديث
       queryClient.invalidateQueries(["notifications"]);
     },
   });
@@ -40,16 +43,16 @@ const Notifications = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold">الاشعارات</h2>
+        <h2 className="text-2xl font-bold">{t("notifications.title")}</h2>
         <p className="text-muted-foreground text-sm">
-          اطلع على الاشعارات الخاصة بك
+          {t("notifications.subtitle")}
         </p>
       </div>
 
       {isLoading ? (
         <NotificationsSkeleton />
       ) : notifications?.items?.length === 0 ? (
-        <EmptyDataSection msg="لا توجد إشعارات حالياً." />
+        <EmptyDataSection msg={t("notifications.empty")} />
       ) : (
         <div className="flex flex-col gap-4">
           {notifications?.items?.map((notification) => (
