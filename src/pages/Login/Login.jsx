@@ -60,7 +60,6 @@ const Login = () => {
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-4 w-full"
-          dir="rtl"
         >
           <MainInput
             control={form.control}

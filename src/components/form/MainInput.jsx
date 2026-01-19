@@ -18,7 +18,6 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
-import { useSelector } from "react-redux";
 
 const MainInput = ({
   control,
@@ -32,11 +31,10 @@ const MainInput = ({
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === "password";
-    const { lang } = useSelector((state) => state.language);
 
 
   return (
-    <div dir={lang === "ar" ? "rtl" : "ltr"}>
+    <div>
       <FormField
         control={control}
         name={name}

@@ -1,11 +1,13 @@
 import { useTranslation } from "react-i18next";
+import logo from "@/assets/images/logo.png";
 
 const ChatHeader = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="px-4 py-3 border-b border-white/10 text-white font-semibold">
-      {t("chatHeader.title")}
+    <div className="py-3 border-b text-white flex items-center gap-2">
+      <img src={logo} alt="logo" className="w-18 border-e-2 border-white pe-2" />
+      <p className="font-bold text-xl">{t("chatHeader.admin")}</p>
     </div>
   );
 };

@@ -16,7 +16,7 @@ const Hero = ({ data = [], isLoading }) => {
   if (!data) return null;
 
   return (
-    <section className="container py-10">
+    <section className="container py-6 lg:py-10">
       <div className="h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] rounded-3xl overflow-hidden relative">
         <Swiper
           dir={lang === "ar" ? "rtl" : "ltr"}

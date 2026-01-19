@@ -16,7 +16,7 @@ const ProductsPage = ({ products = [], meta, currentPage, onPageChange }) => {
 
   return (
     <article className="container py-6 lg:py-10 space-y-6">
-      <section className="flex flex-col md:flex-row justify-center gap-8 lg:gap-16">
+      <section className="flex flex-col md:flex-row justify-center gap-8">
         <OffersList
           onOfferClick={handleOfferClick}
           currentOffer={currentOffer}

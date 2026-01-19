@@ -4,7 +4,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import MainInput from "@/components/form/MainInput";
 import { Button } from "@/components/ui/button";
@@ -24,7 +23,7 @@ import FormSuccess from "@/components/form/FormSuccess";
 import FormError from "@/components/form/FormError";
 import { useTranslation } from "react-i18next";
 
-const ContactUsModal = () => {
+const ContactUsModal = ({ open, onClose }) => {
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const { t } = useTranslation();
@@ -70,13 +69,7 @@ const ContactUsModal = () => {
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <button className="text-sm underline hover:text-primary transition cursor-pointer">
-          {t("ContactUsModal.trigger")}
-        </button>
-      </DialogTrigger>
-
+    <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-center">

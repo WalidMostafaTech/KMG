@@ -169,7 +169,7 @@ const HeaderAction = () => {
             />
           </DropdownMenuTrigger>
 
-          <DropdownMenuContent align="end" dir={lang === "ar" ? "rtl" : "ltr"}>
+          <DropdownMenuContent align="end" dir={lang === "ar" ? "rtl" : "ltr"} className={`w-52`}>
             <DropdownMenuLabel className="flex items-center gap-2">
               <UserAvatar name={profile?.name} image={profile?.image} />
               <h3 className="font-semibold">{profile?.name}</h3>

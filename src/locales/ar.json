@@ -61,7 +61,6 @@
   },
 
   "ContactUsModal": {
-    "trigger": "اتصل بنا",
     "title": "تواصل معنا",
 
     "fields": {
@@ -98,7 +97,8 @@
 
   "footer": {
     "joinPartner": "انضم كاشريك",
-    "refundPolicy": "سياسة الاسترداد"
+    "refundPolicy": "سياسة الاسترداد",
+    "contactUs": "اتصل بنا"
   },
 
   "headerAction": {
@@ -126,7 +126,7 @@
   },
 
   "chatHeader": {
-    "title": "KMG | دعم فني"
+    "admin": "أدمن"
   },
 
   "chatMsgs": {
@@ -213,6 +213,10 @@
     "totalPrice": "السعر الاجمالى",
     "serviceFee": "مصاريف الخدمة",
     "finalPrice": "السعر النهائى"
+  },
+
+  "discoverByPlatform": {
+    "title": "استكشاف حسب المنصات"
   },
 
   "orderMethod": {

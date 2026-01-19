@@ -6,9 +6,12 @@ import "swiper/css";
 import SwiperNavigation from "@/components/common/SwiperNavigation";
 import { useSelector } from "react-redux";
 import TestimonialsSkeleton from "@/components/Loading/SkeletonLoading/TestimonialsSkeleton";
+import { useTranslation } from "react-i18next";
 
 const DiscoverByPlatform = ({ data = [], isLoading }) => {
   const { lang } = useSelector((state) => state.language);
+
+  const { t } = useTranslation();
 
   if (isLoading) {
     return <TestimonialsSkeleton />;
@@ -18,7 +21,7 @@ const DiscoverByPlatform = ({ data = [], isLoading }) => {
 
   return (
     <section className="sectionPadding container">
-      <SectionTitle title={"استكشاف حسب المنصات"} />
+      <SectionTitle title={t("discoverByPlatform.title")} />
 
       <Swiper
         dir={lang === "ar" ? "rtl" : "ltr"}

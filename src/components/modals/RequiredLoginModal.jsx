@@ -39,7 +39,7 @@ const RequiredLoginModal = ({ open, onClose }) => {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex flex-wrap gap-2 mt-4" dir="rtl">
+        <div className="flex flex-wrap gap-2 mt-4">
           <Button onClick={handleLogin} className="flex-1">
             {t("requiredLoginModal.login")}
           </Button>

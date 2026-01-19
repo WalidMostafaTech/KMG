@@ -26,7 +26,7 @@ const PaymentCard = ({ currentOffer }) => {
   if (!currentOffer) return null;
 
   return (
-    <div className="flex flex-col gap-4 card w-full md:max-w-xs h-fit">
+    <div className="flex flex-col gap-4 card w-full md:min-w-xs md:max-w-sm h-fit">
       <div>
         <h3 className="text-lg font-bold mb-2">{currentOffer.name}</h3>
 

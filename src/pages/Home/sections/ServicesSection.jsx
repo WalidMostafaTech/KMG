@@ -31,25 +31,25 @@ const ServicesSection = () => {
     {
       id: 2,
       title: t("servicesSection.subscriptions"),
-      link: "/subscriptions",
+      link: "subscriptions",
       items: servicesData?.subscriptions || [],
     },
     {
       id: 3,
       title: t("servicesSection.topUp"),
-      link: "/top_up",
+      link: "top_up",
       items: servicesData?.top_up || [],
     },
     {
       id: 4,
       title: t("servicesSection.giftCards"),
-      link: "/gift_cards",
+      link: "gift_cards",
       items: servicesData?.gift_cards || [],
     },
     {
       id: 5,
       title: t("servicesSection.addGameToAccount"),
-      link: "/add_game_to_account",
+      link: "add_game_to_account",
       items: servicesData?.add_game_to_account || [],
     },
   ];
@@ -66,7 +66,7 @@ const ServicesSection = () => {
                 className="flex items-center gap-1 group hover:underline"
               >
                 {t("servicesSection.seeMore")}
-                <ChevronLeft className="group-hover:-translate-x-2 ltr:group-hover:translate-x-2 transition-all ltr:rotate-180" />
+                <ChevronLeft className="group-hover:-translate-x-1 ltr:group-hover:translate-x-1 transition-all ltr:rotate-180" />
               </Link>
             </div>
 

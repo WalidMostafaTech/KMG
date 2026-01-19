@@ -20,7 +20,7 @@ const ServicesAccountCard = ({ item }) => {
         />
       </div>
 
-      <p>{item.title}</p>
+      <h3 className="font-semibold line-clamp-2">{item.title}</h3>
 
       <div className="flex flex-col gap-1 text-sm">
         <div className="flex items-center gap-2">
@@ -48,7 +48,7 @@ const ServicesAccountCard = ({ item }) => {
         </div>
       </div>
 
-      <Link to={`/games/accounts/details/${item.id}`}>
+      <Link to={`/games/accounts/details/${item.slug}`} className="mt-auto">
         <Button className="w-full">{t("ServicesAccountCard.buyNow")}</Button>
       </Link>
     </div>

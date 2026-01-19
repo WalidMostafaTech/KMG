@@ -49,24 +49,34 @@ const ChatMsgs = ({ messages, isLoading }) => {
 
     return (
       <div className="bg-black/20 rounded-lg p-3 space-y-2 mt-2">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col md:flex-row items-center gap-2">
           {product?.game_icon && (
-            <img
-              src={product.game_icon}
-              alt={product.title}
-              className="w-10 h-10 rounded object-cover"
-            />
+            <div className="w-full h-24 md:w-10 md:h-10 rounded overflow-hidden">
+              <img
+                src={product.game_icon}
+                alt={product.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
           )}
           <div className="flex-1">
-            <p className="text-sm font-semibold">{product?.title}</p>
-            <p className="text-xs text-white/70 wrap-break-word">
-              كود الطلب: {order.order_code}
-            </p>
+            <p className="text-sm font-semibold max-w-xs">{product?.title}</p>
+            <div className="text-xs text-white/70 flex flex-wrap items-center gap-1">
+              <p>كود الطلب:</p>
+              <span className="font-semibold wrap-break-word">
+                {order.order_code}
+              </span>
+            </div>
           </div>
         </div>
 
         <div className="flex items-center justify-between text-xs">
-          <span className="text-white/70">السعر: {order.total_price} جنيه</span>
+          <div className="text-white/70 flex flex-wrap items-center gap-1">
+            <p>السعر:</p>
+            <span className="font-semibold wrap-break-word">
+              {order.total_price}
+            </span>
+          </div>
           <span
             className={`px-2 py-1 rounded ${
               order.status === "pending"
@@ -107,7 +117,7 @@ const ChatMsgs = ({ messages, isLoading }) => {
 
   if (isLoading) {
     return (
-      <div className="flex-1 flex flex-col gap-3 px-2 py-4">
+      <div className="flex-1 flex flex-col items-end gap-3 px-2 py-4">
         <Skeleton className="h-20 w-1/4 rounded-xl" />
         <Skeleton className="h-30 w-1/2 rounded-xl" />
         <Skeleton className="h-40 w-2/3 rounded-xl" />
@@ -142,7 +152,7 @@ const ChatMsgs = ({ messages, isLoading }) => {
             }`}
           >
             <div
-              className={`max-w-[70%] rounded-2xl px-4 py-2 space-y-2 ${
+              className={`max-w-[80%] rounded-2xl px-4 py-2 space-y-2 ${
                 msg.from === "user"
                   ? "bg-primary text-white rounded-ee"
                   : "bg-muted text-white rounded-es"

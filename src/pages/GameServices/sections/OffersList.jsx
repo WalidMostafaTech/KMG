@@ -10,12 +10,12 @@ const OffersList = ({
 }) => {
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 h-fit">
+      <div className="flex flex-wrap justify-center gap-4 h-fit">
         {offers?.map((item) => (
           <div
             key={item.id}
             onClick={() => onOfferClick(item)}
-            className={`card flex flex-col items-center text-center gap-2 cursor-pointer hover:scale-105 duration-200 ${
+            className={`card min-w-[140px] flex flex-col items-center text-center gap-2 cursor-pointer hover:scale-102 duration-200 ${
               item?.id === currentOffer?.id ? "border-primary border-2" : ""
             }`}
           >

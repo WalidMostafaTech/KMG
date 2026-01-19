@@ -23,22 +23,30 @@ const OffersFilter = ({ filters, setFilters, onApply, onReset, service }) => {
         {service === "accounts" && (
           <>
             {/* نطاق السعر */}
-            <div className="rounded-xl bg-input p-4 col-span-2">
-              <p className="mb-3 text-sm font-medium">
-                {t("OffersFilter.priceRange")}
-              </p>
+            <div className="space-y-3 rounded-xl bg-input p-4 col-span-2">
+              <div className="flex justify-between text-xs">
+                <span>
+                  {t("OffersFilter.from")} {filters.min_price}
+                </span>
+                <span>{t("OffersFilter.priceRange")}</span>
+                <span>
+                  {t("OffersFilter.to")} {filters.max_price}
+                </span>
+              </div>
 
-              <PriceRangeFilter
+              <Slider
+                min={0}
+                max={1000}
+                step={10}
                 value={[filters.min_price, filters.max_price]}
-                onChange={([min, max]) =>
+                onValueChange={([min, max]) =>
                   setFilters((prev) => ({
                     ...prev,
                     min_price: min,
                     max_price: max,
                   }))
                 }
-                min={0}
-                max={1000}
+                className="w-full"
               />
             </div>
 
@@ -142,29 +150,3 @@ const OffersFilter = ({ filters, setFilters, onApply, onReset, service }) => {
 };
 
 export default OffersFilter;
-
-const PriceRangeFilter = ({ value, onChange, min = 0, max = 1000 }) => {
-  const { t } = useTranslation();
-
-  return (
-    <div className="space-y-3">
-      <div className="flex justify-between text-sm text-muted-foreground">
-        <span>
-          {t("OffersFilter.from")} {value[0]}
-        </span>
-        <span>
-          {t("OffersFilter.to")} {value[1]}
-        </span>
-      </div>
-
-      <Slider
-        min={min}
-        max={max}
-        step={10}
-        value={value}
-        onValueChange={onChange}
-        className="w-full"
-      />
-    </div>
-  );
-};

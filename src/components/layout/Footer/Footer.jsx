@@ -13,8 +13,11 @@ import { getFooter } from "@/services/mainServices";
 import { useQuery } from "@tanstack/react-query";
 import FooterSkeleton from "@/components/Loading/SkeletonLoading/FooterSkeleton";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
 
 const Footer = () => {
+  const [openContactModal, setOpenContactModal] = useState(false);
+
   const { t } = useTranslation();
 
   const { data: footerData, isLoading } = useQuery({
@@ -96,7 +99,13 @@ const Footer = () => {
           >
             {t("footer.refundPolicy")}
           </Link>
-          <ContactUsModal />
+
+          <button
+            onClick={() => setOpenContactModal(true)}
+            className="text-sm underline hover:text-primary transition cursor-pointer"
+          >
+            {t("footer.contactUs")}
+          </button>
         </div>
 
         <div className="flex items-center gap-4">
@@ -119,6 +128,11 @@ const Footer = () => {
       <div className="py-4 border-t">
         <p></p>
       </div>
+
+      <ContactUsModal
+        open={openContactModal}
+        onClose={() => setOpenContactModal(false)}
+      />
     </footer>
   );
 };

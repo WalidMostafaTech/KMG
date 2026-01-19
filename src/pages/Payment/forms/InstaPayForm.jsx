@@ -70,11 +70,7 @@ const InstaPayForm = ({ cancelPayment, currentPayment, state }) => {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-4 w-full"
-        dir="rtl"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
         {currentPayment.transfer_number && (
           <div className="flex flex-col gap-2">
             <p className="font-bold">{t("InstaPayForm.transferNumber")}</p>
@@ -103,12 +99,6 @@ const InstaPayForm = ({ cancelPayment, currentPayment, state }) => {
         <ImageInput control={form.control} name="transfer_image" />
 
         <div className="flex items-center gap-2">
-          <Button type="submit" className="flex-1" disabled={isPending}>
-            {isPending
-              ? t("InstaPayForm.confirming")
-              : t("InstaPayForm.confirmPayment")}
-          </Button>
-
           <Button
             type="button"
             variant="outline"
@@ -116,6 +106,12 @@ const InstaPayForm = ({ cancelPayment, currentPayment, state }) => {
             onClick={cancelPayment}
           >
             {t("InstaPayForm.cancel")}
+          </Button>
+
+          <Button type="submit" className="flex-1" disabled={isPending}>
+            {isPending
+              ? t("InstaPayForm.confirming")
+              : t("InstaPayForm.confirmPayment")}
           </Button>
         </div>
 

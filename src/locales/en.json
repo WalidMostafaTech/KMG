@@ -61,7 +61,6 @@
   },
 
   "ContactUsModal": {
-    "trigger": "Contact us",
     "title": "Get in touch",
 
     "fields": {
@@ -98,7 +97,8 @@
 
   "footer": {
     "joinPartner": "Join as a Partner",
-    "refundPolicy": "Refund Policy"
+    "refundPolicy": "Refund Policy",
+    "contactUs": "Contact Us"
   },
 
   "headerAction": {
@@ -126,7 +126,7 @@
   },
 
   "chatHeader": {
-    "title": "KMG | Support"
+    "admin": "Admin"
   },
 
   "chatMsgs": {
@@ -213,6 +213,10 @@
     "minutes": "mins",
     "serviceFee": "Service Fee",
     "finalPrice": "Final Price"
+  },
+
+  "discoverByPlatform": {
+    "title": "Discover By Platform"
   },
 
   "orderMethod": {

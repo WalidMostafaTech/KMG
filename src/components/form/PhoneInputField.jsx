@@ -9,7 +9,6 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { useSelector } from "react-redux";
 
 const PhoneInputField = ({ control, name, label }) => {
   useEffect(() => {
@@ -81,11 +80,8 @@ const PhoneInputField = ({ control, name, label }) => {
     };
   }, []);
 
-      const { lang } = useSelector((state) => state.language);
-
-
   return (
-    <div dir={lang === "ar" ? "rtl" : "ltr"}>
+    <div>
       <FormField
         control={control}
         name={name}

@@ -92,10 +92,6 @@ const ProfileSideBar = () => {
           </DialogHeader>
 
           <DialogFooter className="flex gap-3 pt-2">
-            <Button type="submit" className="flex-1" onClick={handleLogout}>
-              {t("ProfileSideBar.logout")}
-            </Button>
-
             <Button
               type="button"
               variant="outline"
@@ -103,6 +99,10 @@ const ProfileSideBar = () => {
               onClick={() => setShowLogout(false)}
             >
               {t("ProfileSideBar.cancel")}
+            </Button>
+
+            <Button type="submit" className="flex-1" onClick={handleLogout}>
+              {t("ProfileSideBar.logout")}
             </Button>
           </DialogFooter>
         </DialogContent>
