@@ -101,13 +101,16 @@
     "contactUs": "اتصل بنا"
   },
 
-  "headerAction": {
-    "noNotifications": "لا توجد إشعارات",
-    "moreNotifications": "المزيد من التنبيهات",
+  "profileSide": {
     "profile": "الملف الشخصي",
     "orders": "الطلبات",
     "logout": "تسجيل الخروج",
     "login": "تسجيل الدخول"
+  },
+
+  "notificationsPopUp": {
+    "noNotifications": "لا توجد إشعارات",
+    "moreNotifications": "المزيد من التنبيهات"
   },
 
   "headerSearch": {
@@ -128,6 +131,13 @@
     "description": "يجب عليك تسجيل الدخول لتتمكن من المواصلة",
     "login": "تسجيل دخول",
     "createAccount": "إنشاء حساب"
+  },
+
+  "requiredVerifyEmailModal": {
+    "title": "بريدك الإلكتروني غير مُفعّل!",
+    "description": "يجب تفعيل بريدك الإلكتروني للوصول إلى هذه الصفحة",
+    "goToVerify": "تفعيل البريد الإلكتروني",
+    "cancel": "تراجع"
   },
 
   "chatHeader": {

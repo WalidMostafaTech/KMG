@@ -78,7 +78,7 @@ const HeaderSearch = () => {
           <button
             key={game.id}
             onClick={() => handleGameClick(game)}
-            className={`w-full flex items-center gap-3 p-3 bg-muted rounded-md hover:brightness-90 transition-colors`}
+            className={`w-full flex items-center gap-3 p-3 bg-muted rounded-md hover:brightness-90 transition-colors cursor-pointer`}
           >
             <img
               src={game.icon || game.image}
@@ -99,21 +99,19 @@ const HeaderSearch = () => {
 
   return (
     <>
-      <div className="flex-1">
+      <div className="lg:flex-1">
         {/* Mobile Search Button */}
-        <div className="lg:hidden flex justify-end">
-          <Button
-            variant="outline"
-            size="icon"
-            className="rounded-full"
-            onClick={() => setIsModalOpen(true)}
-          >
-            <Search />
-          </Button>
-        </div>
+        <Button
+          variant="outline"
+          size="icon"
+          className="rounded-full lg:hidden"
+          onClick={() => setIsModalOpen(true)}
+        >
+          <Search />
+        </Button>
 
         {/* Desktop Search */}
-        <div className="hidden lg:block relative">
+        <div className="hidden lg:block relative px-8">
           <div className="w-full flex items-center gap-2 bg-input py-2 px-4 rounded-full">
             <Search className="text-gray-500" />
             <input
@@ -141,7 +139,7 @@ const HeaderSearch = () => {
 
       {/* Mobile Search Modal */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="fixed top-4 left-1/2 -translate-x-1/2 translate-y-0 sm:max-w-md w-[calc(100%-2rem)] rounded-xl">
+        <DialogContent className="fixed top-4 left-1/2 -translate-x-1/2 translate-y-0 max-w-[calc(100%-2rem)]! rounded-xl">
           <DialogHeader>
             <DialogTitle className="text-center"></DialogTitle>
           </DialogHeader>

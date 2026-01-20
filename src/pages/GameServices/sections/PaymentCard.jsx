@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import ServicesPaymentCards from "@/components/commonSections/ServicesPaymentCards";
-import PaymentModal from "@/components/commonSections/PaymentModal";
+import PaymentModal from "@/components/modals/PaymentModal";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";

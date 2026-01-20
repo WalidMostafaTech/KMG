@@ -1,0 +1,59 @@
+import { useNavigate } from "react-router";
+import { Button } from "@/components/ui/button";
+import { MessageSquareText } from "lucide-react";
+import LanguageSwitcher from "./LanguageSwitcher";
+import { useDispatch, useSelector } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
+import { getUnreadCount } from "@/services/mainServices";
+import NotificationsPopUp from "./NotificationsPopUp";
+import NotificationsBadge from "@/components/common/NotificationsBadge";
+import ProfileSide from "./ProfileSide";
+import HeaderSearch from "./HeaderSearch";
+import { openModal } from "@/store/modals/modalsSlice";
+
+const HeaderActions = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { profile } = useSelector((state) => state.profile);
+
+  const { data: unreadChats = 0 } = useQuery({
+    queryKey: ["unread-count", "chat"],
+    queryFn: () => getUnreadCount("chat"),
+    enabled: !!profile,
+  });
+
+  const handleGoToChat = () => {
+    if (!profile.is_verified) {
+      dispatch(openModal("requiredVerifyEmailModal"));
+    } else navigate("/chat");
+  };
+
+  return (
+    <div className="flex items-center justify-end gap-2 flex-1">
+      <HeaderSearch />
+
+      {profile && (
+        <>
+          <Button
+            variant="outline"
+            size="icon"
+            className="rounded-full relative"
+            onClick={handleGoToChat}
+          >
+            <MessageSquareText />
+            <NotificationsBadge count={unreadChats} />
+          </Button>
+
+          <NotificationsPopUp />
+        </>
+      )}
+
+      <LanguageSwitcher />
+
+      <ProfileSide />
+    </div>
+  );
+};
+
+export default HeaderActions;

@@ -31,9 +31,9 @@ const LogOutModal = () => {
   };
 
   return (
-    <Dialog open={logoutModal} onOpenChange={() => onClose()}>
+    <Dialog open={logoutModal} onOpenChange={onClose}>
       <DialogContent showCloseButton={false} className="sm:max-w-md">
-        <DialogHeader className="text-center">
+        <DialogHeader>
           <DialogDescription>
             <img src={logoutIcon} alt="logout" className="mx-auto" />
           </DialogDescription>
@@ -42,25 +42,23 @@ const LogOutModal = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogFooter className="flex gap-3 pt-2">
+        <DialogFooter>
           <Button
-            type="button"
-            variant="outline"
-            className="flex-1 rounded-full"
-            disabled={logOutLoading}
-            onClick={onClose}
-          >
-            {t("logOutModal.cancel")}
-          </Button>
-
-          <Button
-            type="submit"
             className="flex-1"
             disabled={logOutLoading}
             onClick={handleLogout}
           >
             {logOutLoading && <Loader2Icon className="size-4 animate-spin" />}
             {t("logOutModal.logout")}
+          </Button>
+
+          <Button
+            variant="outline"
+            className="flex-1 rounded-full"
+            disabled={logOutLoading}
+            onClick={onClose}
+          >
+            {t("logOutModal.cancel")}
           </Button>
         </DialogFooter>
       </DialogContent>

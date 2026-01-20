@@ -13,50 +13,49 @@ import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "@/store/modals/modalsSlice";
 import warningIcon from "@/assets/icons/Warning-icon.png";
 
-const RequiredLoginModal = () => {
+const RequiredVerifyEmailModal = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { requiredLoginModal } = useSelector((state) => state.modals);
+  const { requiredVerifyEmailModal } = useSelector((state) => state.modals);
 
   const onClose = () => {
-    dispatch(closeModal("requiredLoginModal"));
+    dispatch(closeModal("requiredVerifyEmailModal"));
   };
 
-  const handleCreateAccount = () => {
-    navigate("/register");
+  const handleCancel = () => {
     onClose();
   };
 
-  const handleLogin = () => {
-    navigate("/login");
+  const handleVerify = () => {
+    navigate("/verify-email");
     onClose();
   };
 
   return (
-    <Dialog open={requiredLoginModal} onOpenChange={onClose}>
+    <Dialog open={requiredVerifyEmailModal} onOpenChange={onClose}>
       <DialogContent showCloseButton={false} className="sm:max-w-md">
         <DialogHeader>
           <img src={warningIcon} alt="logout" className="mx-auto w-44" />
           <DialogTitle className="text-center">
-            {t("requiredLoginModal.title")}
+            {t("requiredVerifyEmailModal.title")}
           </DialogTitle>
           <DialogDescription className="text-center">
-            {t("requiredLoginModal.description")}
+            {t("requiredVerifyEmailModal.description")}
           </DialogDescription>
         </DialogHeader>
 
         <DialogFooter>
-          <Button className="flex-1" onClick={handleLogin}>
-            {t("requiredLoginModal.login")}
+          <Button className="flex-1" onClick={handleVerify}>
+            {t("requiredVerifyEmailModal.goToVerify")}
           </Button>
 
           <Button
             variant="outline"
             className="flex-1 rounded-full"
-            onClick={handleCreateAccount}
+            onClick={handleCancel}
           >
-            {t("requiredLoginModal.createAccount")}
+            {t("requiredVerifyEmailModal.cancel")}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -64,4 +63,4 @@ const RequiredLoginModal = () => {
   );
 };
 
-export default RequiredLoginModal;
+export default RequiredVerifyEmailModal;

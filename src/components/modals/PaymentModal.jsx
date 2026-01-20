@@ -9,12 +9,13 @@ import {
 
 import { Form } from "@/components/ui/form";
 import MainInput from "@/components/form/MainInput";
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { openModal } from "@/store/modals/modalsSlice";
 
 const PaymentModal = ({
   open,
@@ -41,19 +42,29 @@ const PaymentModal = ({
     },
   });
 
-  const onSubmit = (data) => {
-    navigate("/payment", {
-      state: {
-        product_id,
-        product_price,
-        login_data: data.login_data,
-        password: data.password,
-        ...(gift_code && { gift_code: data.gift_code }),
-      },
-    });
+  const { profile } = useSelector((state) => state.profile);
+  const dispatch = useDispatch();
 
+  const handleCancel = () => {
     form.reset();
     onClose();
+  };
+
+  const onSubmit = (data) => {
+    if (!profile.is_verified) {
+      dispatch(openModal("requiredVerifyEmailModal"));
+    } else
+      navigate("/payment", {
+        state: {
+          product_id,
+          product_price,
+          login_data: data.login_data,
+          password: data.password,
+          ...(gift_code && { gift_code: data.gift_code }),
+        },
+      });
+
+    handleCancel();
   };
 
   return (
@@ -88,7 +99,7 @@ const PaymentModal = ({
               />
             )}
 
-            <DialogFooter className="flex gap-3 pt-2">
+            <DialogFooter>
               <Button type="submit" className="flex-1">
                 {t("PaymentModal.save")}
               </Button>
@@ -97,10 +108,7 @@ const PaymentModal = ({
                 type="button"
                 variant="outline"
                 className="flex-1 rounded-full"
-                onClick={() => {
-                  form.reset();
-                  onClose();
-                }}
+                onClick={handleCancel}
               >
                 {t("PaymentModal.cancel")}
               </Button>

@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   logoutModal: false,
   requiredLoginModal: false,
+  requiredVerifyEmailModal: false,
 };
 
 const modalsSlice = createSlice({

@@ -101,12 +101,16 @@
     "contactUs": "Contact Us"
   },
 
-  "headerAction": {
-    "noNotifications": "No notifications",
-    "moreNotifications": "More notifications",
+  "profileSide": {
     "profile": "Profile",
     "orders": "Orders",
-    "logout": "Logout"
+    "logout": "Logout",
+    "login": "Login"
+  },
+
+  "notificationsPopUp": {
+    "noNotifications": "No notifications",
+    "moreNotifications": "More notifications"
   },
 
   "headerSearch": {
@@ -118,7 +122,8 @@
   "logOutModal": {
     "logoutConfirm": "Are you sure you want to logout?",
     "cancel": "Cancel",
-    "login": "Login"
+    "login": "Login",
+    "logout": "Logout"
   },
 
   "requiredLoginModal": {
@@ -126,6 +131,13 @@
     "description": "You must login to continue",
     "login": "Login",
     "createAccount": "Create Account"
+  },
+
+  "requiredVerifyEmailModal": {
+    "title": "Your email is not verified!",
+    "description": "You must verify your email to access this page",
+    "goToVerify": "Verify Email",
+    "cancel": "Cancel"
   },
 
   "chatHeader": {
