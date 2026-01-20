@@ -12,34 +12,18 @@ import { FiShoppingCart } from "react-icons/fi";
 import { IoIosLogOut } from "react-icons/io";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/images/logo.png";
-import logoutIcon from "@/assets/icons/logout-icon.png";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { useDispatch, useSelector } from "react-redux";
 import { Logs } from "lucide-react";
 import { useState } from "react";
-import { logoutAct } from "@/store/profile/profileSlice";
 import { useTranslation } from "react-i18next";
+import { openModal } from "@/store/modals/modalsSlice";
 
 const ProfileSideBar = () => {
   const { t } = useTranslation();
   const [openSideBar, setOpenSideBar] = useState(false);
-  const [showLogout, setShowLogout] = useState(false);
   const { lang } = useSelector((state) => state.language);
-
   const dispatch = useDispatch();
-
-  const handleLogout = () => {
-    dispatch(logoutAct());
-  };
 
   const sideContent = (
     <div className="flex flex-col gap-2">
@@ -73,40 +57,13 @@ const ProfileSideBar = () => {
         {t("ProfileSideBar.notifications")}
       </NavLink>
 
-      <Dialog open={showLogout} onOpenChange={setShowLogout}>
-        <DialogTrigger asChild>
-          <button className="rounded-full sideBarLink">
-            <IoIosLogOut />
-            {t("ProfileSideBar.logout")}
-          </button>
-        </DialogTrigger>
-
-        <DialogContent showCloseButton={false} className="sm:max-w-md">
-          <DialogHeader className="text-center">
-            <DialogDescription>
-              <img src={logoutIcon} alt="logout" className="mx-auto" />
-            </DialogDescription>
-            <DialogTitle className="text-center">
-              {t("ProfileSideBar.logoutConfirmTitle")}
-            </DialogTitle>
-          </DialogHeader>
-
-          <DialogFooter className="flex gap-3 pt-2">
-            <Button
-              type="button"
-              variant="outline"
-              className="flex-1 rounded-full"
-              onClick={() => setShowLogout(false)}
-            >
-              {t("ProfileSideBar.cancel")}
-            </Button>
-
-            <Button type="submit" className="flex-1" onClick={handleLogout}>
-              {t("ProfileSideBar.logout")}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <button
+        onClick={() => dispatch(openModal("logoutModal"))}
+        className="rounded-full sideBarLink"
+      >
+        <IoIosLogOut />
+        {t("ProfileSideBar.logout")}
+      </button>
     </div>
   );
 

@@ -2,24 +2,23 @@ import { Button } from "@/components/ui/button";
 import ServicesPaymentCards from "@/components/commonSections/ServicesPaymentCards";
 import PaymentModal from "@/components/commonSections/PaymentModal";
 import { useState } from "react";
-import { useSelector } from "react-redux";
-import RequiredLoginModal from "@/components/modals/RequiredLoginModal";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { openModal } from "@/store/modals/modalsSlice";
 
 const PaymentCard = ({ currentOffer }) => {
   const { t } = useTranslation();
-  const [open, setOpen] = useState({
-    paymentModal: false,
-    loginModal: false,
-  });
+  const [openPaymentModal, setOpenPaymentModal] = useState(false);
 
   const { profile } = useSelector((state) => state.profile);
 
+  const dispatch = useDispatch();
+
   const handlePayment = () => {
     if (profile) {
-      setOpen({ ...open, paymentModal: true });
+      setOpenPaymentModal(true);
     } else {
-      setOpen({ ...open, loginModal: true });
+      dispatch(openModal("requiredLoginModal"));
     }
   };
 
@@ -72,15 +71,10 @@ const PaymentCard = ({ currentOffer }) => {
       <ServicesPaymentCards />
 
       <PaymentModal
-        open={open.paymentModal}
-        onClose={() => setOpen({ ...open, paymentModal: false })}
+        open={openPaymentModal}
+        onClose={() => setOpenPaymentModal(false)}
         product_id={currentOffer.id}
         product_price={currentOffer.price}
-      />
-
-      <RequiredLoginModal
-        open={open.loginModal}
-        onClose={() => setOpen({ ...open, loginModal: false })}
       />
     </div>
   );

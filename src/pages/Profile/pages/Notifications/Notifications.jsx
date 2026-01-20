@@ -33,7 +33,7 @@ const Notifications = () => {
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("ar-EG", {
+    return new Date(dateString).toLocaleDateString("en-US", {
       day: "numeric",
       month: "long",
       year: "numeric",

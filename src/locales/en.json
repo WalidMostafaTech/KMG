@@ -106,16 +106,19 @@
     "moreNotifications": "More notifications",
     "profile": "Profile",
     "orders": "Orders",
-    "logout": "Logout",
-    "logoutConfirm": "Are you sure you want to logout?",
-    "cancel": "Cancel",
-    "login": "Login"
+    "logout": "Logout"
   },
 
   "headerSearch": {
     "placeholder": "Search ...",
     "searching": "Searching...",
     "noResults": "No results found"
+  },
+
+  "logOutModal": {
+    "logoutConfirm": "Are you sure you want to logout?",
+    "cancel": "Cancel",
+    "login": "Login"
   },
 
   "requiredLoginModal": {

@@ -9,21 +9,31 @@ import { AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { closeModal } from "@/store/modals/modalsSlice";
 
-const RequiredLoginModal = ({ open, onClose }) => {
+const RequiredLoginModal = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { requiredLoginModal } = useSelector((state) => state.modals);
+
+  const onClose = () => {
+    dispatch(closeModal("requiredLoginModal"));
+  };
 
   const handleCreateAccount = () => {
     navigate("/register");
+    onClose();
   };
 
   const handleLogin = () => {
     navigate("/login");
+    onClose();
   };
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog open={requiredLoginModal} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader className="items-center space-y-4">
           <div className="w-16 h-16 rounded-full bg-red-500 flex items-center justify-center">

@@ -1,15 +1,17 @@
 import { Outlet, useLocation } from "react-router";
-import Header from "./components/layout/Header/Header";
-import Footer from "./components/layout/Footer/Footer";
+import Header from "@/components/layout/Header/Header";
+import Footer from "@/components/layout/Footer/Footer";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { getProfileAct } from "./store/profile/profileSlice";
+import { getProfileAct } from "@/store/profile/profileSlice";
 import {
   fetchCountries,
   fetchPlatforms,
   fetchProductsMinutesRange,
-} from "./store/setting/setting";
+} from "@/store/setting/setting";
 import { Toaster } from "@/components/ui/sonner";
+import LogOutModal from "@/components/modals/LogOutModal";
+import RequiredLoginModal from "@/components/modals/RequiredLoginModal";
 
 function App() {
   const { pathname } = useLocation();
@@ -37,6 +39,10 @@ function App() {
       <Footer />
 
       <Toaster position="top-center" />
+
+      {/* modals */}
+      <LogOutModal />
+      <RequiredLoginModal />
     </main>
   );
 }

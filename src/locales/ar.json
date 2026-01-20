@@ -107,8 +107,6 @@
     "profile": "الملف الشخصي",
     "orders": "الطلبات",
     "logout": "تسجيل الخروج",
-    "logoutConfirm": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
-    "cancel": "تراجع",
     "login": "تسجيل الدخول"
   },
 
@@ -116,6 +114,13 @@
     "placeholder": "بحث ...",
     "searching": "جاري البحث...",
     "noResults": "لا توجد نتائج"
+  },
+
+  "logOutModal": {
+    "logout": "تسجيل الخروج",
+    "logoutConfirm": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+    "cancel": "تراجع",
+    "login": "تسجيل الدخول"
   },
 
   "requiredLoginModal": {

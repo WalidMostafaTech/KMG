@@ -15,7 +15,7 @@ const ChatMsgs = ({ messages, isLoading }) => {
   const formatChatTime = (dateString) => {
     const date = new Date(dateString.replace(" ", "T"));
 
-    return date.toLocaleTimeString("ar-EG", {
+    return date.toLocaleTimeString("en-US", {
       hour: "2-digit",
       minute: "2-digit",
     });

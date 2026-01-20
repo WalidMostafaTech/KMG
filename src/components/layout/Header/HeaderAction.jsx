@@ -2,15 +2,6 @@ import { Link, useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Bell, MessageSquareText } from "lucide-react";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -30,28 +21,22 @@ import {
 import { useState } from "react";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutAct } from "@/store/profile/profileSlice";
 import { useQuery } from "@tanstack/react-query";
 import { getNotifications } from "@/services/notificationsServices";
 import { getUnreadCount } from "@/services/mainServices";
-import logoutIcon from "@/assets/icons/logout-icon.png";
 import { Skeleton } from "@/components/ui/skeleton";
 import NotificationsSkeleton from "@/components/Loading/SkeletonLoading/NotificationsSkeleton";
 import { useTranslation } from "react-i18next";
+import { openModal } from "@/store/modals/modalsSlice";
 
 const HeaderAction = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
+
   const [openNotifications, setOpenNotifications] = useState(false);
-  const [showLogout, setShowLogout] = useState(false);
   const { lang } = useSelector((state) => state.language);
   const { profile, loading } = useSelector((state) => state.profile);
-
-  const handleLogout = () => {
-    dispatch(logoutAct());
-  };
 
   const { data: notifications, isLoading } = useQuery({
     queryKey: ["notifications"],
@@ -72,7 +57,7 @@ const HeaderAction = () => {
   });
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("ar-EG", {
+    return new Date(dateString).toLocaleDateString("en-US", {
       day: "numeric",
       month: "long",
       year: "numeric",
@@ -196,44 +181,15 @@ const HeaderAction = () => {
 
             <DropdownMenuSeparator />
 
-            <Dialog open={showLogout} onOpenChange={setShowLogout}>
-              <DialogTrigger asChild>
-                <button className="bg-red-800/50 hover:bg-red-800/30 transition text-white py-1 px-2 w-full rounded flex items-center gap-2">
-                  <IoIosLogOut />
-                  {t("headerAction.logout")}
-                </button>
-              </DialogTrigger>
-
-              <DialogContent showCloseButton={false} className="sm:max-w-md">
-                <DialogHeader className="text-center">
-                  <DialogDescription>
-                    <img src={logoutIcon} alt="logout" className="mx-auto" />
-                  </DialogDescription>
-                  <DialogTitle className="text-center">
-                    {t("headerAction.logoutConfirm")}
-                  </DialogTitle>
-                </DialogHeader>
-
-                <DialogFooter className="flex gap-3 pt-2">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="flex-1 rounded-full"
-                    onClick={() => setShowLogout(false)}
-                  >
-                    {t("headerAction.cancel")}
-                  </Button>
-
-                  <Button
-                    type="submit"
-                    className="flex-1"
-                    onClick={handleLogout}
-                  >
-                    {t("headerAction.logout")}
-                  </Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+            <DropdownMenuItem
+              onClick={() => {
+                dispatch(openModal("logoutModal"));
+              }}
+              className="bg-red-800/50 hover:bg-red-800/30!"
+            >
+              <IoIosLogOut />
+              {t("headerAction.logout")}
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       ) : (

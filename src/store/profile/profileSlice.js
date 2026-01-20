@@ -10,10 +10,10 @@ export const getProfileAct = createAsyncThunk(
       return data;
     } catch (error) {
       return rejectWithValue(
-        error?.response?.data?.message || "Failed to load profile"
+        error?.response?.data?.message || "Failed to load profile",
       );
     }
-  }
+  },
 );
 
 export const logoutAct = createAsyncThunk(
@@ -25,15 +25,16 @@ export const logoutAct = createAsyncThunk(
       return data;
     } catch (error) {
       return rejectWithValue(
-        error?.response?.data?.message || "Failed to load profile"
+        error?.response?.data?.message || "Failed to load profile",
       );
     }
-  }
+  },
 );
 
 const initialState = {
   profile: null,
   loading: true,
+  logOutLoading: false,
   error: null,
 };
 
@@ -60,13 +61,21 @@ const profileSlice = createSlice({
       })
       .addCase(getProfileAct.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || "فشل في جلب البيانات";
+        state.error = action.payload;
       })
 
       // log out
+      .addCase(logoutAct.pending, (state) => {
+        state.logOutLoading = true;
+        state.error = null;
+      })
       .addCase(logoutAct.fulfilled, (state) => {
-        state.loading = false;
+        state.logOutLoading = false;
         state.profile = null;
+      })
+      .addCase(logoutAct.rejected, (state, action) => {
+        state.logOutLoading = false;
+        state.error = action.payload;
       });
   },
 });
