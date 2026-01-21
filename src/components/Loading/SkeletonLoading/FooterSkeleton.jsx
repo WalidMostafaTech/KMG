@@ -12,7 +12,7 @@ const FooterSkeleton = () => {
           ))}
         </div>
 
-        <img src={logo} alt="Logo" />
+        <img loading="lazy" src={logo} alt="Logo" />
 
         {/* Footer Text */}
         <div className="space-y-2 max-w-3xl w-full">

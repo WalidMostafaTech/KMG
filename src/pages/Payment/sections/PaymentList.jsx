@@ -33,6 +33,7 @@ const PaymentList = ({ onPaymentClick, currentPayment }) => {
             }`}
           >
             <img
+              loading="lazy"
               src={item.image}
               alt={item.title}
               className="max-h-[70px] object-contain"

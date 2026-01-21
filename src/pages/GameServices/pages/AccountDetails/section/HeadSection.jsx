@@ -2,42 +2,35 @@ import { Button } from "@/components/ui/button";
 import ServicesPaymentCards from "@/components/commonSections/ServicesPaymentCards";
 import PaymentModal from "@/components/modals/PaymentModal";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { openModal } from "@/store/modals/modalsSlice";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
+import useRequireAuth from "@/hooks/useRequireAuth";
 
 const HeadSection = ({ data }) => {
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
 
-  const { profile } = useSelector((state) => state.profile);
-
-  const dispatch = useDispatch();
-
   const navigate = useNavigate();
   const { t } = useTranslation();
 
+  const requireAuth = useRequireAuth();
+
   const handlePayment = (product) => {
-    if (profile) {
-      if (!profile.is_verified) {
-        dispatch(openModal("requiredVerifyEmailModal"));
-      } else
-        navigate("/payment", {
-          state: {
-            product_id: product.id,
-            product_price: product.price,
-            currency: product.currency,
-          },
-        });
-    } else {
-      dispatch(openModal("requiredLoginModal"));
-    }
+    requireAuth(() => {
+      navigate("/payment", {
+        state: {
+          product_id: product.id,
+          product_price: product.price,
+          currency: product.currency,
+        },
+      });
+    });
   };
 
   return (
     <div className="card lg:p-8 grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
       <div className="h-[300px] md:h-[400px] bg-accent overflow-hidden rounded-2xl">
         <img
+          loading="lazy"
           src={data?.offer_image}
           alt={data?.title}
           className="w-full h-full object-cover"

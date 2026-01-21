@@ -2,26 +2,20 @@ import { Button } from "@/components/ui/button";
 import ServicesPaymentCards from "@/components/commonSections/ServicesPaymentCards";
 import PaymentModal from "@/components/modals/PaymentModal";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { openModal } from "@/store/modals/modalsSlice";
 import { useNavigate } from "react-router";
+import useRequireAuth from "@/hooks/useRequireAuth";
 
-const PaymentCard = ({ currentOffer, service }) => {
+const PaymentCard = ({ currentOffer, game }) => {
   const { t } = useTranslation();
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
 
-  const { profile } = useSelector((state) => state.profile);
-
-  const dispatch = useDispatch();
-
   const navigate = useNavigate();
+  const requireAuth = useRequireAuth();
 
   const handlePayment = (product) => {
-    if (profile) {
-      if (!profile.is_verified) {
-        dispatch(openModal("requiredVerifyEmailModal"));
-      } else if (service === "gift_cards") {
+    requireAuth(() => {
+      if (game.service === "gift_cards") {
         navigate("/payment", {
           state: {
             product_id: product.id,
@@ -29,10 +23,10 @@ const PaymentCard = ({ currentOffer, service }) => {
             currency: product.currency,
           },
         });
-      } else setOpenPaymentModal(true);
-    } else {
-      dispatch(openModal("requiredLoginModal"));
-    }
+      } else {
+        setOpenPaymentModal(true);
+      }
+    });
   };
 
   if (!currentOffer) return null;
@@ -40,7 +34,13 @@ const PaymentCard = ({ currentOffer, service }) => {
   return (
     <div className="flex flex-col gap-4 card w-full md:min-w-xs md:max-w-sm h-fit">
       <div>
-        <h3 className="text-lg font-bold mb-2">{currentOffer.name}</h3>
+        <h2 className="text-xl font-bold mb-2 pb-2 border-b text-center">
+          {game.name}
+        </h2>
+
+        <h3 className="text-lg font-bold mb-2">
+          {currentOffer.title} {currentOffer.game_currency}
+        </h3>
 
         <ul className="flex flex-col gap-2 text-sm">
           <li className="flex justify-between">
@@ -60,9 +60,9 @@ const PaymentCard = ({ currentOffer, service }) => {
       </div>
 
       <div>
-        <h3 className="text-lg font-bold mb-2">
+        {/* <h3 className="text-lg font-bold mb-2">
           {t("paymentCard.orderSummary")}
-        </h3>
+        </h3> */}
         <ul className="flex flex-col divide-y-2 text-sm">
           <li className="flex justify-between gap-2 py-1 text-muted-foreground">
             <p>{t("paymentCard.deliveryTime")}</p>{" "}

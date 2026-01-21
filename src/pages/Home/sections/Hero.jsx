@@ -29,6 +29,7 @@ const Hero = ({ data = [], isLoading }) => {
           {data?.map((slide) => (
             <SwiperSlide key={slide.id}>
               <img
+                loading="lazy"
                 src={slide.web_image}
                 alt=""
                 className="w-full h-full object-cover"
@@ -50,7 +51,9 @@ const Hero = ({ data = [], isLoading }) => {
 
             .hero-swiper .swiper-pagination-bullet-active {
               background: #fff;
-              transform: scale(1.7);
+              width: 16px;
+              height: 16px;
+              transform: translateY(3px);
             }
           `}
         </style>

@@ -4,8 +4,8 @@ import PaymentCard from "../../sections/PaymentCard";
 import EmptyDataSection from "@/components/commonSections/EmptyDataSection";
 
 const ProductsPage = ({
+  game,
   products = [],
-  service,
   meta,
   currentPage,
   onPageChange,
@@ -32,7 +32,7 @@ const ProductsPage = ({
           onPageChange={onPageChange}
         />
 
-        <PaymentCard currentOffer={currentOffer} service={service} />
+        <PaymentCard currentOffer={currentOffer} game={game} />
       </section>
     </article>
   );

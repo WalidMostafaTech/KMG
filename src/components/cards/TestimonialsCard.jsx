@@ -6,6 +6,7 @@ const TestimonialsCard = ({ item }) => {
       <div className="flex items-center gap-2">
         <div className="w-12 h-12 overflow-hidden rounded-full">
           <img
+            loading="lazy"
             src={item?.image_url}
             alt={item?.name}
             className="w-full h-full object-cover"

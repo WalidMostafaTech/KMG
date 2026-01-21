@@ -5,7 +5,7 @@ import GamesNav from "@/components/commonSections/GamesNav";
 import Accounts from "./pages/Accounts/Accounts";
 import ProductsPage from "./pages/ProductsPage/ProductsPage";
 import OffersFilter from "./sections/OffersFilter";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import AccountsSkeleton from "@/components/Loading/SkeletonLoading/AccountsSkeleton";
 import { useTranslation } from "react-i18next";
 import SeoManager from "@/utils/SeoManager";
@@ -19,8 +19,9 @@ const defaultFilters = {
   max_price: 1000,
 };
 
-const GameServices = () => {
+const GameServicesContent = () => {
   const { service, id } = useParams();
+  const { t } = useTranslation();
 
   const [filters, setFilters] = useState(defaultFilters);
   const [appliedFilters, setAppliedFilters] = useState(defaultFilters);
@@ -28,14 +29,31 @@ const GameServices = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = Number(searchParams.get("page") || 1);
 
+  // Filter out account-specific filters for non-account services
+  const apiFilters = useMemo(() => {
+    if (service === "accounts") {
+      return appliedFilters;
+    }
+
+    // For non-account services, only send country_id and platform_id
+    return {
+      country_id: appliedFilters.country_id,
+      platform_id: appliedFilters.platform_id,
+      min_time: "",
+      max_time: "",
+      min_price: 0,
+      max_price: 1000,
+    };
+  }, [service, appliedFilters]);
+
   const { data: gameServicesData, isLoading } = useQuery({
-    queryKey: ["game-services", service, id, appliedFilters, currentPage],
+    queryKey: ["game-services", service, id, apiFilters, currentPage],
     queryFn: () =>
       getProductsByGameAndService({
         service,
         game_slug: id,
         page: currentPage,
-        ...appliedFilters,
+        ...apiFilters,
       }),
     enabled: !!service,
   });
@@ -54,27 +72,46 @@ const GameServices = () => {
   const game = gameServicesData?.extra?.game || null;
   const products = gameServicesData?.items || [];
 
-  const { t } = useTranslation();
+  const gameServicesToShow =
+    gameServicesData?.extra?.game?.items_count || {};
 
   const links = [
-    { id: 1, title: t("Games.list.accounts"), link: `/games/accounts/${id}` },
+    {
+      id: 1,
+      key: "accounts",
+      title: t("Games.list.accounts"),
+      link: `/games/accounts/${id}`,
+    },
     {
       id: 2,
+      key: "subscriptions",
       title: t("Games.list.subscriptions"),
       link: `/games/subscriptions/${id}`,
     },
-    { id: 3, title: t("Games.list.topUp"), link: `/games/top_up/${id}` },
+    {
+      id: 3,
+      key: "top_up",
+      title: t("Games.list.topUp"),
+      link: `/games/top_up/${id}`,
+    },
     {
       id: 4,
+      key: "gift_cards",
       title: t("Games.list.giftCards"),
       link: `/games/gift_cards/${id}`,
     },
     {
       id: 5,
+      key: "add_game_to_account",
       title: t("Games.list.addGameToAccount"),
       link: `/games/add_game_to_account/${id}`,
     },
   ];
+
+  // فلترة العناصر اللي قيمتها أكبر من صفر
+  const filteredLinks = links.filter(
+    (item) => gameServicesToShow[item.key] > 0,
+  );
 
   const handlePageChange = (page) => {
     setSearchParams({ page });
@@ -91,7 +128,7 @@ const GameServices = () => {
       />
 
       <article className="space-y-6 lg:space-y-10 pb-6">
-        <GamesNav links={links} game={game} isLoading={isLoading} />
+        <GamesNav links={filteredLinks} game={game} isLoading={isLoading} />
 
         <OffersFilter
           filters={filters}
@@ -112,8 +149,8 @@ const GameServices = () => {
           />
         ) : (
           <ProductsPage
+            game={game}
             products={products}
-            service={game?.service}
             meta={gameServicesData?.meta}
             currentPage={currentPage}
             onPageChange={handlePageChange}
@@ -122,6 +159,13 @@ const GameServices = () => {
       </article>
     </>
   );
+};
+
+const GameServices = () => {
+  const { service } = useParams();
+
+  // Reset entire component state when service changes
+  return <GameServicesContent key={service} />;
 };
 
 export default GameServices;

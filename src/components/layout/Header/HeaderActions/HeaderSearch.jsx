@@ -81,6 +81,7 @@ const HeaderSearch = () => {
             className={`w-full flex items-center gap-3 p-3 bg-muted rounded-md hover:brightness-90 transition-colors cursor-pointer`}
           >
             <img
+              loading="lazy"
               src={game.icon || game.image}
               alt={game.name}
               className="w-12 h-12 rounded-lg object-cover"

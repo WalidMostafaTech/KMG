@@ -20,6 +20,7 @@ const OffersList = ({
             }`}
           >
             <img
+              loading="lazy"
               src={item.game_icon}
               alt={item.title}
               className="max-h-[70px] object-contain"

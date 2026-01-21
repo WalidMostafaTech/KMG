@@ -195,6 +195,7 @@ const DetailsModal = ({ order_id, open, onClose }) => {
                 </DialogTitle>
                 <DialogDescription className={`mt-2`}>
                   <img
+                    loading="lazy"
                     src={orderDetails?.product?.game_image}
                     alt="order"
                     className="w-full h-[200px] md:h-[300px] object-cover rounded-xl"

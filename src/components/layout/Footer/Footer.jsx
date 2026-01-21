@@ -69,6 +69,7 @@ const Footer = () => {
           {footerData?.payment_platforms.map((item, index) => (
             <div key={index} className="w-12 h-8 overflow-hidden rounded">
               <img
+                loading="lazy"
                 src={item.image}
                 alt={index + 1}
                 className="w-full h-full object-cover"
@@ -79,6 +80,7 @@ const Footer = () => {
 
         <div className="w-32 overflow-hidden">
           <img
+            loading="lazy"
             src={footerData?.footer_logo || logo}
             alt="footer-logo"
             className="w-full h-full object-contain"

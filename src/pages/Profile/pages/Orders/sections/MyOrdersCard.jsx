@@ -58,6 +58,7 @@ const MyOrdersCard = ({ order }) => {
         <div className="flex items-center gap-2 lg:gap-4">
           <div className="w-24 lg:w-36 aspect-square overflow-hidden rounded-2xl">
             <img
+              loading="lazy"
               src={order?.product?.game_icon}
               alt="image"
               className="w-full h-full object-cover"
@@ -121,6 +122,7 @@ const MyOrdersCard = ({ order }) => {
             <div className="bg-muted rounded-lg p-4 space-y-3">
               <div className="flex items-center gap-3">
                 <img
+                  loading="lazy"
                   src={order?.product?.game_icon}
                   alt={order?.product?.title}
                   className="w-16 h-16 rounded-lg object-cover"
@@ -163,6 +165,7 @@ const MyOrdersCard = ({ order }) => {
                     <div className="flex gap-1">
                       {order.product.platforms.map((platform) => (
                         <img
+                          loading="lazy"
                           key={platform.id}
                           src={platform.icon}
                           alt={platform.name}

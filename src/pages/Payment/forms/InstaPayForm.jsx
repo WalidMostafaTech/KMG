@@ -24,6 +24,7 @@ const InstaPayForm = ({ cancelPayment, currentPayment, state }) => {
     transfer_image: z
       .any()
       .refine((file) => file instanceof File, t("InstaPayForm.imageRequired")),
+    note: z.string().optional(),
   });
 
   const form = useForm({
@@ -31,6 +32,7 @@ const InstaPayForm = ({ cancelPayment, currentPayment, state }) => {
     defaultValues: {
       sender_number: "",
       transfer_image: null,
+      note: "",
     },
   });
 
@@ -55,6 +57,7 @@ const InstaPayForm = ({ cancelPayment, currentPayment, state }) => {
     // form data
     formData.append("sender_number", data.sender_number);
     formData.append("transfer_image", data.transfer_image);
+    formData.append("note", data.note);
 
     // payment data
     formData.append("payment_method", currentPayment.paymentMethod);
@@ -97,6 +100,14 @@ const InstaPayForm = ({ cancelPayment, currentPayment, state }) => {
         />
 
         <ImageInput control={form.control} name="transfer_image" />
+
+        <MainInput
+          control={form.control}
+          type="textarea"
+          name="note"
+          label={t("InstaPayForm.noteLabel")}
+          placeholder={t("InstaPayForm.notePlaceholder")}
+        />
 
         <div className="flex items-center gap-2">
           <Button

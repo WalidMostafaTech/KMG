@@ -11,6 +11,7 @@ const Header = () => {
       <div className="container flex items-center justify-between gap-2">
         <Link to={"/"} className="w-20 lg:w-24 overflow-hidden">
           <img
+            loading="lazy"
             src={setting?.header_logo || logo}
             alt="logo"
             className="w-full h-full object-contain"

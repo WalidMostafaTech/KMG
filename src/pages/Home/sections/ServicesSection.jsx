@@ -53,8 +53,8 @@ const ServicesSection = () => {
   ];
 
   return (
-    <section className="container sectionPadding">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
+    <section className="container xl:max-w-7xl sectionPadding">
+      <div className="grid grid-cols-1 gap-4 lg:gap-8">
         {list.map((item) => (
           <div key={item.id} className="flex flex-col gap-4 card">
             <div className="flex items-center justify-between gap-4">
@@ -68,7 +68,7 @@ const ServicesSection = () => {
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {item.items.map((i) => (
                 <Link
                   to={`/games/${item.link}/${i.slug}`}
@@ -77,6 +77,7 @@ const ServicesSection = () => {
                 >
                   <div className="w-12 h-12 overflow-hidden rounded">
                     <img
+                      loading="lazy"
                       src={i.icon}
                       alt={i.name}
                       className="w-full h-full object-cover"
@@ -84,7 +85,7 @@ const ServicesSection = () => {
                   </div>
 
                   <div>
-                    <h3 className="font-bold">{i.name}</h3>
+                    <h3 className="font-bold line-clamp-1">{i.name}</h3>
                   </div>
                 </Link>
               ))}

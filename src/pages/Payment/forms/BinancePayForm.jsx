@@ -25,12 +25,14 @@ const BinancePayForm = ({ cancelPayment, currentPayment, state }) => {
         (file) => file instanceof File,
         t("BinancePayForm.imageRequired"),
       ),
+    note: z.string().optional(),
   });
 
   const form = useForm({
     resolver: zodResolver(binancePaySchema),
     defaultValues: {
       transfer_image: null,
+      note: "",
     },
   });
 
@@ -54,6 +56,7 @@ const BinancePayForm = ({ cancelPayment, currentPayment, state }) => {
 
     // form data
     formData.append("transfer_image", data.transfer_image);
+    formData.append("note", data.note);
 
     // payment data
     formData.append("payment_method", currentPayment.paymentMethod);
@@ -89,6 +92,14 @@ const BinancePayForm = ({ cancelPayment, currentPayment, state }) => {
         )}
 
         <ImageInput control={form.control} name="transfer_image" />
+
+        <MainInput
+          control={form.control}
+          type="textarea"
+          name="note"
+          label={t("BinancePayForm.noteLabel")}
+          placeholder={t("BinancePayForm.notePlaceholder")}
+        />
 
         <div className="flex items-center gap-2">
           <Button

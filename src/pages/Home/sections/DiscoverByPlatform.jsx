@@ -47,6 +47,7 @@ const DiscoverByPlatform = ({ data = [], isLoading }) => {
           <SwiperSlide key={item.id}>
             <div className="h-32 bg-background">
               <img
+                loading="lazy"
                 src={item.image}
                 alt={item.name}
                 className="w-full h-full object-contain rounded-lg"

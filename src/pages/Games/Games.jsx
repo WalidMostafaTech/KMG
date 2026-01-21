@@ -95,6 +95,7 @@ const Games = () => {
               >
                 <div className="w-full h-60 bg-accent overflow-hidden rounded-lg">
                   <img
+                    loading="lazy"
                     src={item.image}
                     alt={item.name}
                     className="w-full h-full object-cover"

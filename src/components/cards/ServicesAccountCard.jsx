@@ -9,11 +9,13 @@ const ServicesAccountCard = ({ item }) => {
     <div key={item.id} className="flex flex-col gap-4 card">
       <div className="flex items-center justify-between gap-2">
         <img
+          loading="lazy"
           src={item.offer_image}
           alt="offer-image"
           className="w-10 h-10 object-contain"
         />
         <img
+          loading="lazy"
           src={item.game_icon}
           alt="game-icon"
           className="w-10 h-10 object-contain"

@@ -24,6 +24,7 @@ const PaypalForm = ({ cancelPayment, currentPayment, state }) => {
     transfer_image: z
       .any()
       .refine((file) => file instanceof File, t("PaypalForm.imageRequired")),
+    note: z.string().optional(),
   });
 
   const form = useForm({
@@ -31,6 +32,7 @@ const PaypalForm = ({ cancelPayment, currentPayment, state }) => {
     defaultValues: {
       paypal_name: "",
       transfer_image: null,
+      note: "",
     },
   });
 
@@ -55,6 +57,7 @@ const PaypalForm = ({ cancelPayment, currentPayment, state }) => {
     // form data
     formData.append("paypal_name", data.paypal_name);
     formData.append("transfer_image", data.transfer_image);
+    formData.append("note", data.note);
 
     // payment data
     formData.append("payment_method", currentPayment.paymentMethod);
@@ -97,6 +100,14 @@ const PaypalForm = ({ cancelPayment, currentPayment, state }) => {
         />
 
         <ImageInput control={form.control} name="transfer_image" />
+
+        <MainInput
+          control={form.control}
+          type="textarea"
+          name="note"
+          label={t("PaypalForm.noteLabel")}
+          placeholder={t("PaypalForm.notePlaceholder")}
+        />
 
         <div className="flex items-center gap-2">
           <Button

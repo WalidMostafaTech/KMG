@@ -36,7 +36,12 @@ const RequiredVerifyEmailModal = () => {
     <Dialog open={requiredVerifyEmailModal} onOpenChange={onClose}>
       <DialogContent showCloseButton={false} className="sm:max-w-md">
         <DialogHeader>
-          <img src={warningIcon} alt="logout" className="mx-auto w-44" />
+          <img
+            loading="lazy"
+            src={warningIcon}
+            alt="logout"
+            className="mx-auto w-44"
+          />
           <DialogTitle className="text-center">
             {t("requiredVerifyEmailModal.title")}
           </DialogTitle>

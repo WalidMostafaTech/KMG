@@ -83,7 +83,7 @@ const router = createBrowserRouter([
             ],
           },
           {
-            path: "/chat/:id?",
+            path: "/chat",
             element: (
               <CheckVerifiedEmailGuard>
                 <Chat />

@@ -122,6 +122,7 @@ const ImageViewer = ({ open, onOpenChange, images, startIndex = 0 }) => {
           onMouseLeave={handleMouseUp}
         >
           <img
+            loading="lazy"
             src={images[currentIndex]}
             draggable={false}
             onClick={(e) => e.stopPropagation()}

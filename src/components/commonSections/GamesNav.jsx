@@ -17,6 +17,7 @@ const GamesNav = ({ links, game = null, isLoading }) => {
             <div className="flex items-center gap-2">
               <div className="w-10 h-10 overflow-hidden rounded">
                 <img
+                  loading="lazy"
                   src={game.image}
                   alt={game.name}
                   className="w-full h-full object-cover"

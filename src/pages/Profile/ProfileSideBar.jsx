@@ -83,7 +83,12 @@ const ProfileSideBar = () => {
 
         <SheetContent side={lang === "ar" ? "right" : "left"}>
           <SheetTitle className="flex items-center justify-center">
-            <img src={logo} alt="logo" className="w-20 h-20 object-contain" />
+            <img
+              loading="lazy"
+              src={logo}
+              alt="logo"
+              className="w-20 h-20 object-contain"
+            />
           </SheetTitle>
 
           <VisuallyHidden>

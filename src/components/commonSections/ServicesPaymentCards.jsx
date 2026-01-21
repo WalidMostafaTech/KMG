@@ -87,7 +87,7 @@ const ServicesPaymentCards = ({ grid = 1 }) => {
             <DialogTitle></DialogTitle>
           </VisuallyHidden>
 
-          <DialogDescription>
+          <DialogDescription asChild>
             <div
               className="text-sm pt-4 text-white"
               dangerouslySetInnerHTML={{

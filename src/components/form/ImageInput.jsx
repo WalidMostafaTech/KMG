@@ -89,6 +89,7 @@ const ImageInput = ({ control, name, label, disabled = false }) => {
           {preview && (
             <div className="flex flex-col items-center gap-2 mt-2 relative border-2 border-dashed border-gray-300 bg-muted rounded-xl">
               <img
+                loading="lazy"
                 src={preview}
                 alt={t("ImageInput.previewAlt")}
                 className="max-h-40 object-contain rounded-md"

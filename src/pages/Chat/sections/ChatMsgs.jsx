@@ -53,6 +53,7 @@ const ChatMsgs = ({ messages, isLoading }) => {
           {product?.game_icon && (
             <div className="w-full h-24 md:w-10 md:h-10 rounded overflow-hidden">
               <img
+                loading="lazy"
                 src={product.game_icon}
                 alt={product.title}
                 className="w-full h-full object-cover"
@@ -98,6 +99,7 @@ const ChatMsgs = ({ messages, isLoading }) => {
           <div className="flex gap-1 flex-wrap">
             {product.platforms.map((platform) => (
               <img
+                loading="lazy"
                 key={platform.id}
                 src={platform.icon}
                 alt={platform.name}
@@ -167,6 +169,7 @@ const ChatMsgs = ({ messages, isLoading }) => {
                 <>
                   {isImageFile(msg.file_type) ? (
                     <img
+                      loading="lazy"
                       src={msg.file_path}
                       alt={msg.file_name}
                       className="rounded-lg max-h-60 cursor-pointer hover:opacity-90 mt-2"

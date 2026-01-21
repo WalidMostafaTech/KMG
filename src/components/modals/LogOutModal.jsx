@@ -35,7 +35,12 @@ const LogOutModal = () => {
       <DialogContent showCloseButton={false} className="sm:max-w-md">
         <DialogHeader>
           <DialogDescription>
-            <img src={logoutIcon} alt="logout" className="mx-auto" />
+            <img
+              loading="lazy"
+              src={logoutIcon}
+              alt="logout"
+              className="mx-auto"
+            />
           </DialogDescription>
           <DialogTitle className="text-center">
             {t("logOutModal.logoutConfirm")}

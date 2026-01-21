@@ -27,6 +27,7 @@ const VodafoneCashForm = ({ cancelPayment, currentPayment, state }) => {
         (file) => file instanceof File,
         t("VodafoneCashForm.imageRequired"),
       ),
+    note: z.string().optional(),
   });
 
   const form = useForm({
@@ -34,6 +35,7 @@ const VodafoneCashForm = ({ cancelPayment, currentPayment, state }) => {
     defaultValues: {
       sender_number: "",
       transfer_image: null,
+      note: "",
     },
   });
 
@@ -54,9 +56,16 @@ const VodafoneCashForm = ({ cancelPayment, currentPayment, state }) => {
 
   const onSubmit = (data) => {
     const formData = new FormData();
+
+    // form data
     formData.append("sender_number", data.sender_number);
     formData.append("transfer_image", data.transfer_image);
+    formData.append("note", data.note);
+
+    // payment data
     formData.append("payment_method", currentPayment.paymentMethod);
+
+    // state data
     formData.append("product_id", state.product_id);
     formData.append("login_data", state.login_data);
     formData.append("gift_code", state.gift_code);
@@ -85,6 +94,14 @@ const VodafoneCashForm = ({ cancelPayment, currentPayment, state }) => {
         />
 
         <ImageInput control={form.control} name="transfer_image" />
+
+        <MainInput
+          control={form.control}
+          type="textarea"
+          name="note"
+          label={t("VodafoneCashForm.noteLabel")}
+          placeholder={t("VodafoneCashForm.notePlaceholder")}
+        />
 
         <div className="flex items-center gap-2">
           <Button
