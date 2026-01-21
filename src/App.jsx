@@ -8,6 +8,7 @@ import {
   fetchCountries,
   fetchPlatforms,
   fetchProductsMinutesRange,
+  fetchSetting,
 } from "@/store/setting/setting";
 import { Toaster } from "@/components/ui/sonner";
 import LogOutModal from "@/components/modals/LogOutModal";
@@ -20,6 +21,7 @@ function App() {
 
   useEffect(() => {
     dispatch(getProfileAct());
+    dispatch(fetchSetting());
     dispatch(fetchCountries());
     dispatch(fetchPlatforms());
     dispatch(fetchProductsMinutesRange());

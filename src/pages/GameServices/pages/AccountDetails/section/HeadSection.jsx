@@ -4,6 +4,8 @@ import PaymentModal from "@/components/modals/PaymentModal";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { openModal } from "@/store/modals/modalsSlice";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
 
 const HeadSection = ({ data }) => {
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
@@ -12,9 +14,21 @@ const HeadSection = ({ data }) => {
 
   const dispatch = useDispatch();
 
-  const handlePayment = () => {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  const handlePayment = (product) => {
     if (profile) {
-      setOpenPaymentModal(true);
+      if (!profile.is_verified) {
+        dispatch(openModal("requiredVerifyEmailModal"));
+      } else
+        navigate("/payment", {
+          state: {
+            product_id: product.id,
+            product_price: product.price,
+            currency: product.currency,
+          },
+        });
     } else {
       dispatch(openModal("requiredLoginModal"));
     }
@@ -49,6 +63,13 @@ const HeadSection = ({ data }) => {
             </p>
           )}
 
+          {data?.from_time && (
+            <p className="text-sm border rounded-full w-fit px-4 py-2">
+              {data.from_time} - {data.to_time}{" "}
+              {t("ServicesAccountCard.minutes")}
+            </p>
+          )}
+
           {data?.country_name && (
             <p className="text-sm border rounded-full w-fit px-4 py-2">
               {data.country_name}
@@ -58,16 +79,13 @@ const HeadSection = ({ data }) => {
 
         <div className="p-4 bg-accent rounded-2xl">
           <div className="flex items-center flex-wrap gap-2 mb-4">
-            <p className="text-4xl font-bold">{data?.price_after}</p>
-            {data?.price_before && (
-              <p className="text-muted-foreground line-through">
-                {data?.price_before}
-              </p>
-            )}
+            <p className="text-4xl font-bold">
+              {data.price} {data.currency}
+            </p>
           </div>
 
-          <Button onClick={handlePayment} className="w-full">
-            اشتري الان
+          <Button onClick={() => handlePayment(data)} className="w-full">
+            {t("ServicesAccountCard.buyNow")}
           </Button>
         </div>
 
@@ -78,7 +96,8 @@ const HeadSection = ({ data }) => {
         open={openPaymentModal}
         onClose={() => setOpenPaymentModal(false)}
         product_id={data?.id}
-        product_price={data?.price_after}
+        product_price={data?.price}
+        currency={data?.currency}
       />
     </div>
   );

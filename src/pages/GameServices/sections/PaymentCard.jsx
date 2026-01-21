@@ -5,8 +5,9 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { openModal } from "@/store/modals/modalsSlice";
+import { useNavigate } from "react-router";
 
-const PaymentCard = ({ currentOffer }) => {
+const PaymentCard = ({ currentOffer, service }) => {
   const { t } = useTranslation();
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
 
@@ -14,9 +15,21 @@ const PaymentCard = ({ currentOffer }) => {
 
   const dispatch = useDispatch();
 
-  const handlePayment = () => {
+  const navigate = useNavigate();
+
+  const handlePayment = (product) => {
     if (profile) {
-      setOpenPaymentModal(true);
+      if (!profile.is_verified) {
+        dispatch(openModal("requiredVerifyEmailModal"));
+      } else if (service === "gift_cards") {
+        navigate("/payment", {
+          state: {
+            product_id: product.id,
+            product_price: product.price,
+            currency: product.currency,
+          },
+        });
+      } else setOpenPaymentModal(true);
     } else {
       dispatch(openModal("requiredLoginModal"));
     }
@@ -61,12 +74,16 @@ const PaymentCard = ({ currentOffer }) => {
 
           <li className="flex justify-between gap-2 py-1">
             <p>{t("paymentCard.totalPrice")}</p>{" "}
-            <span>{currentOffer.price} $</span>
+            <span>
+              {currentOffer.price} {currentOffer.currency}
+            </span>
           </li>
         </ul>
       </div>
 
-      <Button onClick={handlePayment}>{t("paymentCard.buyNow")}</Button>
+      <Button onClick={() => handlePayment(currentOffer)}>
+        {t("paymentCard.buyNow")}
+      </Button>
 
       <ServicesPaymentCards />
 
@@ -75,6 +92,7 @@ const PaymentCard = ({ currentOffer }) => {
         onClose={() => setOpenPaymentModal(false)}
         product_id={currentOffer.id}
         product_price={currentOffer.price}
+        currency={currentOffer?.currency}
       />
     </div>
   );

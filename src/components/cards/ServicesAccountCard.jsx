@@ -24,12 +24,9 @@ const ServicesAccountCard = ({ item }) => {
 
       <div className="flex flex-col gap-1 text-sm">
         <div className="flex items-center gap-2">
-          <p className="text-lg font-bold">${item.price_after}</p>
-          {item.price_before && (
-            <p className="text-sm text-muted-foreground line-through">
-              ${item.price_before}
-            </p>
-          )}
+          <p className="text-lg font-bold">
+            {item.price} {item.currency}
+          </p>
         </div>
 
         <p className="py-1 px-4 bg-accent rounded-lg w-fit">

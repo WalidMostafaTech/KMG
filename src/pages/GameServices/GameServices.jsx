@@ -113,6 +113,7 @@ const GameServices = () => {
         ) : (
           <ProductsPage
             products={products}
+            service={game?.service}
             meta={gameServicesData?.meta}
             currentPage={currentPage}
             onPageChange={handlePageChange}

@@ -1,7 +1,7 @@
 import api from "./api";
 
 export const getSettings = async () => {
-  const { data } = await api.get("/all-settings");
+  const { data } = await api.get("/settings");
   return data?.data || [];
 };
 

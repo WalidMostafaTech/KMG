@@ -15,7 +15,6 @@ const Chat = () => {
   const sendMsgMutation = useMutation({
     mutationFn: sendMsg,
     onSuccess: () => {
-      // Refresh messages after sending
       queryClient.invalidateQueries(["get_msgs"]);
     },
   });

@@ -77,7 +77,13 @@ const Footer = () => {
           ))}
         </div>
 
-        <img src={logo} alt="logo" />
+        <div className="w-32 overflow-hidden">
+          <img
+            src={footerData?.footer_logo || logo}
+            alt="footer-logo"
+            className="w-full h-full object-contain"
+          />
+        </div>
 
         {footerData?.footer_text && (
           <p className="text-center text-sm max-w-3xl">

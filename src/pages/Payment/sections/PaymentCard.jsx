@@ -14,15 +14,23 @@ const PaymentCard = ({ currentPayment, cancelPayment, state }) => {
       <ul className="flex flex-col divide-y-2 text-sm">
         <li className="flex justify-between gap-2 py-1 text-muted-foreground">
           <p>{t("paymentCard.totalPrice")}</p>
-          <span>{state.product_price}</span>
+          <span>
+            {state.product_price} {state.currency}
+          </span>
         </li>
         <li className="flex justify-between gap-2 py-1 text-muted-foreground">
           <p>{t("paymentCard.serviceFee")}</p>
-          <span>{currentPayment.amount}</span>
+          <span>
+            {currentPayment.amount} {state.currency}
+          </span>
         </li>
         <li className="flex justify-between gap-2 py-1">
           <p>{t("paymentCard.finalPrice")}</p>
-          <span>{state.product_price + currentPayment.amount}</span>
+          <span>
+            {parseFloat(state.product_price) +
+              parseFloat(currentPayment.amount)}{" "}
+            {state.currency}
+          </span>
         </li>
       </ul>
 

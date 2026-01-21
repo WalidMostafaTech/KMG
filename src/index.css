@@ -74,7 +74,8 @@ input::-webkit-inner-spin-button {
   --popover-foreground: #ffffff;
 
   /* Primary */
-  --primary: #7b2cbf;
+  /* --primary: #7b2cbf; */
+  --primary: #9301a1;
   --primary-foreground: #242526;
 
   /* Secondary / Muted */

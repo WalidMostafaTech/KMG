@@ -24,8 +24,12 @@ const OffersList = ({
               alt={item.title}
               className="max-h-[70px] object-contain"
             />
-            <p className="text-sm">{item.title}</p>
-            <span>{item.price} $</span>
+            <p className="text-sm">
+              {item.title} {item?.game_currency}
+            </p>
+            <span>
+              {item.price} {item.currency}
+            </span>
           </div>
         ))}
       </div>

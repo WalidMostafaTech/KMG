@@ -14,14 +14,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { openModal } from "@/store/modals/modalsSlice";
 
 const PaymentModal = ({
   open,
   onClose,
   product_id,
   product_price,
+  currency,
   gift_code = false,
 }) => {
   const navigate = useNavigate();
@@ -42,27 +41,22 @@ const PaymentModal = ({
     },
   });
 
-  const { profile } = useSelector((state) => state.profile);
-  const dispatch = useDispatch();
-
   const handleCancel = () => {
     form.reset();
     onClose();
   };
 
   const onSubmit = (data) => {
-    if (!profile.is_verified) {
-      dispatch(openModal("requiredVerifyEmailModal"));
-    } else
-      navigate("/payment", {
-        state: {
-          product_id,
-          product_price,
-          login_data: data.login_data,
-          password: data.password,
-          ...(gift_code && { gift_code: data.gift_code }),
-        },
-      });
+    navigate("/payment", {
+      state: {
+        product_id,
+        product_price,
+        currency,
+        login_data: data.login_data,
+        password: data.password,
+        ...(gift_code && { gift_code: data.gift_code }),
+      },
+    });
 
     handleCancel();
   };
