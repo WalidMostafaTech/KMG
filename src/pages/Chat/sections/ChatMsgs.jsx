@@ -2,13 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
-const ChatMsgs = ({
-  messages,
-  isLoading,
-  hasNextPage,
-  fetchNextPage,
-  isFetchingNextPage,
-}) => {
+const ChatMsgs = ({ messages, isLoading, openViewer }) => {
   const containerRef = useRef(null);
   const { t } = useTranslation();
 
@@ -84,20 +78,8 @@ const ChatMsgs = ({
               {order.total_price}
             </span>
           </div>
-          <span
-            className={`px-2 py-1 rounded ${
-              order.status === "pending"
-                ? "bg-yellow-500/20 text-yellow-400"
-                : order.status === "completed"
-                  ? "bg-green-500/20 text-green-400"
-                  : "bg-red-500/20 text-red-400"
-            }`}
-          >
-            {order.status === "pending"
-              ? t("chatMsgs.status.pending")
-              : order.status === "completed"
-                ? t("chatMsgs.status.completed")
-                : t("chatMsgs.status.cancelled")}
+          <span className={`px-2 py-1 font-semibold rounded-lg bg-accent/20`}>
+            {order.status}
           </span>
         </div>
 
@@ -149,18 +131,6 @@ const ChatMsgs = ({
       ref={containerRef}
       className="flex-1 overflow-y-auto px-2 py-4 space-y-3 msgs_container"
     >
-      {hasNextPage && (
-        <div className="flex justify-center mb-2">
-          <button
-            onClick={() => fetchNextPage()}
-            disabled={isFetchingNextPage}
-            className="text-sm text-primary hover:underline disabled:opacity-50"
-          >
-            {isFetchingNextPage ? "جاري التحميل..." : "رؤية المزيد"}
-          </button>
-        </div>
-      )}
-
       {messages
         ?.slice()
         .reverse()
@@ -191,6 +161,7 @@ const ChatMsgs = ({
                       src={msg.file_path}
                       alt={msg.file_name}
                       className="rounded-lg max-h-60 cursor-pointer hover:opacity-90 mt-2"
+                      onClick={() => openViewer(msg.file_path)}
                     />
                   ) : (
                     <a

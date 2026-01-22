@@ -59,12 +59,12 @@ const ImageViewer = ({ open, onOpenChange, images, startIndex = 0 }) => {
 
   const handleMouseUp = () => setDragging(false);
 
-  const downloadImage = () => {
-    const link = document.createElement("a");
-    link.href = images[currentIndex];
-    link.download = "image";
-    link.click();
-  };
+  // const downloadImage = () => {
+  //   const link = document.createElement("a");
+  //   link.href = images[currentIndex];
+  //   link.download = "image";
+  //   link.click();
+  // };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -87,9 +87,9 @@ const ImageViewer = ({ open, onOpenChange, images, startIndex = 0 }) => {
           <button onClick={() => setScale((s) => Math.max(1, s - 0.2))}>
             <ZoomOut className="text-white" />
           </button>
-          <button onClick={downloadImage}>
+          {/* <button onClick={downloadImage}>
             <Download className="text-white" />
-          </button>
+          </button> */}
           <button onClick={() => onOpenChange(false)}>
             <X className="text-white" />
           </button>

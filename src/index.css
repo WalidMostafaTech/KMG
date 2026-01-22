@@ -75,7 +75,8 @@ input::-webkit-inner-spin-button {
 
   /* Primary */
   /* --primary: #7b2cbf; */
-  --primary: #9301a1;
+  /* --primary: #9301a1; */
+  --primary: #7b2cbf;
   --primary-foreground: #242526;
 
   /* Secondary / Muted */

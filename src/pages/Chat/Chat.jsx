@@ -2,27 +2,30 @@ import ChatHeader from "./sections/ChatHeader";
 import ChatMsgs from "./sections/ChatMsgs";
 import ChatInput from "./sections/ChatInput";
 import { getMsgs, sendMsg } from "@/services/chatServices";
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import ImageViewer from "./sections/ImageViewer";
 
 const Chat = () => {
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
+  const [startIndex, setStartIndex] = useState(0);
+  const [images, setImages] = useState([]);
+
+  const openViewer = (imgUrl) => {
+    setImages([imgUrl]); // array فيها صورة واحدة
+    setStartIndex(0);
+    setIsViewerOpen(true);
+  };
+
   const queryClient = useQueryClient();
 
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery({
-      queryKey: ["get_msgs"],
-      queryFn: getMsgs,
-      getNextPageParam: (lastPage) => {
-        return lastPage?.meta?.current_page < lastPage?.meta?.last_page
-          ? lastPage.meta.current_page + 1
-          : undefined;
-      },
-    });
+  const { data, isLoading } = useQuery({
+    queryKey: ["get_msgs"],
+    queryFn: getMsgs,
+    refetchOnWindowFocus: false,
+  });
 
-  const messages = data?.pages?.flatMap((page) => page.items) || [];
+  const messages = data || [];
 
   const sendMsgMutation = useMutation({
     mutationFn: sendMsg,
@@ -39,14 +42,19 @@ const Chat = () => {
         <ChatMsgs
           messages={messages}
           isLoading={isLoading}
-          hasNextPage={hasNextPage}
-          fetchNextPage={fetchNextPage}
-          isFetchingNextPage={isFetchingNextPage}
+          openViewer={openViewer}
         />
 
         <ChatInput
           sendMsgMutation={sendMsgMutation}
           isLoading={sendMsgMutation.isPending}
+        />
+
+        <ImageViewer
+          open={isViewerOpen}
+          onOpenChange={setIsViewerOpen}
+          images={images}
+          startIndex={startIndex}
         />
       </div>
     </section>

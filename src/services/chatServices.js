@@ -10,7 +10,7 @@ export const sendMsg = async (formData) => {
   return data?.data || {};
 };
 
-export const getMsgs = async ({ pageParam = 1 }) => {
-  const { data } = await api.get(`/chats/messages?page=${pageParam}`);
+export const getMsgs = async () => {
+  const { data } = await api.get(`/chats/messages`);
   return data?.data;
 };
