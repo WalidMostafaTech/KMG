@@ -56,12 +56,16 @@ const HeadSection = ({ data }) => {
             </p>
           )}
 
-          {data?.from_time && (
+          {data?.instant_delivery ? (
             <p className="text-sm border rounded-full w-fit px-4 py-2">
-              {data.from_time} - {data.to_time}{" "}
+              {t("ServicesAccountCard.instantDelivery")}
+            </p>
+          ) : data?.from_time && data?.to_time ? (
+            <p className="text-sm border rounded-full w-fit px-4 py-2">
+              {data?.from_time} - {data?.to_time}{" "}
               {t("ServicesAccountCard.minutes")}
             </p>
-          )}
+          ) : null}
 
           {data?.country_name && (
             <p className="text-sm border rounded-full w-fit px-4 py-2">

@@ -66,10 +66,14 @@ const PaymentCard = ({ currentOffer, game }) => {
         <ul className="flex flex-col divide-y-2 text-sm">
           <li className="flex justify-between gap-2 py-1 text-muted-foreground">
             <p>{t("paymentCard.deliveryTime")}</p>{" "}
-            <span>
-              {currentOffer.from_time} - {currentOffer.to_time}{" "}
-              {t("paymentCard.minutes")}
-            </span>
+            {currentOffer.instant_delivery ? (
+              <span>{t("ServicesAccountCard.instantDelivery")}</span>
+            ) : currentOffer.from_time && currentOffer.to_time ? (
+              <span>
+                {currentOffer.from_time} - {currentOffer.to_time}{" "}
+                {t("ServicesAccountCard.minutes")}
+              </span>
+            ) : null}
           </li>
 
           <li className="flex justify-between gap-2 py-1">

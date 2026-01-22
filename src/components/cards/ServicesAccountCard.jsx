@@ -31,9 +31,15 @@ const ServicesAccountCard = ({ item }) => {
           </p>
         </div>
 
-        <p className="py-1 px-4 bg-accent rounded-lg w-fit">
-          {item.from_time} - {item.to_time} {t("ServicesAccountCard.minutes")}
-        </p>
+        {item.instant_delivery ? (
+          <p className="py-1 px-4 bg-accent rounded-lg w-fit">
+            {t("ServicesAccountCard.instantDelivery")}
+          </p>
+        ) : item.from_time && item.to_time ? (
+          <p className="py-1 px-4 bg-accent rounded-lg w-fit">
+            {item.from_time} - {item.to_time} {t("ServicesAccountCard.minutes")}
+          </p>
+        ) : null}
 
         <div className="flex items-center flex-wrap gap-1">
           {item?.platforms?.map((platform) => (

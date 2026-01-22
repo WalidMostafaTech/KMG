@@ -3,7 +3,8 @@
 
   "ServicesAccountCard": {
     "buyNow": "Buy Now",
-    "minutes": "minutes"
+    "minutes": "minutes",
+    "instantDelivery": "Instant Delivery"
   },
 
   "MainPagination": {

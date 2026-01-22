@@ -3,7 +3,8 @@
 
   "ServicesAccountCard": {
     "buyNow": "اشتري الآن",
-    "minutes": "دقايق"
+    "minutes": "دقايق",
+    "instantDelivery": "تسليم فوري"
   },
 
   "MainPagination": {

@@ -78,7 +78,7 @@ const Footer = () => {
           ))}
         </div>
 
-        <div className="w-32 overflow-hidden">
+        <div className="w-32 h-16 overflow-hidden">
           <img
             loading="lazy"
             src={footerData?.footer_logo || logo}

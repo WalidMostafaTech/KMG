@@ -9,7 +9,7 @@ const Header = () => {
   return (
     <header className="border-b py-4 sticky top-0 z-50 bg-background">
       <div className="container flex items-center justify-between gap-2">
-        <Link to={"/"} className="w-20 lg:w-24 overflow-hidden">
+        <Link to={"/"} className="w-20 h-12 lg:w-24 overflow-hidden">
           <img
             loading="lazy"
             src={setting?.header_logo || logo}

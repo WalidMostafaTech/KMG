@@ -2,7 +2,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
-const ChatMsgs = ({ messages, isLoading }) => {
+const ChatMsgs = ({
+  messages,
+  isLoading,
+  hasNextPage,
+  fetchNextPage,
+  isFetchingNextPage,
+}) => {
   const containerRef = useRef(null);
   const { t } = useTranslation();
 
@@ -130,7 +136,7 @@ const ChatMsgs = ({ messages, isLoading }) => {
     );
   }
 
-  if (!messages || messages.length === 0) {
+  if (!messages || messages?.length === 0) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center px-2 py-4">
         <p className="text-center">{t("chatMsgs.noMessages")}</p>
@@ -143,6 +149,18 @@ const ChatMsgs = ({ messages, isLoading }) => {
       ref={containerRef}
       className="flex-1 overflow-y-auto px-2 py-4 space-y-3 msgs_container"
     >
+      {hasNextPage && (
+        <div className="flex justify-center mb-2">
+          <button
+            onClick={() => fetchNextPage()}
+            disabled={isFetchingNextPage}
+            className="text-sm text-primary hover:underline disabled:opacity-50"
+          >
+            {isFetchingNextPage ? "جاري التحميل..." : "رؤية المزيد"}
+          </button>
+        </div>
+      )}
+
       {messages
         ?.slice()
         .reverse()
