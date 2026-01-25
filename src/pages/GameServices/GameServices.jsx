@@ -5,21 +5,29 @@ import GamesNav from "@/components/commonSections/GamesNav";
 import Accounts from "./pages/Accounts/Accounts";
 import ProductsPage from "./pages/ProductsPage/ProductsPage";
 import OffersFilter from "./sections/OffersFilter";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import AccountsSkeleton from "@/components/Loading/SkeletonLoading/AccountsSkeleton";
 import { useTranslation } from "react-i18next";
 import SeoManager from "@/utils/SeoManager";
-
-const defaultFilters = {
-  min_time: "",
-  max_time: "",
-  country_id: "",
-  platform_id: "",
-  min_price: 0,
-  max_price: 1000,
-};
+import { useSelector } from "react-redux";
 
 const GameServicesContent = () => {
+  const { setting } = useSelector((state) => state.setting);
+
+  const maxPriceLimit = setting?.max_product_price || 10000;
+
+  const defaultFilters = useMemo(
+    () => ({
+      min_time: "",
+      max_time: "",
+      country_id: "",
+      platform_id: "",
+      min_price: 0,
+      max_price: maxPriceLimit,
+    }),
+    [maxPriceLimit],
+  );
+
   const { service, id } = useParams();
   const { t } = useTranslation();
 
@@ -28,6 +36,20 @@ const GameServicesContent = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = Number(searchParams.get("page") || 1);
+
+  useEffect(() => {
+    if (!setting?.max_product_price) return;
+
+    setFilters((prev) => ({
+      ...prev,
+      max_price: maxPriceLimit,
+    }));
+
+    setAppliedFilters((prev) => ({
+      ...prev,
+      max_price: maxPriceLimit,
+    }));
+  }, [setting?.max_product_price, maxPriceLimit]);
 
   // Filter out account-specific filters for non-account services
   const apiFilters = useMemo(() => {
@@ -42,9 +64,9 @@ const GameServicesContent = () => {
       min_time: "",
       max_time: "",
       min_price: 0,
-      max_price: 1000,
+      max_price: maxPriceLimit,
     };
-  }, [service, appliedFilters]);
+  }, [service, appliedFilters, maxPriceLimit]);
 
   const { data: gameServicesData, isLoading } = useQuery({
     queryKey: ["game-services", service, id, apiFilters, currentPage],
@@ -72,8 +94,7 @@ const GameServicesContent = () => {
   const game = gameServicesData?.extra?.game || null;
   const products = gameServicesData?.items || [];
 
-  const gameServicesToShow =
-    gameServicesData?.extra?.game?.items_count || {};
+  const gameServicesToShow = gameServicesData?.extra?.game?.items_count || {};
 
   const links = [
     {
@@ -154,6 +175,7 @@ const GameServicesContent = () => {
             meta={gameServicesData?.meta}
             currentPage={currentPage}
             onPageChange={handlePageChange}
+            service={game?.service}
           />
         )}
       </article>

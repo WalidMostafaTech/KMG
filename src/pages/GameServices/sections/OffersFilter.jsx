@@ -13,9 +13,12 @@ import { useTranslation } from "react-i18next";
 
 const OffersFilter = ({ filters, setFilters, onApply, onReset, service }) => {
   const { t } = useTranslation();
-  const { countries, platforms, productsMinutesRange } = useSelector(
+  const { countries, platforms, productsMinutesRange, setting } = useSelector(
     (state) => state.setting,
   );
+  const { lang } = useSelector((state) => state.language);
+
+  const maxPriceLimit = setting?.max_product_price || 10000;
 
   return (
     <div className="container space-y-4">
@@ -35,8 +38,9 @@ const OffersFilter = ({ filters, setFilters, onApply, onReset, service }) => {
               </div>
 
               <Slider
+                dir={lang === "ar" ? "rtl" : "ltr"}
                 min={0}
-                max={1000}
+                max={maxPriceLimit}
                 step={10}
                 value={[filters.min_price, filters.max_price]}
                 onValueChange={([min, max]) =>

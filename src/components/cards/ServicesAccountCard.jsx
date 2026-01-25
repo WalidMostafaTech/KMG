@@ -10,7 +10,7 @@ const ServicesAccountCard = ({ item }) => {
       <div className="flex items-center justify-between gap-2">
         <img
           loading="lazy"
-          src={item.offer_image}
+          src={item.country_icon}
           alt="offer-image"
           className="w-10 h-10 object-contain"
         />

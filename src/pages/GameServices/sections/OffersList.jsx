@@ -7,7 +7,10 @@ const OffersList = ({
   meta,
   currentPage,
   onPageChange,
+  service,
 }) => {
+  console.log("serviccce" ,service);
+  
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap justify-center gap-4 h-fit">
@@ -21,7 +24,11 @@ const OffersList = ({
           >
             <img
               loading="lazy"
-              src={item.game_icon}
+              src={
+                service === "top_up" || service === "gift_cards"
+                  ? item.image
+                  : item.game_icon
+              }
               alt={item.title}
               className="max-h-[70px] object-contain"
             />
