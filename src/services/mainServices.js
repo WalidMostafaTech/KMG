@@ -19,8 +19,13 @@ export const getCountries = async () => {
   return data?.data || [];
 };
 
-export const getPlatforms = async () => {
-  const { data } = await api.get("/platforms");
+export const getPlatforms = async (payload) => {
+  const { data } = await api.get("/platforms", {
+    params: {
+      game_id: payload.game_id,
+      service: payload.service,
+    },
+  });
   return data?.data || [];
 };
 

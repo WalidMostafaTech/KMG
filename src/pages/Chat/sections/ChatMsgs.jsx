@@ -1,16 +1,35 @@
-import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useRef } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslation } from "react-i18next";
+import { AiOutlineClockCircle, AiOutlineReload } from "react-icons/ai";
+import { MdErrorOutline } from "react-icons/md";
 
-const ChatMsgs = ({ messages, isLoading, openViewer }) => {
-  const containerRef = useRef(null);
+const ChatMsgs = ({
+  messages,
+  isLoading,
+  openViewer,
+  onRetry,
+  scrollTrigger,
+}) => {
   const { t } = useTranslation();
+  const containerRef = useRef(null);
 
+  // Scroll to bottom on initial load
   useEffect(() => {
-    if (containerRef.current) {
+    if (!isLoading && messages?.length > 0 && containerRef.current) {
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [isLoading]);
+
+  // Scroll to bottom when scrollTrigger changes (when sending new message)
+  useEffect(() => {
+    if (scrollTrigger > 0 && containerRef.current) {
+      containerRef.current.scrollTo({
+        top: containerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [scrollTrigger]);
 
   const formatChatTime = (dateString) => {
     const date = new Date(dateString.replace(" ", "T"));
@@ -188,9 +207,36 @@ const ChatMsgs = ({ messages, isLoading, openViewer }) => {
               {/* Display order card */}
               {renderOrderCard(msg.order)}
 
-              <span className="text-[10px] bg-black/10 px-2 py-1 rounded-lg block w-fit">
-                {formatChatTime(msg.created_at)}
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] bg-black/10 px-2 py-1 rounded-lg">
+                  {formatChatTime(msg.created_at)}
+                </span>
+
+                {msg.pending && (
+                  <AiOutlineClockCircle
+                    className="text-white/70 animate-pulse"
+                    size={14}
+                    title="جاري الإرسال"
+                  />
+                )}
+
+                {msg.error && (
+                  <div className="flex items-center gap-1">
+                    <MdErrorOutline
+                      className="text-red-400"
+                      size={14}
+                      title="فشل الإرسال"
+                    />
+                    <button
+                      onClick={() => onRetry(msg._formData)}
+                      className="text-xs text-red-300 hover:text-red-200 flex items-center gap-1"
+                    >
+                      <AiOutlineReload size={12} />
+                      إعادة الإرسال
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         ))}

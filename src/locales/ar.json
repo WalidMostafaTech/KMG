@@ -215,7 +215,8 @@
     "country": "المنطقة",
     "platform": "المنصة",
     "reset": "تفريغ الفلاتر",
-    "apply": "فلتره"
+    "apply": "فلتره",
+    "all": "الكل"
   },
 
   "paymentCard": {

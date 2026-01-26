@@ -7,10 +7,7 @@ const OffersList = ({
   meta,
   currentPage,
   onPageChange,
-  service,
 }) => {
-  console.log("serviccce" ,service);
-  
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap justify-center gap-4 h-fit">
@@ -22,20 +19,25 @@ const OffersList = ({
               item?.id === currentOffer?.id ? "border-primary border-2" : ""
             }`}
           >
-            <img
-              loading="lazy"
-              src={
-                service === "top_up" || service === "gift_cards"
-                  ? item.image
-                  : item.game_icon
-              }
-              alt={item.title}
-              className="max-h-[70px] object-contain"
-            />
-            <p className="text-sm">
-              {item.title} {item?.game_currency}
-            </p>
-            <span>
+            <div className="w-full h-[70px] bg-accent rounded-md overflow-hidden">
+              <img
+                loading="lazy"
+                src={item.image}
+                alt={item.title}
+                className="w-full h-full object-contain"
+              />
+            </div>
+
+            {item?.game_currency ? (
+              <div>
+                <p className="text-xl font-bold">{item.title}</p>
+                <p className="text-sm">{item?.game_currency}</p>
+              </div>
+            ) : (
+              <p className="text-sm">{item.title}</p>
+            )}
+
+            <span className="font-semibold pt-1 border-t mt-auto w-full">
               {item.price} {item.currency}
             </span>
           </div>

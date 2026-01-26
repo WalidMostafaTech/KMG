@@ -9,7 +9,6 @@ const ProductsPage = ({
   meta,
   currentPage,
   onPageChange,
-  service,
 }) => {
   const [currentOffer, setCurrentOffer] = useState(null);
 
@@ -31,7 +30,6 @@ const ProductsPage = ({
           meta={meta}
           currentPage={currentPage}
           onPageChange={onPageChange}
-          service={service}
         />
 
         <PaymentCard currentOffer={currentOffer} game={game} />

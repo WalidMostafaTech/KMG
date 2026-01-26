@@ -7,6 +7,10 @@ const VerifyEmailGuard = ({ children }) => {
 
   if (loading) return <LoadingPage />;
 
+  if (!profile) {
+    return <Navigate to="/login" replace />;
+  }
+
   if (profile?.is_verified) {
     return <Navigate to="/" replace />;
   }

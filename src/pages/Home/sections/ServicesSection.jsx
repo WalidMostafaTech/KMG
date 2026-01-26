@@ -75,7 +75,7 @@ const ServicesSection = () => {
                   key={i.id}
                   className="flex items-center gap-2 hover:bg-accent rounded transition"
                 >
-                  <div className="w-12 h-12 overflow-hidden rounded">
+                  <div className="w-16 h-16 overflow-hidden rounded">
                     <img
                       loading="lazy"
                       src={i.icon}

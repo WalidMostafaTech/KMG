@@ -9,91 +9,42 @@ import { useState, useMemo, useEffect } from "react";
 import AccountsSkeleton from "@/components/Loading/SkeletonLoading/AccountsSkeleton";
 import { useTranslation } from "react-i18next";
 import SeoManager from "@/utils/SeoManager";
-import { useSelector } from "react-redux";
 
 const GameServicesContent = () => {
-  const { setting } = useSelector((state) => state.setting);
-
-  const maxPriceLimit = setting?.max_product_price || 10000;
-
-  const defaultFilters = useMemo(
-    () => ({
-      min_time: "",
-      max_time: "",
-      country_id: "",
-      platform_id: "",
-      min_price: 0,
-      max_price: maxPriceLimit,
-    }),
-    [maxPriceLimit],
-  );
-
   const { service, id } = useParams();
   const { t } = useTranslation();
 
+  const defaultFilters = useMemo(
+    () => ({
+      country_id: "",
+      platform_id: "",
+    }),
+    [],
+  );
+
   const [filters, setFilters] = useState(defaultFilters);
-  const [appliedFilters, setAppliedFilters] = useState(defaultFilters);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = Number(searchParams.get("page") || 1);
 
-  useEffect(() => {
-    if (!setting?.max_product_price) return;
-
-    setFilters((prev) => ({
-      ...prev,
-      max_price: maxPriceLimit,
-    }));
-
-    setAppliedFilters((prev) => ({
-      ...prev,
-      max_price: maxPriceLimit,
-    }));
-  }, [setting?.max_product_price, maxPriceLimit]);
-
-  // Filter out account-specific filters for non-account services
-  const apiFilters = useMemo(() => {
-    if (service === "accounts") {
-      return appliedFilters;
-    }
-
-    // For non-account services, only send country_id and platform_id
-    return {
-      country_id: appliedFilters.country_id,
-      platform_id: appliedFilters.platform_id,
-      min_time: "",
-      max_time: "",
-      min_price: 0,
-      max_price: maxPriceLimit,
-    };
-  }, [service, appliedFilters, maxPriceLimit]);
-
   const { data: gameServicesData, isLoading } = useQuery({
-    queryKey: ["game-services", service, id, apiFilters, currentPage],
+    queryKey: ["game-services", service, id, filters, currentPage],
     queryFn: () =>
       getProductsByGameAndService({
         service,
         game_slug: id,
         page: currentPage,
-        ...apiFilters,
+        ...filters,
       }),
     enabled: !!service,
   });
 
-  const applyFilters = () => {
-    setAppliedFilters(filters);
+  useEffect(() => {
     setSearchParams({ page: 1 });
-  };
-
-  const resetFilters = () => {
-    setFilters(defaultFilters);
-    setAppliedFilters(defaultFilters);
-    setSearchParams({ page: 1 });
-  };
+  }, [filters, setSearchParams]);
 
   const game = gameServicesData?.extra?.game || null;
   const products = gameServicesData?.items || [];
-
   const gameServicesToShow = gameServicesData?.extra?.game?.items_count || {};
 
   const links = [
@@ -129,7 +80,6 @@ const GameServicesContent = () => {
     },
   ];
 
-  // فلترة العناصر اللي قيمتها أكبر من صفر
   const filteredLinks = links.filter(
     (item) => gameServicesToShow[item.key] > 0,
   );
@@ -151,13 +101,7 @@ const GameServicesContent = () => {
       <article className="space-y-6 lg:space-y-10 pb-6">
         <GamesNav links={filteredLinks} game={game} isLoading={isLoading} />
 
-        <OffersFilter
-          filters={filters}
-          setFilters={setFilters}
-          onApply={applyFilters}
-          onReset={resetFilters}
-          service={game?.service}
-        />
+        <OffersFilter filters={filters} setFilters={setFilters} game={game} />
 
         {isLoading ? (
           <AccountsSkeleton />
@@ -175,7 +119,6 @@ const GameServicesContent = () => {
             meta={gameServicesData?.meta}
             currentPage={currentPage}
             onPageChange={handlePageChange}
-            service={game?.service}
           />
         )}
       </article>
@@ -185,8 +128,6 @@ const GameServicesContent = () => {
 
 const GameServices = () => {
   const { service } = useParams();
-
-  // Reset entire component state when service changes
   return <GameServicesContent key={service} />;
 };
 

@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 const MainPagination = ({ totalPages, currentPage, onPageChange }) => {
   const { t } = useTranslation();
 
-  if (!totalPages || totalPages === 0) return null;
+  if (!totalPages || totalPages === 0 || totalPages === 1) return null;
 
   const handlePageClick = (page) => {
     if (page >= 1 && page <= totalPages && page !== currentPage) {

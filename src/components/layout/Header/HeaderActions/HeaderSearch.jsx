@@ -49,55 +49,6 @@ const HeaderSearch = () => {
     setDebouncedSearch("");
   };
 
-  const SearchResults = ({ mobile = false }) => {
-    if (!debouncedSearch) return null;
-
-    if (isLoading) {
-      return (
-        <div
-          className={`p-4 text-center text-gray-500 ${mobile ? "" : "card"}`}
-        >
-          {t("headerSearch.searching")}
-        </div>
-      );
-    }
-
-    if (!searchResults || searchResults.length === 0) {
-      return (
-        <div
-          className={`p-4 text-center text-gray-500 ${mobile ? "" : "card"}`}
-        >
-          {t("headerSearch.noResults")}
-        </div>
-      );
-    }
-
-    return (
-      <div className={`mt-2 max-h-96 overflow-y-auto ${mobile ? "" : "card"}`}>
-        {searchResults.map((game) => (
-          <button
-            key={game.id}
-            onClick={() => handleGameClick(game)}
-            className={`w-full flex items-center gap-3 p-3 bg-muted rounded-md hover:brightness-90 transition-colors cursor-pointer`}
-          >
-            <img
-              loading="lazy"
-              src={game.icon || game.image}
-              alt={game.name}
-              className="w-12 h-12 rounded-lg object-cover"
-            />
-            <div className="flex-1 text-right">
-              <h3 className="font-semibold">{game.name}</h3>
-              {game.service && (
-                <p className="text-sm text-gray-500">{game.service}</p>
-              )}
-            </div>
-          </button>
-        ))}
-      </div>
-    );
-  };
-
   return (
     <>
       <div className="lg:flex-1">
@@ -132,7 +83,13 @@ const HeaderSearch = () => {
           </div>
           {searchTerm && (
             <div className="absolute top-full left-0 right-0 mt-2 z-50">
-              <SearchResults />
+              <SearchResults
+                handleGameClick={handleGameClick}
+                debouncedSearch={debouncedSearch}
+                isLoading={isLoading}
+                searchResults={searchResults}
+                t={t}
+              />
             </div>
           )}
         </div>
@@ -163,7 +120,14 @@ const HeaderSearch = () => {
                 </button>
               )}
             </div>
-            <SearchResults mobile={true} />
+            <SearchResults
+              mobile={true}
+              handleGameClick={handleGameClick}
+              debouncedSearch={debouncedSearch}
+              isLoading={isLoading}
+              searchResults={searchResults}
+              t={t}
+            />
           </div>
         </DialogContent>
       </Dialog>
@@ -172,3 +136,58 @@ const HeaderSearch = () => {
 };
 
 export default HeaderSearch;
+
+const SearchResults = ({
+  mobile = false,
+  handleGameClick,
+  debouncedSearch,
+  isLoading,
+  searchResults,
+  t,
+}) => {
+  if (!debouncedSearch) return null;
+
+  if (isLoading) {
+    return (
+      <div className={`p-4 text-center text-gray-500 ${mobile ? "" : "card"}`}>
+        {t("headerSearch.searching")}
+      </div>
+    );
+  }
+
+  if (!searchResults || searchResults.length === 0) {
+    return (
+      <div className={`p-4 text-center text-gray-500 ${mobile ? "" : "card"}`}>
+        {t("headerSearch.noResults")}
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className={`mt-2 max-h-96 overflow-y-auto space-y-2 ${mobile ? "" : "card"}`}
+    >
+      {searchResults.map((game) => (
+        <button
+          key={game.id}
+          onClick={() => handleGameClick(game)}
+          className={`w-full flex items-center gap-3 p-2 bg-muted rounded-md hover:brightness-90 transition-colors cursor-pointer`}
+        >
+          <img
+            loading="lazy"
+            src={game.icon || game.image}
+            alt={game.name}
+            className="w-16 h-16 rounded object-cover"
+          />
+
+          <div className="flex-1 text-start space-y-1">
+            <h3 className="font-semibold">{game.name}</h3>
+            {game.service && (
+              <p className="text-sm text-gray-500">{game.service}</p>
+            )}
+          </div>
+        </button>
+      ))}
+    </div>
+  );
+};

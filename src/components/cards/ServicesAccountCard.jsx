@@ -6,20 +6,39 @@ const ServicesAccountCard = ({ item }) => {
   const { t } = useTranslation();
 
   return (
-    <div key={item.id} className="flex flex-col gap-4 card">
-      <div className="flex items-center justify-between gap-2">
-        <img
-          loading="lazy"
-          src={item.country_icon}
-          alt="offer-image"
-          className="w-10 h-10 object-contain"
-        />
-        <img
-          loading="lazy"
-          src={item.game_icon}
-          alt="game-icon"
-          className="w-10 h-10 object-contain"
-        />
+    <Link
+      to={`/games/accounts/details/${item.slug}`}
+      key={item.id}
+      className="flex flex-col gap-4 card"
+    >
+      <div className="grid grid-cols-2 gap-4">
+        {item?.platforms[0] ? (
+          <div className="flex items-center gap-2">
+            <img
+              loading="lazy"
+              src={item?.platforms[0]?.image}
+              alt="game-icon"
+              className="w-8 h-8 object-contain"
+            />
+            <p>{item?.platforms[0]?.name}</p>
+          </div>
+        ) : (
+          <div></div>
+        )}
+
+        {item?.country_name ? (
+          <div className="flex items-center gap-2 flex-row-reverse">
+            <img
+              loading="lazy"
+              src={item.country_icon}
+              alt="offer-image"
+              className="w-8 h-8 object-contain"
+            />
+            <p>{item.country_name}</p>
+          </div>
+        ) : (
+          <div></div>
+        )}
       </div>
 
       <h3 className="font-semibold line-clamp-2">{item.title}</h3>
@@ -40,23 +59,10 @@ const ServicesAccountCard = ({ item }) => {
             {item.from_time} - {item.to_time} {t("ServicesAccountCard.minutes")}
           </p>
         ) : null}
-
-        <div className="flex items-center flex-wrap gap-1">
-          {item?.platforms?.map((platform) => (
-            <p
-              key={platform.id}
-              className="py-1 px-4 bg-accent rounded-lg w-fit"
-            >
-              {platform.name}
-            </p>
-          ))}
-        </div>
       </div>
 
-      <Link to={`/games/accounts/details/${item.slug}`} className="mt-auto">
-        <Button className="w-full">{t("ServicesAccountCard.buyNow")}</Button>
-      </Link>
-    </div>
+      <Button className="w-full">{t("ServicesAccountCard.buyNow")}</Button>
+    </Link>
   );
 };
 

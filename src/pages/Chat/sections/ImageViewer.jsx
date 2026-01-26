@@ -1,45 +1,23 @@
-import { useRef, useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import {
-  X,
-  ZoomIn,
-  ZoomOut,
-  Download,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { X, ZoomIn, ZoomOut, RotateCw, RotateCcw } from "lucide-react";
 
-const ImageViewer = ({ open, onOpenChange, images, startIndex = 0 }) => {
-  const [currentIndex, setCurrentIndex] = useState(startIndex);
+const ImageViewer = ({ open, image, onClose }) => {
   const [scale, setScale] = useState(1);
+  const [rotation, setRotation] = useState(0);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
 
   const dragStart = useRef({ x: 0, y: 0 });
 
-  const resetTransform = () => {
-    setScale(1);
-    setPosition({ x: 0, y: 0 });
-  };
-
-  const next = () => {
-    if (currentIndex < images.length - 1) {
-      setCurrentIndex((i) => i + 1);
-      resetTransform();
+  useEffect(() => {
+    if (open) {
+      setScale(1);
+      setRotation(0);
+      setPosition({ x: 0, y: 0 });
     }
-  };
+  }, [open]);
 
-  const prev = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex((i) => i - 1);
-      resetTransform();
-    }
-  };
+  if (!open || !image) return null;
 
   const handleMouseDown = (e) => {
     setDragging(true);
@@ -59,83 +37,61 @@ const ImageViewer = ({ open, onOpenChange, images, startIndex = 0 }) => {
 
   const handleMouseUp = () => setDragging(false);
 
-  // const downloadImage = () => {
-  //   const link = document.createElement("a");
-  //   link.href = images[currentIndex];
-  //   link.download = "image";
-  //   link.click();
-  // };
-
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent
-        showCloseButton={false}
-        className="p-0 max-w-full! h-screen bg-black/95 border-none"
-        onClick={() => onOpenChange(false)}
+    <div
+      className="fixed inset-0 z-9999 bg-black/70 flex items-center justify-center"
+      onClick={onClose}
+    >
+      {/* Controls */}
+      <div
+        className="absolute top-4 left-1/2 -translate-x-1/2 flex gap-3 z-50"
+        onClick={(e) => e.stopPropagation()}
       >
-        <DialogTitle className="hidden">Image Viewer</DialogTitle>
-        <DialogDescription className="hidden" />
+        <button onClick={() => setScale((s) => s + 0.2)}>
+          <ZoomIn className="text-white" />
+        </button>
 
-        {/* Controls */}
-        <div
-          className="absolute top-4 left-1/2 -translate-x-1/2 z-50 flex gap-2"
+        <button onClick={() => setScale((s) => Math.max(1, s - 0.2))}>
+          <ZoomOut className="text-white" />
+        </button>
+
+        <button onClick={() => setRotation((r) => r - 90)}>
+          <RotateCcw className="text-white" />
+        </button>
+
+        <button onClick={() => setRotation((r) => r + 90)}>
+          <RotateCw className="text-white" />
+        </button>
+
+        <button onClick={onClose}>
+          <X className="text-white" />
+        </button>
+      </div>
+
+      {/* Image */}
+      <div
+        className="w-full h-full flex items-center justify-center"
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+      >
+        <img
+          src={image}
+          draggable={false}
+          onMouseDown={handleMouseDown}
           onClick={(e) => e.stopPropagation()}
-        >
-          <button onClick={() => setScale((s) => s + 0.2)}>
-            <ZoomIn className="text-white" />
-          </button>
-          <button onClick={() => setScale((s) => Math.max(1, s - 0.2))}>
-            <ZoomOut className="text-white" />
-          </button>
-          {/* <button onClick={downloadImage}>
-            <Download className="text-white" />
-          </button> */}
-          <button onClick={() => onOpenChange(false)}>
-            <X className="text-white" />
-          </button>
-        </div>
-
-        {/* Prev / Next */}
-        {currentIndex > 0 && (
-          <button
-            onClick={prev}
-            className="absolute left-4 top-1/2 -translate-y-1/2"
-          >
-            <ChevronLeft className="text-white w-8 h-8" />
-          </button>
-        )}
-
-        {currentIndex < images.length - 1 && (
-          <button
-            onClick={next}
-            className="absolute right-4 top-1/2 -translate-y-1/2"
-          >
-            <ChevronRight className="text-white w-8 h-8" />
-          </button>
-        )}
-
-        {/* Image */}
-        <div
-          className="w-full h-full flex items-center justify-center"
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
-        >
-          <img
-            loading="lazy"
-            src={images[currentIndex]}
-            draggable={false}
-            onClick={(e) => e.stopPropagation()}
-            onMouseDown={handleMouseDown}
-            style={{
-              transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
-              cursor: dragging ? "grabbing" : "grab",
-            }}
-            className="max-h-[90vh] select-none transition-transform object-contain"
-          />
-        </div>
-      </DialogContent>
-    </Dialog>
+          className="max-h-[90vh] max-w-[90vw] select-none object-contain"
+          style={{
+            transform: `
+              translate(${position.x}px, ${position.y}px)
+              scale(${scale})
+              rotate(${rotation}deg)
+            `,
+            cursor: dragging ? "grabbing" : "grab",
+          }}
+        />
+      </div>
+    </div>
   );
 };
 
