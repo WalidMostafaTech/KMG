@@ -181,7 +181,7 @@ const SearchResults = ({
 
   return (
     <div
-      className={`mt-2 max-h-96 overflow-y-auto space-y-2 ${mobile ? "" : "card"}`}
+      className={`mt-2 max-h-96 overflow-y-auto space-y-2 msgs_container ${mobile ? "" : "card"}`}
     >
       {searchResults?.games?.map((game) => (
         <button
@@ -197,10 +197,7 @@ const SearchResults = ({
           />
 
           <div className="flex-1 text-start space-y-1">
-            <h3 className="font-semibold">{game.name}</h3>
-            {game.service && (
-              <p className="text-sm text-gray-500">{game.service}</p>
-            )}
+            <h3 className="font-semibold line-clamp-2">{game.name}</h3>
           </div>
         </button>
       ))}
@@ -218,10 +215,7 @@ const SearchResults = ({
           />
 
           <div className="flex-1 text-start space-y-1">
-            <h3 className="font-semibold">{product.title}</h3>
-            {product.service && (
-              <p className="text-sm text-gray-500">{product.service}</p>
-            )}
+            <h3 className="font-semibold line-clamp-2">{product.title}</h3>
           </div>
         </button>
       ))}
