@@ -40,8 +40,17 @@ const HeaderSearch = () => {
   const handleGameClick = (game) => {
     navigate(`/games/accounts/${game.slug}`);
     setIsModalOpen(false);
-    setSearchTerm("");
-    setDebouncedSearch("");
+    clearSearch();
+  };
+
+  const handleProductClick = (pro) => {
+    if (pro.service === "accounts") {
+      navigate(`/games/accounts/details/${pro.slug}`);
+    } else {
+      navigate(`/games/${pro.service}/${pro.game_slug}`);
+    }
+    setIsModalOpen(false);
+    clearSearch();
   };
 
   const clearSearch = () => {
@@ -85,6 +94,7 @@ const HeaderSearch = () => {
             <div className="absolute top-full left-0 right-0 mt-2 z-50">
               <SearchResults
                 handleGameClick={handleGameClick}
+                handleProductClick={handleProductClick}
                 debouncedSearch={debouncedSearch}
                 isLoading={isLoading}
                 searchResults={searchResults}
@@ -123,6 +133,7 @@ const HeaderSearch = () => {
             <SearchResults
               mobile={true}
               handleGameClick={handleGameClick}
+              handleProductClick={handleProductClick}
               debouncedSearch={debouncedSearch}
               isLoading={isLoading}
               searchResults={searchResults}
@@ -140,6 +151,7 @@ export default HeaderSearch;
 const SearchResults = ({
   mobile = false,
   handleGameClick,
+  handleProductClick,
   debouncedSearch,
   isLoading,
   searchResults,
@@ -155,7 +167,11 @@ const SearchResults = ({
     );
   }
 
-  if (!searchResults || searchResults.length === 0) {
+  if (
+    !searchResults ||
+    (searchResults?.games?.length === 0 &&
+      searchResults?.products?.length === 0)
+  ) {
     return (
       <div className={`p-4 text-center text-gray-500 ${mobile ? "" : "card"}`}>
         {t("headerSearch.noResults")}
@@ -167,7 +183,7 @@ const SearchResults = ({
     <div
       className={`mt-2 max-h-96 overflow-y-auto space-y-2 ${mobile ? "" : "card"}`}
     >
-      {searchResults.map((game) => (
+      {searchResults?.games?.map((game) => (
         <button
           key={game.id}
           onClick={() => handleGameClick(game)}
@@ -175,7 +191,7 @@ const SearchResults = ({
         >
           <img
             loading="lazy"
-            src={game.icon || game.image}
+            src={game.image}
             alt={game.name}
             className="w-16 h-16 rounded object-cover"
           />
@@ -184,6 +200,27 @@ const SearchResults = ({
             <h3 className="font-semibold">{game.name}</h3>
             {game.service && (
               <p className="text-sm text-gray-500">{game.service}</p>
+            )}
+          </div>
+        </button>
+      ))}
+      {searchResults?.products?.map((product) => (
+        <button
+          key={product.id}
+          onClick={() => handleProductClick(product)}
+          className={`w-full flex items-center gap-3 p-2 bg-muted rounded-md hover:brightness-90 transition-colors cursor-pointer`}
+        >
+          <img
+            loading="lazy"
+            src={product.offer_image || product.image}
+            alt={product.title}
+            className="w-16 h-16 rounded object-cover"
+          />
+
+          <div className="flex-1 text-start space-y-1">
+            <h3 className="font-semibold">{product.title}</h3>
+            {product.service && (
+              <p className="text-sm text-gray-500">{product.service}</p>
             )}
           </div>
         </button>

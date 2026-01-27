@@ -1,16 +1,29 @@
-import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
+import UnavailableLayout from "../common/UnavailableLayout";
 
 const ServicesAccountCard = ({ item }) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  const isUnavailable = item.items_count === 0;
+
+  const handleNavigate = () => {
+    if (!isUnavailable) {
+      navigate(`/games/accounts/details/${item.slug}`);
+    }
+  };
 
   return (
-    <Link
-      to={`/games/accounts/details/${item.slug}`}
+    <div
+      onClick={handleNavigate}
       key={item.id}
-      className="flex flex-col gap-4 card"
+      className={`relative overflow-hidden flex flex-col gap-4 card`}
     >
+      {/* Overlay */}
+      {isUnavailable && <UnavailableLayout />}
+
       <div className="grid grid-cols-2 gap-4">
         {item?.platforms[0] ? (
           <div className="flex items-center gap-2">
@@ -61,8 +74,14 @@ const ServicesAccountCard = ({ item }) => {
         ) : null}
       </div>
 
-      <Button className="w-full">{t("ServicesAccountCard.buyNow")}</Button>
-    </Link>
+      <Button
+        className="w-full mt-auto"
+        disabled={isUnavailable}
+        variant={isUnavailable ? "secondary" : "default"}
+      >
+        {t("ServicesAccountCard.buyNow")}
+      </Button>
+    </div>
   );
 };
 

@@ -5,9 +5,12 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import useRequireAuth from "@/hooks/useRequireAuth";
+import UnavailableLayout from "@/components/common/UnavailableLayout";
 
 const HeadSection = ({ data }) => {
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
+
+  const isUnavailable = data.items_count === 0;
 
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -15,6 +18,8 @@ const HeadSection = ({ data }) => {
   const requireAuth = useRequireAuth();
 
   const handlePayment = (product) => {
+    if (isUnavailable) return;
+
     requireAuth(() => {
       navigate("/payment", {
         state: {
@@ -27,7 +32,10 @@ const HeadSection = ({ data }) => {
   };
 
   return (
-    <div className="card lg:p-8 grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
+    <div className="card lg:p-8 grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 relative overflow-hidden">
+      {/* Overlay */}
+      {isUnavailable && <UnavailableLayout />}
+
       <div className="h-[300px] md:h-[400px] bg-accent overflow-hidden rounded-2xl">
         <img
           loading="lazy"

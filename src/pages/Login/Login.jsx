@@ -43,7 +43,7 @@ const Login = () => {
     mutationFn: loginUser,
     onSuccess: (data) => {
       navigate("/");
-      dispatch(addProfile(data?.user));
+      dispatch(addProfile({ ...data?.user, image: data?.user?.image_url }));
     },
   });
 
