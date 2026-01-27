@@ -14,3 +14,10 @@ export const getMsgs = async () => {
   const { data } = await api.get(`/chats/messages`);
   return data?.data;
 };
+
+export const getNewMsgs = async (last_id) => {
+  const { data } = await api.get(
+    `/chats/messages/new-messages?last_id=${last_id}`,
+  );
+  return data?.data;
+};

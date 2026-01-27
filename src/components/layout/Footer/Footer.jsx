@@ -5,7 +5,10 @@ import {
   FaXTwitter,
   FaYoutube,
   FaInstagram,
+  FaTiktok,
+  FaWhatsapp,
 } from "react-icons/fa6";
+import { FaTelegramPlane } from "react-icons/fa";
 
 import { Link } from "react-router";
 import ContactUsModal from "./ContactUsModal";
@@ -59,6 +62,24 @@ const Footer = () => {
       name: "facebook",
       link: footerData?.facebook,
       icon: <FaFacebookF />,
+    },
+    {
+      id: 6,
+      name: "tiktok",
+      link: footerData?.tiktok,
+      icon: <FaTiktok />,
+    },
+    {
+      id: 7,
+      name: "telegram",
+      link: footerData?.telegram,
+      icon: <FaTelegramPlane />,
+    },
+    {
+      id: 8,
+      name: "whatsapp",
+      link: footerData?.whatsapp,
+      icon: <FaWhatsapp />,
     },
   ];
 
@@ -116,7 +137,7 @@ const Footer = () => {
           </button>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center justify-center flex-wrap gap-4">
           {socials
             .filter((item) => item.link)
             .map((item) => (

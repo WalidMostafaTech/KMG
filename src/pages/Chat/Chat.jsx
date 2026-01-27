@@ -1,7 +1,7 @@
 import ChatHeader from "./sections/ChatHeader";
 import ChatMsgs from "./sections/ChatMsgs";
 import ChatInput from "./sections/ChatInput";
-import { getMsgs, sendMsg } from "@/services/chatServices";
+import { getMsgs, getNewMsgs, sendMsg } from "@/services/chatServices";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import ImageViewer from "./sections/ImageViewer";
@@ -27,6 +27,26 @@ const Chat = () => {
   });
 
   const messages = data || [];
+
+  const lastMessageId = messages.length ? messages[0].id : null;
+
+  useQuery({
+    queryKey: ["get_new_msgs", lastMessageId],
+    queryFn: () => getNewMsgs(lastMessageId),
+    enabled: !!lastMessageId,
+    refetchInterval: 20000,
+    refetchOnWindowFocus: false,
+    onSuccess: (newMsgs) => {
+      if (!newMsgs || newMsgs.length === 0) return;
+
+      queryClient.setQueryData(["get_msgs"], (old = []) => [
+        ...newMsgs,
+        ...old,
+      ]);
+
+      setScrollTrigger((p) => p + 1);
+    },
+  });
 
   const sendMsgMutation = useMutation({
     mutationFn: sendMsg,
