@@ -144,16 +144,17 @@
 
   "chatHeader": {
     "admin": "أدمن",
-    "support":"الدعم الفني"
+    "support": "الدعم الفني"
   },
 
   "chatMsgs": {
     "noMessages": "لا توجد رسائل حاليا.",
-    "status": {
-      "pending": "قيد الانتظار",
-      "completed": "مكتمل",
-      "cancelled": "ملغي"
-    }
+    "noMoreMessages": "لا توجد رسائل أقدم",
+    "orderCode": "كود الطلب",
+    "price": "السعر",
+    "sending": "جاري الإرسال",
+    "sendFailed": "فشل الإرسال",
+    "retry": "إعادة الإرسال"
   },
 
   "checkEmail": {

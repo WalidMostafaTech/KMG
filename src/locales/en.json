@@ -149,11 +149,12 @@
 
   "chatMsgs": {
     "noMessages": "No messages yet.",
-    "status": {
-      "pending": "Pending",
-      "completed": "Completed",
-      "cancelled": "Cancelled"
-    }
+    "noMoreMessages": "No older messages",
+    "orderCode": "Order Code",
+    "price": "Price",
+    "sending": "Sending",
+    "sendFailed": "Failed to send",
+    "retry": "Retry"
   },
 
   "checkEmail": {

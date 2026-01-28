@@ -10,9 +10,18 @@ export const sendMsg = async (formData) => {
   return data?.data || {};
 };
 
-export const getMsgs = async () => {
-  const { data } = await api.get(`/chats/messages`);
-  return data?.data;
+export const getMsgs = async ({ page = 1, per_page = 20 }) => {
+  const { data } = await api.get(`/chats/messages`, {
+    params: {
+      page,
+      per_page,
+    },
+  });
+
+  return {
+    messages: data?.data?.items || [],
+    meta: data?.data?.meta || {},
+  };
 };
 
 export const getNewMsgs = async (last_id) => {

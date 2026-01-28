@@ -97,7 +97,7 @@ const ChatInput = ({ sendMsgMutation, isLoading }) => {
         <button
           onClick={sendMessage}
           disabled={isLoading || (!input.trim() && !selectedFile)}
-          className="bg-primary hover:bg-purple-700 text-white p-2 rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
+          className="bg-primary hover:bg-purple-700 text-white p-2 rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading ? (
             <div className="animate-spin w-[18px] h-[18px] border-2 border-white border-t-transparent rounded-full" />

@@ -43,11 +43,9 @@ const MyOrdersCard = ({ order }) => {
   });
 
   const handleSendToChat = () => {
-    if (!message.trim()) return;
-
     const formData = new FormData();
     formData.append("order_id", order.id);
-    formData.append("message", message);
+    formData.append("message", message || "__");
 
     sendOrderToChat.mutate(formData);
   };
@@ -70,7 +68,9 @@ const MyOrdersCard = ({ order }) => {
             <p className="text-muted-foreground text-sm">
               {t("myOrdersCard.messageDialog.orderCode")} {order.order_code}
             </p>
-            <p className="text-lg font-bold">${order?.product?.price}</p>
+            <p className="text-lg font-bold">
+              {order?.product?.price} {order?.currency}
+            </p>
           </div>
         </div>
 
@@ -139,7 +139,7 @@ const MyOrdersCard = ({ order }) => {
                 <span className="text-muted-foreground">
                   {t("myOrdersCard.messageDialog.price")}
                 </span>
-                <span className="font-bold">${order?.total_price}</span>
+                <span className="font-bold">{order?.total_price} {order?.currency}</span>
               </div>
 
               <div className="flex items-center justify-between text-sm">
@@ -148,11 +148,7 @@ const MyOrdersCard = ({ order }) => {
                 </span>
                 <Badge variant="outline" className="gap-1">
                   <BadgeCheck size={14} />
-                  {order.status === "pending"
-                    ? t("myOrdersCard.status.pending")
-                    : order.status === "completed"
-                      ? t("myOrdersCard.status.completed")
-                      : order.status}
+                  {order.status}
                 </Badge>
               </div>
 
@@ -209,7 +205,7 @@ const MyOrdersCard = ({ order }) => {
             </Button>
             <Button
               onClick={handleSendToChat}
-              disabled={sendOrderToChat.isPending || !message.trim()}
+              disabled={sendOrderToChat.isPending}
               className="gap-2"
             >
               {sendOrderToChat.isPending ? (
