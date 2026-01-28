@@ -9,6 +9,7 @@ import { Toaster } from "@/components/ui/sonner";
 import LogOutModal from "@/components/modals/LogOutModal";
 import RequiredLoginModal from "@/components/modals/RequiredLoginModal";
 import RequiredVerifyEmailModal from "@/components/modals/RequiredVerifyEmailModal";
+import ContactUsModal from "./components/modals/ContactUsModal";
 
 function App() {
   const { pathname } = useLocation();
@@ -40,6 +41,7 @@ function App() {
       <LogOutModal />
       <RequiredLoginModal />
       <RequiredVerifyEmailModal />
+      <ContactUsModal />
     </main>
   );
 }

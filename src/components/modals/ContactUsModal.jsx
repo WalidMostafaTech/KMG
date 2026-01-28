@@ -19,12 +19,20 @@ import PhoneInputField from "@/components/form/PhoneInputField";
 import { useMutation } from "@tanstack/react-query";
 import { getContactUs } from "@/services/mainServices";
 import { useState } from "react";
-import FormSuccess from "@/components/form/FormSuccess";
 import FormError from "@/components/form/FormError";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { closeModal } from "@/store/modals/modalsSlice";
+import { toast } from "sonner";
 
-const ContactUsModal = ({ open, onClose }) => {
-  const [successMsg, setSuccessMsg] = useState("");
+const ContactUsModal = () => {
+  const dispatch = useDispatch();
+  const { contactUsModal } = useSelector((state) => state.modals);
+
+  const onClose = () => {
+    dispatch(closeModal("contactUsModal"));
+  };
+
   const [errorMsg, setErrorMsg] = useState("");
   const { t } = useTranslation();
 
@@ -38,7 +46,7 @@ const ContactUsModal = ({ open, onClose }) => {
         (val) => isValidPhoneNumber(val),
         t("ContactUsModal.validation.phoneInvalid"),
       ),
-    message: z.string().min(10, t("ContactUsModal.validation.messageMin")),
+    message: z.string().min(5, t("ContactUsModal.validation.messageMin")),
   });
 
   const form = useForm({
@@ -55,12 +63,12 @@ const ContactUsModal = ({ open, onClose }) => {
     mutationFn: getContactUs,
     onSuccess: () => {
       form.reset();
-      setSuccessMsg(t("ContactUsModal.success"));
+      toast.success(t("ContactUsModal.success"));
       setErrorMsg("");
+      onClose();
     },
     onError: (error) => {
       setErrorMsg(error?.response?.data?.message || t("ContactUsModal.error"));
-      setSuccessMsg("");
     },
   });
 
@@ -69,7 +77,7 @@ const ContactUsModal = ({ open, onClose }) => {
   };
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog open={contactUsModal} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-center">
@@ -116,7 +124,6 @@ const ContactUsModal = ({ open, onClose }) => {
                 : t("ContactUsModal.submit")}
             </Button>
 
-            {successMsg && <FormSuccess successMsg={successMsg} />}
             {errorMsg && <FormError errorMsg={errorMsg} />}
           </form>
         </Form>

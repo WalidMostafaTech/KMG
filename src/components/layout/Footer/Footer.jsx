@@ -10,18 +10,19 @@ import {
 } from "react-icons/fa6";
 import { FaTelegramPlane } from "react-icons/fa";
 
-import { Link } from "react-router";
-import ContactUsModal from "./ContactUsModal";
+import { Link, useNavigate } from "react-router";
 import { getFooter } from "@/services/mainServices";
 import { useQuery } from "@tanstack/react-query";
 import FooterSkeleton from "@/components/Loading/SkeletonLoading/FooterSkeleton";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { openModal } from "@/store/modals/modalsSlice";
 
 const Footer = () => {
-  const [openContactModal, setOpenContactModal] = useState(false);
-
   const { t } = useTranslation();
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { data: footerData, isLoading } = useQuery({
     queryKey: ["footer"],
@@ -31,6 +32,24 @@ const Footer = () => {
   if (isLoading) {
     return <FooterSkeleton />;
   }
+
+  const links = [
+    {
+      id: 1,
+      name: t("footer.joinPartner"),
+      action: () => navigate("/join-as-partner"),
+    },
+    {
+      id: 2,
+      name: t("footer.refundPolicy"),
+      action: () => navigate("/refund-policy"),
+    },
+    {
+      id: 3,
+      name: t("footer.contactUs"),
+      action: () => dispatch(openModal("contactUsModal")),
+    },
+  ];
 
   const socials = [
     {
@@ -72,13 +91,13 @@ const Footer = () => {
     {
       id: 7,
       name: "telegram",
-      link: footerData?.telegram,
+      link: `https://t.me/${footerData?.telegram.replace("@", "")}`,
       icon: <FaTelegramPlane />,
     },
     {
       id: 8,
       name: "whatsapp",
-      link: footerData?.whatsapp,
+      link: `https://wa.me/${footerData?.whatsapp.replace(/[^\d]/g, "")}`,
       icon: <FaWhatsapp />,
     },
   ];
@@ -115,26 +134,15 @@ const Footer = () => {
         )}
 
         <div className="flex items-center gap-4">
-          <Link
-            to="/join-as-partner"
-            className="text-sm underline hover:text-primary transition"
-          >
-            {t("footer.joinPartner")}
-          </Link>
-
-          <Link
-            to="/refund-policy"
-            className="text-sm underline hover:text-primary transition"
-          >
-            {t("footer.refundPolicy")}
-          </Link>
-
-          <button
-            onClick={() => setOpenContactModal(true)}
-            className="text-sm underline hover:text-primary transition cursor-pointer"
-          >
-            {t("footer.contactUs")}
-          </button>
+          {links.map((item) => (
+            <button
+              key={item.id}
+              onClick={item.action}
+              className="text-sm underline hover:text-primary transition cursor-pointer"
+            >
+              {item.name}
+            </button>
+          ))}
         </div>
 
         <div className="flex items-center justify-center flex-wrap gap-4">
@@ -157,11 +165,6 @@ const Footer = () => {
       <div className="py-4 border-t">
         <p></p>
       </div>
-
-      <ContactUsModal
-        open={openContactModal}
-        onClose={() => setOpenContactModal(false)}
-      />
     </footer>
   );
 };

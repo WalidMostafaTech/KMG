@@ -87,7 +87,7 @@ const PhoneInputField = ({ control, name, label }) => {
         name={name}
         render={({ field }) => (
           <FormItem>
-            {label && <FormLabel>{label}</FormLabel>}
+            {label && <FormLabel htmlFor={name}>{label}</FormLabel>}
 
             <FormControl>
               <PhoneInput

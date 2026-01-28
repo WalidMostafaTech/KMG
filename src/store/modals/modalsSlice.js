@@ -4,6 +4,7 @@ const initialState = {
   logoutModal: false,
   requiredLoginModal: false,
   requiredVerifyEmailModal: false,
+  contactUsModal: false,
 };
 
 const modalsSlice = createSlice({

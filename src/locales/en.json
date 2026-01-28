@@ -93,7 +93,7 @@
       "emailInvalid": "Invalid email address",
       "phoneRequired": "Phone number is required",
       "phoneInvalid": "Invalid phone number",
-      "messageMin": "Message must be at least 10 characters"
+      "messageMin": "Message must be at least 5 characters"
     }
   },
 
