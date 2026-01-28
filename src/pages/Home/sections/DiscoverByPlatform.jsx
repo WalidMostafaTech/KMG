@@ -33,19 +33,20 @@ const DiscoverByPlatform = ({ data = [], isLoading }) => {
         }}
         breakpoints={{
           0: {
-            slidesPerView: 2.2,
+            slidesPerView: 1.5,
           },
           640: {
-            slidesPerView: 3.3,
+            slidesPerView: 2.5,
           },
           1024: {
             slidesPerView: 4.5,
           },
+
         }}
       >
         {data?.map((item) => (
           <SwiperSlide key={item.id}>
-            <div className="h-32 rounded-xl overflow-hidden">
+            <div className="h-36 xl:h-48 bg-background rounded-xl overflow-hidden">
               <img
                 loading="lazy"
                 src={item.image}
