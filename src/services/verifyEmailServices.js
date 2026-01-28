@@ -5,7 +5,11 @@ export const sendOtpVerifyEmail = async (email) => {
   const { data } = await api.post("/auth/verify/resend-code", { email });
 
   if (data?.data?.token) {
-    Cookies.set("token", data?.data?.token);
+    Cookies.set("token", data?.data?.token, {
+      expires: 7,
+      secure: true,
+      sameSite: "strict",
+    });
   }
 
   return data?.data;
@@ -15,7 +19,11 @@ export const verifyEmail = async (payload) => {
   const { data } = await api.post("/auth/verify-account", payload);
 
   if (data?.data?.token) {
-    Cookies.set("token", data?.data?.token);
+    Cookies.set("token", data?.data?.token, {
+      expires: 7,
+      secure: true,
+      sameSite: "strict",
+    });
   }
 
   return data?.data;
