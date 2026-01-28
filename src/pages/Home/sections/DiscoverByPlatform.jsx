@@ -45,12 +45,12 @@ const DiscoverByPlatform = ({ data = [], isLoading }) => {
       >
         {data?.map((item) => (
           <SwiperSlide key={item.id}>
-            <div className="h-32 bg-background">
+            <div className="h-32 rounded-xl overflow-hidden">
               <img
                 loading="lazy"
                 src={item.image}
                 alt={item.name}
-                className="w-full h-full object-contain rounded-lg"
+                className="w-full h-full object-cover"
               />
             </div>
           </SwiperSlide>
