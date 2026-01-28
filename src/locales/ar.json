@@ -143,7 +143,8 @@
   },
 
   "chatHeader": {
-    "admin": "أدمن"
+    "admin": "أدمن",
+    "support":"الدعم الفني"
   },
 
   "chatMsgs": {

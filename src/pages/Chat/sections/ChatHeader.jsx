@@ -16,7 +16,7 @@ const ChatHeader = () => {
           className="w-full h-full object-contain"
         />
       </div>
-      <p className="font-bold text-xl">{t("chatHeader.admin")}</p>
+      <p className="font-bold text-xl">{t("chatHeader.support")}</p>
     </div>
   );
 };
